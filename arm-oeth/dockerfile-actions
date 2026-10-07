@@ -1,0 +1,87 @@
+# syntax=docker/dockerfile:1.10
+
+# Foundry binaries (forge/cast/anvil) — pulled from the official image
+# at a digest pin instead of curl-pipe-bash from foundry.paradigm.xyz.
+# Replaces the previous `curl … | bash` install (security/M-011).
+# Bump by resolving the desired immutable Foundry release tag and updating
+# the digest below; review the published Foundry release notes.
+FROM ghcr.io/foundry-rs/foundry:v1.8.1@sha256:0c00cb0bda1ab1b91c9a6bf60f4c76c09c1a8870824b6d4718afbabacf6f9a17 AS foundry
+
+FROM oven/bun:1
+
+ENV DEBIAN_FRONTEND=noninteractive \
+  DEBUG_HIDE_DATE=true \
+  NODE_OPTIONS=--max-old-space-size=8096 \
+  PNPM_STORE_DIR=/root/.local/share/pnpm/store
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  curl \
+  git \
+  build-essential \
+  python3 \
+  bsdutils \
+  nodejs \
+  npm \
+  && rm -rf /var/lib/apt/lists/*
+
+# security/M-012: create a non-root runtime user. Build/install steps
+# stay as root so the apt+pnpm caches and SSH-keyed deps work; we
+# chown /app and switch USER just before CMD.
+RUN groupadd -r runner && useradd -r -g runner -m -d /home/runner runner
+
+# Foundry (forge/cast/anvil) — required at hardhat config load time
+# because hardhat.config.js loads @nomicfoundation/hardhat-foundry.
+# Pulled from the digest-pinned `foundry` builder stage at the top of
+# this Dockerfile. /usr/local/bin keeps them on PATH after USER switch.
+COPY --from=foundry /usr/local/bin/forge /usr/local/bin/cast /usr/local/bin/anvil /usr/local/bin/
+
+WORKDIR /app
+
+# Install the public dependencies first for better caching. The Talos client is
+# an optional peer dependency, so install the version declared in package.json
+# using the TALOS_PACKAGE_TOKEN environment variable. The token needs
+# read:packages access to the oplabs package.
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN --mount=type=cache,id=arm-oeth-pnpm-store,target=/root/.local/share/pnpm/store \
+    npm install -g pnpm@10.33.2 && pnpm install --frozen-lockfile
+RUN --mount=type=secret,id=talos_package_token,env=TALOS_PACKAGE_TOKEN,required=true \
+    --mount=type=cache,id=arm-oeth-pnpm-store,target=/root/.local/share/pnpm/store \
+    TALOS_CLIENT_VERSION="$(node -p "require('./package.json').peerDependencies['@oplabs/talos-client']")" \
+    && printf '@oplabs:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n' "$TALOS_PACKAGE_TOKEN" > /tmp/talos.npmrc \
+    && npm_config_userconfig=/tmp/talos.npmrc pnpm add --save-prod "@oplabs/talos-client@$TALOS_CLIENT_VERSION" \
+    && rm -f /tmp/talos.npmrc
+
+# Copy the rest of the workspace.
+COPY . .
+
+# Dump the hardhat task catalog to /app/actions-catalog.json at build time.
+# Runs under Node (where hardhat works) — the bun parent can't load hardhat
+# itself (keccak native module crashes; bun#18546). The runner reads this
+# file at boot and passes it to runContainer's `actionsCatalog`. A dump
+# failure is non-fatal: empty catalog ⇒ admin UI shows zero editable flags
+# per action (fail-closed), the rest of the runner is unaffected.
+RUN cd /app \
+    && NODE_PATH=/app/node_modules/.pnpm/node_modules \
+       node dump-actions-catalog.cjs > /app/actions-catalog.json \
+    || (echo "[build] hardhat catalog dump failed; shipping empty catalog" \
+        && echo "{}" > /app/actions-catalog.json)
+
+# Hand /app over to the runtime user. After this, all reads/writes by
+# the runner process are as `runner`, not root. Closes security/M-012.
+RUN chown -R runner:runner /app
+
+ENV MAINNET_URL="" \
+  SONIC_URL="" \
+  HOLESKY_URL=""
+
+# Git commit this image was built from. CI passes
+# --build-arg GIT_COMMIT_SHA=<github.sha>; empty for local builds. @oplabs/talos-client's
+# runContainer reports it as the runner's `version`, letting the admin announce
+# redeploys to Discord.
+ARG GIT_COMMIT_SHA=""
+ENV GIT_COMMIT_SHA=$GIT_COMMIT_SHA
+
+USER runner
+CMD ["bun", "run", "runner.ts"]

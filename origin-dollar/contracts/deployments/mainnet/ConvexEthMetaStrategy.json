@@ -1,0 +1,1018 @@
+{
+  "address": "0x5c93E05783EA4D0D968c7A2C0cDfFCEfC711b213",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "platformAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "vaultAddress",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct InitializableAbstractStrategy.BaseStrategyConfig",
+          "name": "_baseConfig",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "cvxDepositorAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "cvxRewardStakerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "cvxDepositorPTokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "oethAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "wethAddress",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct ConvexEthMetaStrategy.ConvexEthMetaConfig",
+          "name": "_convexConfig",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_pToken",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Deposit",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousGovernor",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "GovernorshipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_oldHarvesterAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_newHarvesterAddress",
+          "type": "address"
+        }
+      ],
+      "name": "HarvesterAddressesUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_pToken",
+          "type": "address"
+        }
+      ],
+      "name": "PTokenAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_pToken",
+          "type": "address"
+        }
+      ],
+      "name": "PTokenRemoved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousGovernor",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "PendingGovernorshipTransfer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address[]",
+          "name": "_oldAddresses",
+          "type": "address[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "address[]",
+          "name": "_newAddresses",
+          "type": "address[]"
+        }
+      ],
+      "name": "RewardTokenAddressesUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "rewardToken",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "RewardTokenCollected",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_pToken",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Withdrawal",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "ETH_ADDRESS",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "MAX_SLIPPAGE",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "assetToPToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        }
+      ],
+      "name": "checkBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claimGovernance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "collectRewardTokens",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "curvePool",
+      "outputs": [
+        {
+          "internalType": "contract ICurveETHPoolV1",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "cvxDepositorAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "cvxDepositorPTokenId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "cvxRewardStaker",
+      "outputs": [
+        {
+          "internalType": "contract IRewardStaking",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_weth",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "depositAll",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ethCoinIndex",
+      "outputs": [
+        {
+          "internalType": "uint128",
+          "name": "",
+          "type": "uint128"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getRewardTokenAddresses",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "governor",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "harvesterAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_rewardTokenAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "_assets",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "_pTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_rewardTokenAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "_assets",
+          "type": "address[]"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isGovernor",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lpToken",
+      "outputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_oTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "mintAndAddOTokens",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "oeth",
+      "outputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "oethCoinIndex",
+      "outputs": [
+        {
+          "internalType": "uint128",
+          "name": "",
+          "type": "uint128"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "platformAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_lpTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "removeAndBurnOTokens",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_lpTokens",
+          "type": "uint256"
+        }
+      ],
+      "name": "removeOnlyAssets",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_assetIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "removePToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "rewardTokenAddresses",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "safeApproveAllTokens",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_harvesterAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setHarvesterAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_pToken",
+          "type": "address"
+        }
+      ],
+      "name": "setPTokenAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_rewardTokenAddresses",
+          "type": "address[]"
+        }
+      ],
+      "name": "setRewardTokenAddresses",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        }
+      ],
+      "name": "supportsAsset",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "transferGovernance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "vaultAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "weth",
+      "outputs": [
+        {
+          "internalType": "contract IWETH9",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_weth",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdrawAll",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 4995,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "initialized",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 4998,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "initializing",
+        "offset": 1,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 5038,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "______gap",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_array(t_uint256)50_storage"
+      },
+      {
+        "astId": 5118,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_platformAddress",
+        "offset": 0,
+        "slot": "51",
+        "type": "t_address"
+      },
+      {
+        "astId": 5121,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_vaultAddress",
+        "offset": 0,
+        "slot": "52",
+        "type": "t_address"
+      },
+      {
+        "astId": 5125,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "assetToPToken",
+        "offset": 0,
+        "slot": "53",
+        "type": "t_mapping(t_address,t_address)"
+      },
+      {
+        "astId": 5128,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "assetsMapped",
+        "offset": 0,
+        "slot": "54",
+        "type": "t_array(t_address)dyn_storage"
+      },
+      {
+        "astId": 5130,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_rewardTokenAddress",
+        "offset": 0,
+        "slot": "55",
+        "type": "t_address"
+      },
+      {
+        "astId": 5132,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_rewardLiquidationThreshold",
+        "offset": 0,
+        "slot": "56",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 5134,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "harvesterAddress",
+        "offset": 0,
+        "slot": "57",
+        "type": "t_address"
+      },
+      {
+        "astId": 5137,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "rewardTokenAddresses",
+        "offset": 0,
+        "slot": "58",
+        "type": "t_array(t_address)dyn_storage"
+      },
+      {
+        "astId": 5141,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_reserved",
+        "offset": 0,
+        "slot": "59",
+        "type": "t_array(t_int256)98_storage"
+      },
+      {
+        "astId": 1913,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_cvxDepositorAddress",
+        "offset": 0,
+        "slot": "157",
+        "type": "t_address"
+      },
+      {
+        "astId": 1915,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_cvxRewardStaker",
+        "offset": 0,
+        "slot": "158",
+        "type": "t_address"
+      },
+      {
+        "astId": 1917,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_cvxDepositorPTokenId",
+        "offset": 0,
+        "slot": "159",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 1919,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_curvePool",
+        "offset": 0,
+        "slot": "160",
+        "type": "t_address"
+      },
+      {
+        "astId": 1921,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_lpToken",
+        "offset": 0,
+        "slot": "161",
+        "type": "t_address"
+      },
+      {
+        "astId": 1923,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_oeth",
+        "offset": 0,
+        "slot": "162",
+        "type": "t_address"
+      },
+      {
+        "astId": 1925,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_weth",
+        "offset": 0,
+        "slot": "163",
+        "type": "t_address"
+      },
+      {
+        "astId": 1927,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_oethCoinIndex",
+        "offset": 0,
+        "slot": "164",
+        "type": "t_uint128"
+      },
+      {
+        "astId": 1929,
+        "contract": "contracts/strategies/ConvexEthMetaStrategy.sol:ConvexEthMetaStrategy",
+        "label": "_deprecated_ethCoinIndex",
+        "offset": 16,
+        "slot": "164",
+        "type": "t_uint128"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_address)dyn_storage": {
+        "encoding": "dynamic_array",
+        "label": "address[]",
+        "numberOfBytes": "32",
+        "base": "t_address"
+      },
+      "t_array(t_int256)98_storage": {
+        "encoding": "inplace",
+        "label": "int256[98]",
+        "numberOfBytes": "3136",
+        "base": "t_int256"
+      },
+      "t_array(t_uint256)50_storage": {
+        "encoding": "inplace",
+        "label": "uint256[50]",
+        "numberOfBytes": "1600",
+        "base": "t_uint256"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_int256": {
+        "encoding": "inplace",
+        "label": "int256",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_address)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => address)",
+        "numberOfBytes": "32",
+        "value": "t_address"
+      },
+      "t_uint128": {
+        "encoding": "inplace",
+        "label": "uint128",
+        "numberOfBytes": "16"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

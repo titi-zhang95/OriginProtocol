@@ -1,0 +1,173 @@
+{
+  "address": "0x31FD8618379D8e473Ec2B1540B906E8e11D2A99b",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_vault",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_ousd",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "int256",
+          "name": "expectedProfit",
+          "type": "int256"
+        },
+        {
+          "internalType": "int256",
+          "name": "profitVariance",
+          "type": "int256"
+        },
+        {
+          "internalType": "int256",
+          "name": "expectedVaultChange",
+          "type": "int256"
+        },
+        {
+          "internalType": "int256",
+          "name": "vaultChangeVariance",
+          "type": "int256"
+        }
+      ],
+      "name": "checkDelta",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ousd",
+      "outputs": [
+        {
+          "internalType": "contract IOUSD",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "snapshots",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "vaultValue",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalSupply",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "time",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "takeSnapshot",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "vault",
+      "outputs": [
+        {
+          "internalType": "contract IVault",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 702,
+        "contract": "contracts/strategies/VaultValueChecker.sol:OETHVaultValueChecker",
+        "label": "snapshots",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_address,t_struct(Snapshot)697_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_struct(Snapshot)697_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct VaultValueChecker.Snapshot)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Snapshot)697_storage"
+      },
+      "t_struct(Snapshot)697_storage": {
+        "encoding": "inplace",
+        "label": "struct VaultValueChecker.Snapshot",
+        "numberOfBytes": "96",
+        "members": [
+          {
+            "astId": 692,
+            "contract": "contracts/strategies/VaultValueChecker.sol:OETHVaultValueChecker",
+            "label": "vaultValue",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 694,
+            "contract": "contracts/strategies/VaultValueChecker.sol:OETHVaultValueChecker",
+            "label": "totalSupply",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 696,
+            "contract": "contracts/strategies/VaultValueChecker.sol:OETHVaultValueChecker",
+            "label": "time",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          }
+        ]
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

@@ -1,0 +1,408 @@
+{
+  "address": "0xC67436e3c9c24aFBd33782DE930Fbd328EA0A752",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_oToken",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_governor",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_centralRegistry",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_beacon",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousGovernor",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "GovernorshipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousGovernor",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "PendingGovernorshipTransfer",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "VERSION",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "beacon",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_exclusionList",
+          "type": "address[]"
+        }
+      ],
+      "name": "bribeAll",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "centralRegistry",
+      "outputs": [
+        {
+          "internalType": "contract IPoolBoostCentralRegistry",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claimGovernance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_salt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_initData",
+          "type": "bytes"
+        }
+      ],
+      "name": "computePoolBoosterAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_ammPoolAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_initData",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_salt",
+          "type": "uint256"
+        }
+      ],
+      "name": "createPoolBoosterMerkl",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "governor",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isGovernor",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "oToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "poolBoosterFromPool",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "boosterAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "ammPoolAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "enum IPoolBoostCentralRegistry.PoolBoosterType",
+          "name": "boosterType",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "poolBoosterLength",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "poolBoosters",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "boosterAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "ammPoolAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "enum IPoolBoostCentralRegistry.PoolBoosterType",
+          "name": "boosterType",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_poolBoosterAddress",
+          "type": "address"
+        }
+      ],
+      "name": "removePoolBooster",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "removePoolBoosterByIndex",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "transferGovernance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 1336,
+        "contract": "contracts/poolBooster/PoolBoosterFactoryMerkl.sol:PoolBoosterFactoryMerkl",
+        "label": "poolBoosters",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_array(t_struct(PoolBoosterEntry)1327_storage)dyn_storage"
+      },
+      {
+        "astId": 1341,
+        "contract": "contracts/poolBooster/PoolBoosterFactoryMerkl.sol:PoolBoosterFactoryMerkl",
+        "label": "poolBoosterFromPool",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_mapping(t_address,t_struct(PoolBoosterEntry)1327_storage)"
+      },
+      {
+        "astId": 1671,
+        "contract": "contracts/poolBooster/PoolBoosterFactoryMerkl.sol:PoolBoosterFactoryMerkl",
+        "label": "beacon",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_address"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_struct(PoolBoosterEntry)1327_storage)dyn_storage": {
+        "encoding": "dynamic_array",
+        "label": "struct AbstractPoolBoosterFactory.PoolBoosterEntry[]",
+        "numberOfBytes": "32",
+        "base": "t_struct(PoolBoosterEntry)1327_storage"
+      },
+      "t_enum(PoolBoosterType)1258": {
+        "encoding": "inplace",
+        "label": "enum IPoolBoostCentralRegistry.PoolBoosterType",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_struct(PoolBoosterEntry)1327_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct AbstractPoolBoosterFactory.PoolBoosterEntry)",
+        "numberOfBytes": "32",
+        "value": "t_struct(PoolBoosterEntry)1327_storage"
+      },
+      "t_struct(PoolBoosterEntry)1327_storage": {
+        "encoding": "inplace",
+        "label": "struct AbstractPoolBoosterFactory.PoolBoosterEntry",
+        "numberOfBytes": "64",
+        "members": [
+          {
+            "astId": 1321,
+            "contract": "contracts/poolBooster/PoolBoosterFactoryMerkl.sol:PoolBoosterFactoryMerkl",
+            "label": "boosterAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 1323,
+            "contract": "contracts/poolBooster/PoolBoosterFactoryMerkl.sol:PoolBoosterFactoryMerkl",
+            "label": "ammPoolAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 1326,
+            "contract": "contracts/poolBooster/PoolBoosterFactoryMerkl.sol:PoolBoosterFactoryMerkl",
+            "label": "boosterType",
+            "offset": 20,
+            "slot": "1",
+            "type": "t_enum(PoolBoosterType)1258"
+          }
+        ]
+      }
+    }
+  }
+}

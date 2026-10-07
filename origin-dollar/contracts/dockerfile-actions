@@ -1,0 +1,74 @@
+# syntax=docker/dockerfile:1.10
+FROM oven/bun:1
+
+ENV DEBIAN_FRONTEND=noninteractive \
+  DEBUG=origin* \
+  DEBUG_HIDE_DATE=true \
+  NODE_OPTIONS=--max-old-space-size=8096 \
+  PNPM_STORE_DIR=/root/.local/share/pnpm/store
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  build-essential \
+  python3 \
+  nodejs \
+  npm \
+  && rm -rf /var/lib/apt/lists/*
+
+# security/M-012: create a non-root runtime user. Build/install steps
+# stay as root so the apt+pnpm caches and SSH-keyed deps work; we
+# chown /app and switch USER just before CMD.
+RUN groupadd -r runner && useradd -r -g runner -m -d /home/runner runner
+
+WORKDIR /app
+
+# Install dependencies first for better caching. The Talos client is an
+# optional peer dependency, so install it explicitly for the runner image.
+# talos_package_token must be a PAT with read:packages access to oplabs packages.
+COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
+RUN --mount=type=secret,id=talos_package_token,env=NODE_AUTH_TOKEN,required=true \
+    --mount=type=cache,id=origin-dollar-contracts-pnpm-store,target=/root/.local/share/pnpm/store \
+    npm install -g pnpm@10.33.4 \
+    && printf '%s\n' \
+      '@oplabs:registry=https://npm.pkg.github.com' \
+      '//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}' \
+      > /tmp/talos.npmrc \
+    && NPM_CONFIG_USERCONFIG=/tmp/talos.npmrc pnpm install --frozen-lockfile \
+    && TALOS_CLIENT_VERSION="$(node -p 'require("./package.json").peerDependencies["@oplabs/talos-client"]')" \
+    && NPM_CONFIG_USERCONFIG=/tmp/talos.npmrc \
+      pnpm add --save-prod "@oplabs/talos-client@${TALOS_CLIENT_VERSION}" \
+    && rm /tmp/talos.npmrc
+
+# Copy the rest of the contracts workspace.
+COPY . .
+
+# No contract compilation needed: the Talos actions resolve addresses/ABIs from
+# the committed deployments/ artifacts and curated abi/ interfaces.
+
+# Dump the action catalog to /app/actions-catalog.json at build time from the
+# in-process registry. The runner reads this file at boot and
+# passes it to runContainer's `actionsCatalog`. Fail the image build if an action
+# cannot be loaded so a broken or incomplete catalog is never deployed.
+RUN cd /app \
+    && pnpm exec tsx dump-actions-catalog.ts > /app/actions-catalog.json
+
+# Hand /app over to the runtime user. After this, all reads/writes by
+# the runner process are as `runner`, not root. Closes security/M-012.
+RUN chown -R runner:runner /app
+
+ENV MAINNET_PROVIDER_URL="" \
+  SONIC_PROVIDER_URL="" \
+  PLUME_PROVIDER_URL="" \
+  HOODI_PROVIDER_URL="" \
+  BEACON_PROVIDER_URL=""
+
+# Git commit this image was built from. CI passes
+# --build-arg GIT_COMMIT_SHA=<github.sha>; empty for local builds. @oplabs/talos-client's
+# runContainer reports it as the runner's `version`, letting the admin announce
+# redeploys to Discord.
+ARG GIT_COMMIT_SHA=""
+ENV GIT_COMMIT_SHA=$GIT_COMMIT_SHA
+
+USER runner
+CMD ["bun", "run", "runner.ts"]

@@ -1,0 +1,293 @@
+{
+  "address": "0x017aD99900b9581Cd40C815990890EE9F0858246",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "governor",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "symbol",
+          "type": "string"
+        }
+      ],
+      "name": "tokEthPrice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "symbol",
+          "type": "string"
+        }
+      ],
+      "name": "tokUsdPrice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "claimGovernance",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ethUsdPrice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "isGovernor",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "transferGovernance",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "feed",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "internalType": "bool",
+          "name": "directToUsd",
+          "type": "bool"
+        }
+      ],
+      "name": "registerFeed",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "symbol",
+          "type": "string"
+        }
+      ],
+      "name": "price",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "ethFeed_",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_feed",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "_symbol",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "_directToUsd",
+          "type": "bool"
+        }
+      ],
+      "name": "FeedRegistered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousGovernor",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "PendingGovernorshipTransfer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousGovernor",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "GovernorshipTransferred",
+      "type": "event"
+    }
+  ],
+  "storageLayout": {
+    "storage": [
+      {
+        "contract": "ChainlinkOracle",
+        "label": "ethFeed",
+        "type": "t_address",
+        "src": "contracts/oracle/ChainlinkOracle.sol:15"
+      },
+      {
+        "contract": "ChainlinkOracle",
+        "label": "feeds",
+        "type": "t_mapping(t_bytes32,t_struct(FeedConfig)7663_storage)",
+        "src": "contracts/oracle/ChainlinkOracle.sol:23"
+      },
+      {
+        "contract": "ChainlinkOracle",
+        "label": "ethDecimals",
+        "type": "t_uint8",
+        "src": "contracts/oracle/ChainlinkOracle.sol:25"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "label": "address"
+      },
+      "t_mapping(t_bytes32,t_struct(FeedConfig)7663_storage)": {
+        "label": "mapping(bytes32 => struct ChainlinkOracle.FeedConfig)"
+      },
+      "t_bytes32": {
+        "label": "bytes32"
+      },
+      "t_struct(FeedConfig)7663_storage": {
+        "label": "struct ChainlinkOracle.FeedConfig",
+        "members": [
+          {
+            "label": "feed",
+            "type": "t_address"
+          },
+          {
+            "label": "decimals",
+            "type": "t_uint8"
+          },
+          {
+            "label": "directToUsd",
+            "type": "t_bool"
+          }
+        ]
+      },
+      "t_uint8": {
+        "label": "uint8"
+      },
+      "t_bool": {
+        "label": "bool"
+      }
+    }
+  }
+}

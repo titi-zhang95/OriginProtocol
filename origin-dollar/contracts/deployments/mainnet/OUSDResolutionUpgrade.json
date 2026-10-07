@@ -1,0 +1,407 @@
+{
+  "address": "0xB248c975DaeAc47c4960EcBD10a79E486eBD1cA8",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "_totalSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_account",
+          "type": "address"
+        }
+      ],
+      "name": "creditsBalanceOfHighres",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "isUpgraded",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "nonRebasingCreditsPerToken",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nonRebasingSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "rebaseState",
+      "outputs": [
+        {
+          "internalType": "enum OUSDResolutionUpgrade.RebaseOptions",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rebasingCredits",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rebasingCreditsHighres",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rebasingCreditsPerToken",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rebasingCreditsPerTokenHighres",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "accounts",
+          "type": "address[]"
+        }
+      ],
+      "name": "upgradeAccounts",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "upgradeGlobals",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "vaultAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 6,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "initialized",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 8,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "initializing",
+        "offset": 1,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 12,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "______igap",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_array(t_uint256)50_storage"
+      },
+      {
+        "astId": 16,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "_____ugap",
+        "offset": 0,
+        "slot": "51",
+        "type": "t_array(t_uint256)100_storage"
+      },
+      {
+        "astId": 18,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "_name",
+        "offset": 0,
+        "slot": "151",
+        "type": "t_string_storage"
+      },
+      {
+        "astId": 20,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "_symbol",
+        "offset": 0,
+        "slot": "152",
+        "type": "t_string_storage"
+      },
+      {
+        "astId": 22,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "_decimals",
+        "offset": 0,
+        "slot": "153",
+        "type": "t_uint8"
+      },
+      {
+        "astId": 31,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "_totalSupply",
+        "offset": 0,
+        "slot": "154",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 37,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "_allowances",
+        "offset": 0,
+        "slot": "155",
+        "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))"
+      },
+      {
+        "astId": 43,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "vaultAddress",
+        "offset": 0,
+        "slot": "156",
+        "type": "t_address"
+      },
+      {
+        "astId": 47,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "_creditBalances",
+        "offset": 0,
+        "slot": "157",
+        "type": "t_mapping(t_address,t_uint256)"
+      },
+      {
+        "astId": 49,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "_rebasingCredits",
+        "offset": 0,
+        "slot": "158",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 51,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "_rebasingCreditsPerToken",
+        "offset": 0,
+        "slot": "159",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 53,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "nonRebasingSupply",
+        "offset": 0,
+        "slot": "160",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 57,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "nonRebasingCreditsPerToken",
+        "offset": 0,
+        "slot": "161",
+        "type": "t_mapping(t_address,t_uint256)"
+      },
+      {
+        "astId": 62,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "rebaseState",
+        "offset": 0,
+        "slot": "162",
+        "type": "t_mapping(t_address,t_enum(RebaseOptions)4)"
+      },
+      {
+        "astId": 66,
+        "contract": "Contract.sol:OUSDResolutionUpgrade",
+        "label": "isUpgraded",
+        "offset": 0,
+        "slot": "163",
+        "type": "t_mapping(t_address,t_uint256)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_uint256)100_storage": {
+        "encoding": "inplace",
+        "label": "uint256[100]",
+        "numberOfBytes": "3200",
+        "base": "t_uint256"
+      },
+      "t_array(t_uint256)50_storage": {
+        "encoding": "inplace",
+        "label": "uint256[50]",
+        "numberOfBytes": "1600",
+        "base": "t_uint256"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_enum(RebaseOptions)4": {
+        "encoding": "inplace",
+        "label": "enum OUSDResolutionUpgrade.RebaseOptions",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_enum(RebaseOptions)4)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => enum OUSDResolutionUpgrade.RebaseOptions)",
+        "numberOfBytes": "32",
+        "value": "t_enum(RebaseOptions)4"
+      },
+      "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => mapping(address => uint256))",
+        "numberOfBytes": "32",
+        "value": "t_mapping(t_address,t_uint256)"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      },
+      "t_uint8": {
+        "encoding": "inplace",
+        "label": "uint8",
+        "numberOfBytes": "1"
+      }
+    }
+  }
+}

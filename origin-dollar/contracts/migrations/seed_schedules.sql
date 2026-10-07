@@ -1,0 +1,81 @@
+-- contracts/migrations/seed_schedules.sql
+-- Apply against the shared automaton Postgres.
+-- Commands match the original contracts/cron/cron-jobs.ts; the container's
+-- runContainer spawns them via sh -c in workdir /app.
+
+-- Drop the deprecated plume-only row (superseded by the per-network
+-- otoken_addWithdrawalQueueLiquidity_* rows below, whose action it called no
+-- longer exists). Runs every boot; idempotent — no-op once gone.
+DELETE FROM schedules
+WHERE product = 'origin-dollar'
+  AND name = 'otoken_oethp_addWithdrawalQueueLiquidity';
+
+-- Move the addWithdrawalQueueLiquidity rows from daily to every 10 minutes
+-- (the action now skips the tx when there is nothing to add). The INSERT below
+-- is ON CONFLICT DO NOTHING, so existing rows need this UPDATE. Guarded on the
+-- old daily crons so it never overrides a cron later changed in the UI.
+UPDATE schedules
+SET cron_expr = '*/10 * * * *'
+WHERE product = 'origin-dollar'
+  AND name IN (
+    'otoken_addWithdrawalQueueLiquidity_mainnet',
+    'otoken_addWithdrawalQueueLiquidity_base',
+    'otoken_addWithdrawalQueueLiquidity_sonic',
+    'otoken_addWithdrawalQueueLiquidity_plume'
+  )
+  AND cron_expr IN ('20 0 * * *', '30 0 * * *', '35 0 * * *', '25 0 * * *');
+
+INSERT INTO schedules (product, name, command, cron_expr, timezone, enabled, note) VALUES
+('origin-dollar', 'manage_merkle_morpho_bribe',               'cd /app && pnpm exec tsx tasks/run.ts manageMerklBribes --network mainnet',            '30 13 * * 3',           'UTC', false, 'permissioned'),
+('origin-dollar', 'manage_curve_pb_mainnet',                  'cd /app && pnpm exec tsx tasks/run.ts manageBribes --network mainnet',                 '30 09 * * 5',           'UTC', false, 'permissioned'),
+('origin-dollar', 'update_votemarket_epochs',                 'cd /app && pnpm exec tsx tasks/run.ts updateVotemarketEpochs --network arbitrumOne',   '0 6 * * 5',             'UTC', false, 'permissioned'),
+('origin-dollar', 'OETHandOUSD_harvest_CRV_MOPRHO_native_staking','cd /app && pnpm exec tsx tasks/run.ts harvest --network mainnet',                  '25 11,23 * * *',        'UTC', false, NULL),
+('origin-dollar', 'manage_pass_through',                      'cd /app && pnpm exec tsx tasks/run.ts managePassThrough --network mainnet',            '30 12 * * 0',           'UTC', false, NULL),
+('origin-dollar', 'claim_bribes_base',                        'cd /app && pnpm exec tsx tasks/run.ts claimBribes --network base',                     '30 10 * * 4',           'UTC', false, 'permissioned'),
+('origin-dollar', 'manage_bribes_base',                       'cd /app && pnpm exec tsx tasks/run.ts manageMerklBribes --network base',               '35 13 * * 3',           'UTC', false, 'permissioned'),
+('origin-dollar', 'sonic_staking_request_withdraw',           'cd /app && pnpm exec tsx tasks/run.ts sonicUndelegate --network sonic',                '35 3,9,15,21 * * *',    'UTC', false, 'permissioned'),
+('origin-dollar', 'sonic_staking_claim_withdraw',             'cd /app && pnpm exec tsx tasks/run.ts sonicClaimWithdrawals --network sonic',          '58 */2 * * *',          'UTC', false, 'permissioned'),
+('origin-dollar', 'healthcheck',                              'cd /app && pnpm exec tsx tasks/run.ts healthcheck --network mainnet',                  '*/5 * * * *',           'UTC', false, NULL),
+('origin-dollar', 'daily_snap_balances',                      'cd /app && pnpm exec tsx tasks/run.ts snapBalances --network mainnet',                 '2 0 * * *',             'UTC', false, NULL),
+('origin-dollar', 'daily_verify_balances',                    'cd /app && pnpm exec tsx tasks/run.ts verifyBalances --network mainnet',               '6 0 * * *',             'UTC', false, NULL),
+('origin-dollar', 'daily_verify_deposits',                    'cd /app && pnpm exec tsx tasks/run.ts verifyDeposits --network mainnet',               '11 */4 * * *',          'UTC', false, 'Disabled until consolidations done'),
+('origin-dollar', 'daily_auto_validator_deposits',            'cd /app && pnpm exec tsx tasks/run.ts autoValidatorDeposits --network mainnet',        '14 1 * * *',            'UTC', false, 'Do not enable — deposit queue is 50 days long'),
+('origin-dollar', 'daily_auto_validator_withdrawals',         'cd /app && pnpm exec tsx tasks/run.ts autoValidatorWithdrawals --network mainnet',     '24 1 * * *',            'UTC', false, 'Do not enable — AMO covers liquidity'),
+('origin-dollar', 'stake_validator',                          'cd /app && pnpm exec tsx tasks/run.ts stakeValidator --network mainnet',               '0 0 1 1 *',             'UTC', false, 'Manual validator staking. Provide amount, pubkey, sig, and deposit-message-root.'),
+('origin-dollar', 'withdraw_validator',                       'cd /app && pnpm exec tsx tasks/run.ts withdrawValidator --network mainnet',            '0 0 1 1 *',             'UTC', false, 'Manual validator partial withdrawal or full exit. Provide amount and pubkey; amount 0 requests a full exit.'),
+('origin-dollar', 'remove_validator',                         'cd /app && pnpm exec tsx tasks/run.ts removeValidator --network mainnet',              '0 0 1 1 *',             'UTC', false, 'Manual validator removal. Provide operatorids and pubkey.'),
+('origin-dollar', 'otoken_os_collectAndRelease',              'cd /app && pnpm exec tsx tasks/run.ts otokenOsCollectAndRelease --network sonic',      '55 23 * * *',           'UTC', false, NULL),
+('origin-dollar', 'otoken_ousd_autoWithdrawal',               'cd /app && pnpm exec tsx tasks/run.ts otokenOusdAutoWithdrawal --network mainnet',     '35 11,23 * * *',        'UTC', false, NULL),
+('origin-dollar', 'otoken_oethb_updateWoethPrice',            'cd /app && pnpm exec tsx tasks/run.ts otokenOethbUpdateWoethPrice --network base',     '30 21 * * *',           'UTC', false, NULL),
+('origin-dollar', 'otoken_addWithdrawalQueueLiquidity_mainnet', 'cd /app && pnpm exec tsx tasks/run.ts otokenAddWithdrawalQueueLiquidity --network mainnet', '*/10 * * * *',   'UTC', false, NULL),
+('origin-dollar', 'otoken_addWithdrawalQueueLiquidity_base',    'cd /app && pnpm exec tsx tasks/run.ts otokenAddWithdrawalQueueLiquidity --network base',    '*/10 * * * *',   'UTC', false, NULL),
+('origin-dollar', 'otoken_addWithdrawalQueueLiquidity_sonic',   'cd /app && pnpm exec tsx tasks/run.ts otokenAddWithdrawalQueueLiquidity --network sonic',   '*/10 * * * *',   'UTC', false, NULL),
+('origin-dollar', 'otoken_addWithdrawalQueueLiquidity_plume',   'cd /app && pnpm exec tsx tasks/run.ts otokenAddWithdrawalQueueLiquidity --network plume',   '*/10 * * * *',   'UTC', false, NULL),
+('origin-dollar', 'otoken_oethb_rebase',                      'cd /app && pnpm exec tsx tasks/run.ts otokenOethbRebase --network base',               '25 9,21 * * *',         'UTC', false, NULL),
+('origin-dollar', 'otoken_os_sonicRestakeRewards',            'cd /app && pnpm exec tsx tasks/run.ts otokenOsSonicRestakeRewards --network sonic',    '52 22 * * *',           'UTC', false, NULL),
+('origin-dollar', 'cross_chain_balance_update_base',          'cd /app && pnpm exec tsx tasks/run.ts crossChainBalanceUpdateBase --network base',     '40 7,15,23 * * *',      'UTC', false, 'permissioned'),
+('origin-dollar', 'cross_chain_balance_update_hyperevm',      'cd /app && pnpm exec tsx tasks/run.ts crossChainBalanceUpdateHyperevm --network hyperevm', '50 7,15,23 * * *',  'UTC', false, 'permissioned'),
+('origin-dollar', 'cross_chain_base_mainnet',                 'cd /app && pnpm exec tsx tasks/run.ts relayCCTPMessage --network base',                '27 2,8,14,20 * * *',    'UTC', false, 'permissioned'),
+('origin-dollar', 'cross_chain_mainnet_base',                 'cd /app && pnpm exec tsx tasks/run.ts relayCCTPMessage --network mainnet',             '43 4,10,16,22 * * *',   'UTC', false, 'permissioned'),
+('origin-dollar', 'cross_chain_hyper_mainnet',                'cd /app && pnpm exec tsx tasks/run.ts crossChainRelayHyperEVM --network hyperevm',     '17 1,6,11,16,21 * * *', 'UTC', false, 'permissioned'),
+('origin-dollar', 'cross_chain_mainnet_hyper',                'cd /app && pnpm exec tsx tasks/run.ts crossChainRelayHyperEVM --network mainnet',      '7 3,8,13,18,23 * * *',  'UTC', false, 'permissioned'),
+('origin-dollar', 'otoken_ousd_oeth_rebase',                  'cd /app && pnpm exec tsx tasks/run.ts otokenOusdOethRebase --network mainnet',         '45 11,23 * * *',        'UTC', false, NULL),
+('origin-dollar', 'otoken_oeth_rebase',                       'cd /app && pnpm exec tsx tasks/run.ts otokenOethRebase --network mainnet',             '45 11,23 * * *',        'UTC', false, NULL),
+('origin-dollar', 'otoken_ousd_rebase',                       'cd /app && pnpm exec tsx tasks/run.ts otokenOusdRebase --network mainnet',             '45 11,23 * * *',        'UTC', false, NULL),
+('origin-dollar', 'otoken_os_rebase',                         'cd /app && pnpm exec tsx tasks/run.ts otokenOsRebase --network sonic',                 '45 11,23 * * *',        'UTC', false, NULL),
+('origin-dollar', 'ogn_claimAndForwardRewards',               'cd /app && pnpm exec tsx tasks/run.ts ognClaimAndForwardRewards --network mainnet',    '50 0 * * 2',            'UTC', false, NULL),
+('origin-dollar', 'fee_splitter_distribute',                   'cd /app && pnpm exec tsx tasks/run.ts feeSplitterDistribute --network mainnet',        '10 12 * * *',           'UTC', false, 'Daily on purpose: the CoW harvester has no on-chain price check, so a daily cadence caps what is exposed to the bot key to about one day of fees.'),
+('origin-dollar', 'cow_harvest_ousd',                          'cd /app && pnpm exec tsx tasks/run.ts cowHarvest --network mainnet --harvester ousd', '0 */4 * * *', 'UTC', false, 'Replaces the Railway "Harvester: OUSD" cron. Posts CoW orders signed with the Talos key, which must be bot() on the harvester. Add --dryrun to quote and sign without posting.'),
+('origin-dollar', 'cow_harvest_oeth',                          'cd /app && pnpm exec tsx tasks/run.ts cowHarvest --network mainnet --harvester oeth', '0 */4 * * *', 'UTC', false, 'Replaces the Railway "Harvester: OETH" cron. Posts CoW orders signed with the Talos key, which must be bot() on the harvester. Add --dryrun to quote and sign without posting.'),
+('origin-dollar', 'cow_harvest_ogn',                           'cd /app && pnpm exec tsx tasks/run.ts cowHarvest --network mainnet --harvester ogn', '0 */4 * * *', 'UTC', false, 'Replaces the Railway "Harvester: OGN" cron. Posts CoW orders signed with the Talos key, which must be bot() on the harvester. Add --dryrun to quote and sign without posting.'),
+('origin-dollar', 'set_xogn_reward_rate',                      'cd /app && pnpm exec tsx tasks/run.ts setXOGNRewardRate --network mainnet',            '20 1 * * 2',            'UTC', false, 'Reads config from scripts/config/ogn-buyback.json. Add --dryrun to report the rate without broadcasting.'),
+('origin-dollar', 'otoken_oethb_harvest',                     'cd /app && pnpm exec tsx tasks/run.ts otokenOethbHarvest --network base',              '55 11 * * *',           'UTC', false, NULL),
+('origin-dollar', 'module_rebase_mainnet',                    'cd /app && pnpm exec tsx tasks/run.ts permissionedRebase --network mainnet',           '15 10,22 * * *',        'UTC', false, NULL),
+('origin-dollar', 'module_rebase_base',                       'cd /app && pnpm exec tsx tasks/run.ts permissionedRebase --network base',              '15 10,22 * * *',        'UTC', false, NULL),
+('origin-dollar', 'module_rebase_sonic',                      'cd /app && pnpm exec tsx tasks/run.ts permissionedRebase --network sonic',             '15 10,22 * * *',        'UTC', false, NULL),
+('origin-dollar', 'ousd_rebalancer',                          'cd /app && pnpm exec tsx tasks/run.ts ousdRebalancer --network mainnet',               '0 0 1 1 *',             'UTC', false, 'Manual: Run now to rebalance OUSD Morpho strategies'),
+('origin-dollar', 'propose_vault_strategy_moves_mainnet',     'cd /app && pnpm exec tsx tasks/run.ts proposeVaultStrategyMoves --network mainnet --vault OUSD --moves "withdrawAll:REPLACE_WITH_STRATEGY"', '0 0 1 1 *', 'UTC', false, 'Manual Ethereum launcher: replace vault and moves before Run now. Proposes a Strategist Safe transaction; never enable this schedule.'),
+('origin-dollar', 'propose_vault_strategy_moves_base',        'cd /app && pnpm exec tsx tasks/run.ts proposeVaultStrategyMoves --network base --vault SuperOETH --moves "withdrawAll:REPLACE_WITH_STRATEGY"', '0 0 1 1 *', 'UTC', false, 'Manual Base launcher: replace moves before Run now. Proposes a Strategist Safe transaction; never enable this schedule.'),
+('origin-dollar', 'queue_proposal',                           'cd /app && pnpm exec tsx tasks/run.ts queueGovernorSixProposal --network mainnet',     '0 0 1 1 *',             'UTC', false, 'Manual: add --propid then Run now'),
+('origin-dollar', 'execute_proposal',                         'cd /app && pnpm exec tsx tasks/run.ts executeGovernorSixProposal --network mainnet',   '0 0 1 1 *',             'UTC', false, 'Manual: add --propid then Run now')
+ON CONFLICT (product, name) DO NOTHING;

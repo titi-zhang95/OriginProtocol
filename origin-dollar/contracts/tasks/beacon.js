@@ -1,0 +1,1161 @@
+const ethers = require("ethers");
+const {
+  defaultAbiCoder,
+  formatUnits,
+  solidityPack,
+  parseUnits,
+  arrayify,
+} = require("ethers/lib/utils");
+
+const addresses = require("../utils/addresses");
+const {
+  getBeaconBlock,
+  getValidator: getValidatorBeacon,
+  getValidators: getValidatorsBeacon,
+  getSlot,
+  calcBlockTimestamp,
+} = require("../utils/beacon");
+const { bytes32, validatorKeys } = require("../utils/regex");
+const { resolveContract } = require("../utils/resolvers");
+const {
+  generateValidatorPubKeyProof,
+  generateFirstPendingDepositSlotProof,
+  generateValidatorWithdrawableEpochProof,
+  generateBalancesContainerProof,
+  generateBalanceProof,
+  generatePendingDepositsContainerProof,
+  generatePendingDepositProof,
+} = require("../utils/proofs");
+const { toHex } = require("../utils/units");
+const { logTxDetails } = require("../utils/txLogger");
+const { CHAIN_NAMES, getNetworkName } = require("./lib/network");
+const { ZERO_BYTES32 } = require("../utils/constants");
+const {
+  address: mainnetCompoundingStakingSSVStrategyProxy,
+} = require("../deployments/mainnet/CompoundingStakingSSVStrategyProxy.json");
+const {
+  address: mainnetCompoundingStakingStrategyProxy,
+} = require("../deployments/mainnet/CompoundingStakingStrategyProxy.json");
+const {
+  address: hoodiCompoundingStakingSSVStrategyProxy,
+} = require("../deployments/hoodi/CompoundingStakingSSVStrategyProxy.json");
+
+const log = require("../utils/logger")("task:beacon");
+const MAX_DATE_MS = 8640000000000000n;
+
+const getStrategyNetworkName = async () => getNetworkName();
+
+const getKnownWithdrawalStrategies = (networkName) => {
+  if (networkName === "mainnet") {
+    return [
+      {
+        label: "NativeStakingSSVStrategyProxy",
+        address: addresses.mainnet.NativeStakingSSVStrategyProxy,
+      },
+      {
+        label: "NativeStakingSSVStrategy2Proxy",
+        address: addresses.mainnet.NativeStakingSSVStrategy2Proxy,
+      },
+      {
+        label: "NativeStakingSSVStrategy3Proxy",
+        address: addresses.mainnet.NativeStakingSSVStrategy3Proxy,
+      },
+      {
+        label: "CompoundingStakingSSVStrategyProxy",
+        address: mainnetCompoundingStakingSSVStrategyProxy,
+      },
+      {
+        label: "CompoundingStakingStrategyProxy",
+        address: mainnetCompoundingStakingStrategyProxy,
+      },
+    ];
+  }
+
+  if (networkName === "hoodi") {
+    return [
+      {
+        label: "CompoundingStakingSSVStrategyProxy",
+        address: hoodiCompoundingStakingSSVStrategyProxy,
+      },
+    ];
+  }
+
+  return [];
+};
+
+const getLinkedStrategy = (withdrawalCredentials, networkName) => {
+  const linkedAddress = ethers.utils.getAddress(
+    `0x${withdrawalCredentials.slice(-40)}`
+  );
+  const knownStrategy = getKnownWithdrawalStrategies(networkName).find(
+    ({ address }) => address?.toLowerCase() === linkedAddress.toLowerCase()
+  );
+
+  if (knownStrategy) {
+    return knownStrategy.label;
+  }
+
+  return "Unknown";
+};
+
+const getValidatorType = (withdrawalCredentials) =>
+  withdrawalCredentials.slice(0, 4).toLowerCase();
+
+const resolveBeaconSlot = ({ slot, epoch }) => {
+  if (slot !== undefined && epoch !== undefined) {
+    throw new Error("Pass either `slot` or `epoch`, not both");
+  }
+
+  if (epoch !== undefined) {
+    return epoch * 32;
+  }
+
+  return slot;
+};
+
+const formatEpochUtc = (epoch, networkName) => {
+  if (epoch === undefined || epoch === null) {
+    return "N/A";
+  }
+
+  if (typeof epoch === "number" && !Number.isFinite(epoch)) {
+    return "Infinity";
+  }
+
+  const slot = BigInt(epoch) * 32n;
+  const timestampMs = calcBlockTimestamp(slot, networkName) * 1000n;
+
+  if (timestampMs > MAX_DATE_MS) {
+    return "N/A";
+  }
+
+  const date = new Date(Number(timestampMs));
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const month = date.toLocaleString("en-GB", {
+    month: "short",
+    timeZone: "UTC",
+  });
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+
+  return `${day} ${month} ${hours}:${minutes}`;
+};
+
+/// Returns an ethers provider connected to the Ethereum mainnet or Hoodi.
+/// @param {Provider} [provider] - Optional ethers provider connected to local fork or live chain. Uses the ambient provider if not supplied.
+async function getLiveProvider(provider) {
+  const networkName = provider
+    ? CHAIN_NAMES[(await provider.getNetwork()).chainId]
+    : getNetworkName();
+  if (!networkName) throw new Error("Unsupported provider chain");
+  if (networkName == "hoodi") {
+    return new ethers.providers.JsonRpcProvider(process.env.HOODI_PROVIDER_URL);
+  }
+  // Get provider to Ethereum mainnet and not a local fork
+  return new ethers.providers.JsonRpcProvider(process.env.PROVIDER_URL);
+}
+
+async function requestValidatorWithdraw({ pubkey, amount, signer }) {
+  const amountGwei = parseUnits(amount.toString(), 9);
+
+  const data = solidityPack(["bytes", "uint64"], [pubkey, amountGwei]);
+  log(`Encoded partial withdrawal data: ${data}`);
+
+  const tx = await signer.sendTransaction({
+    to: addresses.mainnet.beaconChainWithdrawRequest,
+    data,
+    value: 1, // 1 wei for the fee
+  });
+
+  await logTxDetails(tx, "requestWithdraw");
+}
+
+async function verifyValidator({ slot, index, ids, dryrun, cred, signer }) {
+  if (index === undefined && ids === undefined) {
+    throw new Error("Pass either --index or --ids");
+  }
+  if (index !== undefined && ids !== undefined) {
+    throw new Error("Pass either --index or --ids, not both");
+  }
+
+  const validatorIds =
+    ids === undefined ? [String(index)] : ids.split(",").map((id) => id.trim());
+  if (validatorIds.length === 0 || validatorIds.some((id) => id === "")) {
+    throw new Error("--ids must contain at least one validator ID");
+  }
+  const validatorIndexes = [...new Set(validatorIds)].map((id) => {
+    if (!/^\d+$/.test(id) || !Number.isSafeInteger(Number(id))) {
+      throw new Error(`Invalid validator ID: "${id}"`);
+    }
+    return Number(id);
+  });
+
+  // Get provider to mainnet or testnet and not a local fork
+  const provider = await getLiveProvider(signer.provider);
+
+  const networkName = await getNetworkName();
+
+  const { blockView, blockTree, stateView } = await getBeaconBlock(
+    slot,
+    networkName
+  );
+
+  const strategy = await resolveContract(
+    "CompoundingStakingStrategyProxy",
+    "CompoundingStakingStrategy"
+  );
+
+  if (cred) {
+    log(`Overriding withdrawal credentials to ${cred}`);
+
+    for (const validatorIndex of validatorIndexes) {
+      // Update the validator's withdrawalCredentials in stateView
+      const validator = stateView.validators.get(validatorIndex);
+      if (
+        !validator ||
+        toHex(validator.node.root) ==
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+      ) {
+        throw new Error(
+          `Validator at index ${validatorIndex} not found for slot ${blockView.slot}`
+        );
+      }
+
+      log(
+        `Original withdrawal credentials for validator ${validatorIndex}: ${toHex(
+          validator.withdrawalCredentials
+        )}`
+      );
+
+      // Override the address in the withdrawal credentials
+      validator.withdrawalCredentials = arrayify(cred);
+      stateView.validators.set(validatorIndex, validator);
+    }
+
+    // Update blockTree with new stateRoot
+    const stateRootGindex = blockView.type.getPathInfo(["stateRoot"]).gindex;
+    blockTree.setNode(stateRootGindex, stateView.node);
+  } else {
+    cred = "0x020000000000000000000000" + strategy.address.slice(2);
+  }
+
+  const nextBlock = blockView.body.executionPayload.blockNumber + 1;
+  const { timestamp: nextBlockTimestamp } = await provider.getBlock(nextBlock);
+  log(
+    `Next execution layer block ${nextBlock} has timestamp ${nextBlockTimestamp}`
+  );
+
+  const validatorProofs = [];
+  for (const validatorIndex of validatorIndexes) {
+    const {
+      proof,
+      leaf: pubKeyHash,
+      root: beaconBlockRoot,
+      pubKey,
+    } = await generateValidatorPubKeyProof({
+      validatorIndex,
+      blockView,
+      blockTree,
+      stateView,
+    });
+
+    // Check the validator is in STAKED state
+    const stateEnum = (await strategy.validator(pubKeyHash)).state;
+    log(`Validator with pub key hash ${pubKeyHash} has state: ${stateEnum}`);
+    if (stateEnum !== 2)
+      // STAKED
+      throw Error(
+        `Validator ${validatorIndex} with pub key hash ${pubKeyHash} is not STAKED. Status: ${stateEnum}`
+      );
+
+    validatorProofs.push({
+      beaconBlockRoot,
+      proof,
+      pubKey,
+      pubKeyHash,
+      stateEnum,
+      validatorIndex,
+    });
+  }
+
+  if (dryrun) {
+    for (const validatorProof of validatorProofs) {
+      console.log(`beaconBlockRoot       : ${validatorProof.beaconBlockRoot}`);
+      console.log(`nextBlockTimestamp    : ${nextBlockTimestamp}`);
+      console.log(`validator index       : ${validatorProof.validatorIndex}`);
+      console.log(`pubKeyHash            : ${validatorProof.pubKeyHash}`);
+      console.log(`withdrawal credentials: ${cred}`);
+      console.log(`Validator status      : ${validatorProof.stateEnum}`);
+      console.log(`proof:\n${validatorProof.proof}`);
+    }
+    return;
+  }
+
+  for (const validatorProof of validatorProofs) {
+    log(
+      `About verify validator ${validatorProof.validatorIndex} with pub key ${validatorProof.pubKey}, pub key hash ${validatorProof.pubKeyHash}, withdrawal credential ${cred} at slot ${blockView.slot} to beacon chain root ${validatorProof.beaconBlockRoot}`
+    );
+    const tx = await strategy
+      .connect(signer)
+      .verifyValidator(
+        nextBlockTimestamp,
+        validatorProof.validatorIndex,
+        validatorProof.pubKeyHash,
+        cred,
+        validatorProof.proof
+      );
+    await logTxDetails(tx, "verifyValidator");
+  }
+}
+
+// get deposits that have been processed on the beacon chain but not yet validated by the strategy
+async function getProcessedDeposits(pendingDeposits) {
+  const depositProcessedSlot = (await getSlot()) - 30;
+
+  const networkName = await getNetworkName();
+
+  log(
+    `Checking if any deposits have been processed in slot ${depositProcessedSlot} for the ${networkName} network`
+  );
+
+  // Uses the beacon chain data for the beacon block root
+  const { stateView } = await getBeaconBlock(depositProcessedSlot, networkName);
+
+  const pendingDepositMap = {};
+
+  for (let i = 0; i < stateView.pendingDeposits.length; i++) {
+    pendingDepositMap[
+      toHex(stateView.pendingDeposits.get(i).hashTreeRoot())
+    ] = true;
+  }
+
+  const processedDeposits = [];
+  for (const deposit of pendingDeposits) {
+    if (!pendingDepositMap[deposit.pendingDepositRoot]) {
+      processedDeposits.push(deposit);
+      console.log(
+        `Found a deposit that has been processed on the beacon chain`
+      );
+      console.log(`Pending deposit root: ${deposit.pendingDepositRoot}`);
+      console.log(`Validator:            ${deposit.pubKeyHash}`);
+      console.log(`Slot:                 ${deposit.slot}`);
+      console.log(
+        `Amount:               ${formatUnits(deposit.amountGwei, "gwei")} ETH`
+      );
+    }
+  }
+  return { processedDeposits, depositProcessedSlot };
+}
+
+async function verifyDeposits({ dryrun, signer }) {
+  const stakingStrategy = await resolveContract(
+    "CompoundingStakingStrategyProxy",
+    "CompoundingStakingStrategy"
+  );
+  const stakingStrategyView = await resolveContract(
+    "CompoundingStakingStrategyView"
+  );
+
+  const pendingDeposits = await stakingStrategyView.getPendingDeposits();
+
+  if (pendingDeposits.length === 0) {
+    console.log("No pending deposits found on the strategy");
+    return;
+  }
+
+  const { processedDeposits, depositProcessedSlot } =
+    await getProcessedDeposits(pendingDeposits);
+
+  /**
+   * Deposit verification requires the depositProcessedSlot to be smaller than the
+   * snapshot slot. That can easily be achieved by calling the snapBalances just before
+   * calling the verifyDeposit.
+   */
+  if (processedDeposits.length > 0) {
+    log(`About to snap balances before verifying deposits`);
+    if (!dryrun) {
+      await stakingStrategy.connect(signer).snapBalances();
+    }
+  } else {
+    console.log(
+      `There are ${pendingDeposits.length} pending deposits but none have been processed on the beacon chain yet`
+    );
+  }
+
+  for (const deposit of processedDeposits) {
+    await verifyDeposit({
+      slot: depositProcessedSlot,
+      root: deposit.pendingDepositRoot,
+      dryrun,
+      signer,
+    });
+  }
+}
+
+async function verifyDeposit({
+  slot,
+  root: depositRoot,
+  dryrun,
+  test,
+  index: strategyValidatorIndex,
+  signer,
+}) {
+  const strategy = await resolveContract(
+    "CompoundingStakingStrategyProxy",
+    "CompoundingStakingStrategy"
+  );
+
+  let strategyDepositSlot = 0;
+  if (!test) {
+    const depositData = await strategy.deposits(depositRoot);
+    log(
+      `Found deposit for ${formatUnits(
+        depositData.amountGwei,
+        9
+      )} ETH, from slot ${depositData.slot} with public key hash ${
+        depositData.pubKeyHash
+      } and deposit index ${depositData.depositIndex}`
+    );
+    const strategyValidator = await strategy.validator(depositData.pubKeyHash);
+    if (strategyValidator.state !== 3 && strategyValidator.state !== 4)
+      throw Error(
+        `Validator with pub key hash ${depositData.pubKeyHash} is not VERIFIED or ACTIVE. Status: ${strategyValidator.state}`
+      );
+
+    const { slot, amountGwei, pubKeyHash, status } = await strategy.deposits(
+      depositRoot
+    );
+    strategyDepositSlot = slot;
+    if (strategyDepositSlot == 0) {
+      throw Error(`Failed to find deposit with root ${depositRoot}`);
+    }
+    log(
+      `Verifying deposit of ${formatUnits(
+        amountGwei,
+        9
+      )} ETH at slot ${strategyDepositSlot} with public key hash ${pubKeyHash}`
+    );
+    if (status !== 1) {
+      throw Error(
+        `Deposit with root ${depositRoot} is not Pending. Status: ${status}`
+      );
+    }
+
+    strategyValidatorIndex = strategyValidator.index;
+  }
+
+  if (!slot) {
+    const latestSlot = await getSlot();
+    slot = latestSlot - 33;
+    log(
+      `Latest slot is ${latestSlot}, using slot ${slot} for verifying the deposit`
+    );
+  }
+
+  // Uses the latest slot if the slot is undefined
+  const networkName = await getNetworkName();
+  const depositProcessedBeaconData = await getBeaconBlock(slot, networkName);
+  const depositProcessedSlot = depositProcessedBeaconData.blockView.slot;
+
+  // if generating unit testing data
+  if (test) {
+    // change the slot of the first pending deposit to be 2 years in the future
+    // to ensure the unit test deposit has been processed
+    const firstPendingDeposit =
+      depositProcessedBeaconData.stateView.pendingDeposits.get(0);
+    log(`Original first pending deposit slot: ${firstPendingDeposit.slot}`);
+
+    // There are 2,628,000 12 second slots per year
+    firstPendingDeposit.slot = depositProcessedSlot + 2 * 2628000;
+    log(`Testing first pending deposit slot: ${firstPendingDeposit.slot}`);
+    depositProcessedBeaconData.stateView.pendingDeposits.set(
+      0,
+      firstPendingDeposit
+    );
+
+    const stateRootGIndex =
+      depositProcessedBeaconData.blockView.type.getPropertyGindex("stateRoot");
+    // Patching the tree by attaching the state in the `stateRoot` field of the block.
+    depositProcessedBeaconData.blockTree.setNode(
+      stateRootGIndex,
+      depositProcessedBeaconData.stateView.node
+    );
+  }
+
+  // Generate a proof of the first pending deposit
+  const {
+    proof: pendingDepositSlotProof,
+    slot: firstPendingDepositSlot,
+    pubkeyHash: firstPendingDepositPubKeyHash,
+    validatorIndex: firstPendingDepositValidatorIndex,
+    root: processedBeaconBlockRoot,
+    isEmpty,
+  } = await generateFirstPendingDepositSlotProof({
+    ...depositProcessedBeaconData,
+    test,
+  });
+
+  if (!isEmpty && firstPendingDepositSlot == 0 && !test) {
+    throw Error(
+      `Can not verify when the first pending deposits has a zero slot. This is from a validator consolidating to a compounding validator.\nExecute again when the first pending deposit slot is not zero.`
+    );
+  }
+  if (!isEmpty && strategyDepositSlot > firstPendingDepositSlot) {
+    throw Error(
+      `Deposit at slot ${strategyDepositSlot} has not been processed at slot ${depositProcessedSlot}. Next deposit in the queue is from slot ${firstPendingDepositSlot}.`
+    );
+  }
+
+  // Generate a proof of the withdrawable epoch for the strategy's validator to deposit is going to
+  const {
+    proof: strategyValidatorWithdrawableEpochProof,
+    withdrawableEpoch: strategyValidatorWithdrawableEpoch,
+  } = await generateValidatorWithdrawableEpochProof({
+    ...depositProcessedBeaconData,
+    validatorIndex: strategyValidatorIndex,
+    includePubKeyProof: false,
+  });
+
+  const firstPendingDeposit = {
+    slot: firstPendingDepositSlot,
+    validatorIndex: firstPendingDepositValidatorIndex,
+    proof: pendingDepositSlotProof,
+  };
+  const strategyValidator = {
+    withdrawableEpoch: strategyValidatorWithdrawableEpoch.toString(),
+    withdrawableEpochProof: strategyValidatorWithdrawableEpochProof,
+  };
+
+  if (dryrun) {
+    console.log(
+      `deposit slot                              : ${strategyDepositSlot}`
+    );
+    console.log(`deposit root                              : ${depositRoot}`);
+    console.log(
+      `beacon block root                         : ${processedBeaconBlockRoot}`
+    );
+    console.log(
+      `deposit processed slot                    : ${depositProcessedSlot}`
+    );
+    console.log(
+      `first pending deposit pubkey.             : ${firstPendingDepositPubKeyHash}`
+    );
+    console.log(
+      `first pending deposit index               : ${firstPendingDepositValidatorIndex}`
+    );
+    console.log(
+      `first pending deposit slot                : ${firstPendingDepositSlot}`
+    );
+    console.log(
+      `first pending deposit slot proof          : ${pendingDepositSlotProof}`
+    );
+    console.log(
+      `Strategy validator index.                 : ${strategyValidatorIndex}`
+    );
+    console.log(
+      `Strategy validator withdrawable epoch.    : ${strategyValidatorWithdrawableEpoch}`
+    );
+    console.log(
+      `Strategy validator withdrawable proof     : ${strategyValidatorWithdrawableEpochProof}`
+    );
+    return;
+  }
+
+  if (test) {
+    console.log(
+      JSON.stringify(
+        {
+          firstPendingDeposit,
+          strategyValidator,
+          processedBeaconBlockRoot,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  log(
+    `About to verify deposit from slot ${strategyDepositSlot} with processing slot ${depositProcessedSlot}, deposit root ${depositRoot}, slot of first pending deposit ${firstPendingDepositSlot} to beacon block root ${processedBeaconBlockRoot}`
+  );
+  const tx = await strategy
+    .connect(signer)
+    .verifyDeposit(
+      depositRoot,
+      depositProcessedSlot,
+      firstPendingDeposit,
+      strategyValidator
+    );
+  await logTxDetails(tx, "verifyDeposit");
+}
+
+async function verifyBalances({
+  indexes,
+  deposits,
+  overIds,
+  overBals,
+  dryrun,
+  test,
+  signer,
+  slot,
+}) {
+  const strategy = test
+    ? undefined
+    : await resolveContract(
+        "CompoundingStakingStrategyProxy",
+        "CompoundingStakingStrategy"
+      );
+  const strategyView = await resolveContract("CompoundingStakingStrategyView");
+
+  if (!slot) {
+    if (!test) {
+      const { blockRoot } = await strategy.snappedBalance();
+      slot = blockRoot;
+      log(`Using slot with block root ${slot} for verifying balances`);
+    } else {
+      slot = "head";
+    }
+  }
+
+  // Uses the beacon chain data for the beacon block root
+  const networkName = await getNetworkName();
+  const { blockView, blockTree, stateView } = await getBeaconBlock(
+    slot,
+    networkName
+  );
+  const verificationSlot = blockView.slot;
+
+  // Update validator balances so they become active
+  // Used to generated test data for fork tests
+  if (overIds) {
+    const validatorIndexes = overIds.split(",").map((index) => Number(index));
+    const validatorBalances = overBals
+      .split(",")
+      .map((balance) => parseUnits(balance, 9)); // in Gwei
+    if (overIds.split(",").length !== overBals.split(",").length) {
+      throw new Error("Mismatched lengths for overIds and overBals");
+    }
+    for (const [i, validatorIndex] of validatorIndexes.entries()) {
+      stateView.balances.set(validatorIndex, validatorBalances[i]);
+    }
+  }
+  const stateRootGindex = blockView.type.getPathInfo(["stateRoot"]).gindex;
+  blockTree.setNode(stateRootGindex, stateView.node);
+
+  const {
+    leaf: pendingDepositContainerRoot,
+    proof: pendingDepositContainerProof,
+  } = await generatePendingDepositsContainerProof({
+    blockView,
+    blockTree,
+    stateView,
+  });
+
+  let pendingDepositIndexes = [];
+  let pendingDepositRoots = [];
+  let pendingDepositProofs = [];
+  if (test && deposits) {
+    const depositIndexes = deposits.split(",").map((index) => Number(index));
+    for (const depositIndex of depositIndexes) {
+      pendingDepositIndexes.push(depositIndex);
+      const { proof, leaf } = await generatePendingDepositProof({
+        blockView,
+        blockTree,
+        stateView,
+        depositIndex,
+      });
+      pendingDepositRoots.push(leaf);
+      pendingDepositProofs.push(proof);
+    }
+  } else {
+    const pendingDeposits = await strategyView.getPendingDeposits();
+    // For each of the strategy's pending deposits
+    for (const deposit of pendingDeposits) {
+      // Find the strategy's deposit in the beacon chain's pending deposits
+      let pendingDepositIndex = -1;
+      for (let i = 0; i < stateView.pendingDeposits.length; i++) {
+        const pd = stateView.pendingDeposits.get(i);
+        if (toHex(pd.hashTreeRoot()) === deposit.pendingDepositRoot) {
+          log(
+            `Found pending deposit with root ${deposit.pendingDepositRoot} at index ${i}`
+          );
+          pendingDepositIndex = i;
+          pendingDepositIndexes.push(pendingDepositIndex);
+          pendingDepositRoots.push(deposit.pendingDepositRoot);
+          break;
+        }
+      }
+      if (pendingDepositIndex === -1) {
+        throw Error(
+          `Could not find pending deposit with root hash ${deposit.pendingDepositRoot}`
+        );
+      }
+      const { proof } = await generatePendingDepositProof({
+        blockView,
+        blockTree,
+        stateView,
+        depositIndex: pendingDepositIndex,
+      });
+      pendingDepositProofs.push(proof);
+    }
+  }
+
+  const verifiedValidators = indexes
+    ? indexes.split(",").map((index) => ({
+        index,
+      }))
+    : await strategyView.getVerifiedValidators();
+
+  let balancesContainerRoot = ZERO_BYTES32;
+  let balancesContainerProof = "0x";
+  let beaconBlockRoot = ZERO_BYTES32;
+  if (verifiedValidators.length > 0) {
+    const balancesContainerProofData = await generateBalancesContainerProof({
+      blockView,
+      blockTree,
+      stateView,
+    });
+    balancesContainerRoot = balancesContainerProofData.leaf;
+    balancesContainerProof = balancesContainerProofData.proof;
+    beaconBlockRoot = balancesContainerProofData.root;
+  }
+
+  const validatorBalanceLeaves = [];
+  const validatorBalanceProofs = [];
+  const validatorBalances = [];
+  for (const validator of verifiedValidators) {
+    const { proof, leaf, balance } = await generateBalanceProof({
+      validatorIndex: validator.index,
+      blockView,
+      blockTree,
+      stateView,
+    });
+    validatorBalanceLeaves.push(leaf);
+    validatorBalanceProofs.push(proof);
+    validatorBalances.push(balance);
+
+    log(
+      `Validator ${validator.index} has balance: ${formatUnits(balance, 9)} ETH`
+    );
+  }
+  const validatorBalancesFormatted = validatorBalances.map((bal) =>
+    formatUnits(bal, 9)
+  );
+
+  const balanceProofs = {
+    beaconBlockRoot,
+    balancesContainerRoot,
+    balancesContainerProof,
+    validatorBalanceLeaves,
+    validatorBalanceProofs,
+  };
+  const pendingDepositProofsData = {
+    pendingDepositContainerRoot,
+    pendingDepositContainerProof,
+    pendingDepositIndexes,
+    pendingDepositRoots,
+    pendingDepositProofs,
+  };
+
+  if (test) {
+    console.log(
+      JSON.stringify(
+        {
+          balanceProofs,
+          validatorBalances: validatorBalancesFormatted,
+          pendingDepositProofs: pendingDepositProofsData,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  if (dryrun) {
+    console.log(`snapped slot                      : ${verificationSlot}`);
+    console.log(`snap balances block root          : ${beaconBlockRoot}`);
+    console.log(`\nbalancesContainerRoot           : ${balancesContainerRoot}`);
+    console.log(`\nbalancesContainerProof:\n${balancesContainerProof}`);
+    console.log(
+      `\nvalidatorBalanceLeaves:\n[${validatorBalanceLeaves
+        .map((leaf) => `"${leaf}"`)
+        .join(",\n")}]`
+    );
+    console.log(
+      `\nvalidatorBalanceProofs:\n[${validatorBalanceProofs
+        .map((proof) => `"${proof}"`)
+        .join(",\n")}]`
+    );
+    console.log(
+      `validatorBalances: [${validatorBalancesFormatted.join(", ")}]`
+    );
+    console.log(
+      `\npendingDepositContainerRoot: ${pendingDepositContainerRoot}`
+    );
+    console.log(
+      `\npendingDepositContainerProof:\n${pendingDepositContainerProof}`
+    );
+    console.log(
+      `\npendingDepositIndexes:\n[${pendingDepositIndexes
+        .map((index) => `"${index}"`)
+        .join(",")}]`
+    );
+    console.log(
+      `\npendingDepositProofs:\n[${pendingDepositProofs
+        .map((proof) => `"${proof}"`)
+        .join(",\n")}]`
+    );
+
+    return { balanceProofs, pendingDepositProofs: pendingDepositProofsData };
+  }
+
+  log(
+    `About to verify ${verifiedValidators.length} validator balances for slot ${verificationSlot} to beacon block root ${beaconBlockRoot}`
+  );
+  log(balanceProofs);
+  log(pendingDepositProofsData);
+
+  const tx = await strategy
+    .connect(signer)
+    .verifyBalances(balanceProofs, pendingDepositProofsData);
+  await logTxDetails(tx, "verifyBalances");
+}
+
+async function beaconRoot({ block, live, signer }) {
+  // Either use live chain or local fork to get the block timestamp
+  const provider = live
+    ? await getLiveProvider(signer.provider)
+    : signer.provider;
+
+  // Get timestamp of the block
+  const fetchedBlock = await provider.getBlock(block);
+  if (fetchedBlock == null) throw Error(`Block ${block} not found`);
+
+  const { timestamp } = fetchedBlock;
+  log(`Block ${block} has timestamp ${timestamp}`);
+
+  const data = defaultAbiCoder.encode(["uint256"], [timestamp]);
+  log(`Encoded timestamp data: ${data}`);
+
+  // The Beacon Roots contract is the same on mainnet and Hoodi
+  const beaconRootsAddress = addresses.mainnet.beaconRoots;
+  const root = await provider.call(
+    {
+      to: beaconRootsAddress,
+      data,
+    },
+    block // blockTag
+  );
+
+  if (!root.match(bytes32)) {
+    throw Error(
+      `Could not find parent beacon block root for block ${block} with timestamp ${timestamp} in ${beaconRootsAddress}.`
+    );
+  }
+
+  console.log(`Block ${block} has parent beacon block root ${root}`);
+
+  return { root, timestamp };
+}
+
+async function getValidator({ slot, epoch, index, pubkey }) {
+  if (!index && !pubkey) {
+    throw new Error("Either `index` or `pubkey` parameter is required");
+  }
+
+  // Uses the latest slot if the slot is undefined
+  const blockId = resolveBeaconSlot({ slot, epoch });
+
+  if (pubkey) {
+    const apiValidator = await getValidatorBeacon(pubkey, blockId);
+    index = apiValidator.validatorindex;
+  }
+
+  const networkName = await getNetworkName();
+  const { blockView, stateView } = await getBeaconBlock(blockId, networkName);
+
+  const validator = stateView.validators.get(index);
+  if (
+    !validator ||
+    toHex(validator.node.root) ==
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+  ) {
+    throw new Error(
+      `Validator at index ${index} not found for slot ${blockId}`
+    );
+  }
+
+  const balance = stateView.balances.get(index);
+
+  console.log(
+    `Validator at index ${index} for slot ${stateView.slot}, epoch ${
+      BigInt(stateView.slot) / 32n
+    }:`
+  );
+  console.log(`Public Key                  : ${toHex(validator.pubkey)}`);
+  console.log(
+    `Withdrawal Credentials      : ${toHex(validator.withdrawalCredentials)}`
+  );
+  console.log(`Actual Balance              : ${formatUnits(balance, 9)} ETH`);
+  console.log(
+    `Effective Balance           : ${formatUnits(
+      validator.effectiveBalance,
+      9
+    )} ETH`
+  );
+  console.log(`Slashed                     : ${validator.slashed}`);
+  console.log(`Activation Epoch            : ${validator.activationEpoch}`);
+  console.log(`Exit Epoch                  : ${validator.exitEpoch}`);
+  console.log(`Withdrawable Epoch          : ${validator.withdrawableEpoch}`);
+  console.log(
+    `Activation Eligibility Epoch: ${validator.activationEligibilityEpoch}`
+  );
+
+  console.log(`\n${stateView.pendingDeposits.length} pending deposits:`);
+  let depositsFound = 0;
+  let totalDeposits = 0;
+  for (let i = 0; i < stateView.pendingDeposits.length; i++) {
+    const deposit = stateView.pendingDeposits.get(i);
+    if (Buffer.from(deposit.pubkey).equals(validator.pubkey)) {
+      console.log(
+        `  pending deposit for ${formatUnits(deposit.amount, 9)}, slot ${
+          deposit.slot
+        }, withdrawal credential ${toHex(
+          deposit.withdrawalCredentials
+        )} at position ${i}`
+      );
+      // console.log(`signature ${toHex(deposit.signature)}`);
+      depositsFound++;
+      totalDeposits += deposit.amount;
+    }
+  }
+  console.log(
+    `${depositsFound} pending deposits worth ${formatUnits(
+      totalDeposits,
+      9
+    )} for validator in ${stateView.pendingDeposits.length} pending deposits`
+  );
+
+  console.log(
+    `\n${stateView.pendingPartialWithdrawals.length} pending partial withdrawals:`
+  );
+  let partialWithdrawalsFound = 0;
+  let totalPartialWithdrawals = 0n;
+  for (let i = 0; i < stateView.pendingPartialWithdrawals.length; i++) {
+    const withdrawal = stateView.pendingPartialWithdrawals.get(i);
+    log(
+      `Pending partial withdrawal for validator ${
+        withdrawal.validatorIndex
+      }, withdrawable epoch ${
+        withdrawal.withdrawableEpoch
+      } and amount ${formatUnits(withdrawal.amount, 9)}`
+    );
+    if (withdrawal.validatorIndex == index) {
+      console.log(
+        `  pending partial withdrawal at position ${i} with withdrawable epoch ${
+          withdrawal.withdrawableEpoch
+        } for ${formatUnits(withdrawal.amount, 9)} ETH`
+      );
+      partialWithdrawalsFound++;
+      totalPartialWithdrawals = totalPartialWithdrawals + withdrawal.amount;
+    }
+  }
+  console.log(
+    `${partialWithdrawalsFound} pending partial withdrawals worth ${formatUnits(
+      totalPartialWithdrawals,
+      9
+    )} ETH for validator in ${
+      stateView.pendingPartialWithdrawals.length
+    } pending withdrawals`
+  );
+
+  console.log(
+    `\n${blockView.body.executionPayload.withdrawals.length} execution payload withdrawals:`
+  );
+  let withdrawals = 0;
+  for (let i = 0; i < blockView.body.executionPayload.withdrawals.length; i++) {
+    const withdrawal = blockView.body.executionPayload.withdrawals.get(i);
+    log(
+      `Withdrawal ${withdrawal.index} for validator ${
+        withdrawal.validatorIndex
+      }, amount ${formatUnits(withdrawal.amount, 9)}, address ${toHex(
+        withdrawal.address
+      )}`
+    );
+    if (withdrawal.validatorIndex == index) {
+      console.log(`Found withdrawal at position ${i}`);
+      console.log(`amount : ${formatUnits(withdrawal.amount, 9)} ETH`);
+      console.log(`address: ${toHex(withdrawal.address)}`);
+      withdrawals++;
+    }
+  }
+  console.log(
+    `${withdrawals} withdrawals for validator in ${blockView.body.executionPayload.withdrawals.length} withdrawals`
+  );
+
+  console.log(
+    `\n${blockView.body.executionRequests.withdrawals.length} execution withdrawal requests:`
+  );
+  let withdrawalRequests = 0;
+  for (
+    let i = 0;
+    i < blockView.body.executionRequests.withdrawals.length;
+    i++
+  ) {
+    const withdrawalRequest =
+      blockView.body.executionRequests.withdrawals.get(i);
+    log(
+      `Withdrawal request for validator ${toHex(
+        withdrawalRequest.validatorPubkey
+      )}, amount ${formatUnits(
+        withdrawalRequest.amount,
+        9
+      )} and source address ${toHex(withdrawalRequest.sourceAddress)}`
+    );
+    if (
+      Buffer.from(withdrawalRequest.validatorPubkey).equals(validator.pubkey)
+    ) {
+      console.log(
+        `Found withdrawal request at position ${i} on the execution layer`
+      );
+      console.log(`amount : ${formatUnits(withdrawalRequest.amount, 9)} ETH`);
+      console.log(`address: ${toHex(withdrawalRequest.sourceAddress)}`);
+      withdrawalRequests++;
+    }
+  }
+  console.log(
+    `${withdrawalRequests} withdrawal requests on the execution layer found for validator in ${blockView.body.executionRequests.withdrawals.length} requests`
+  );
+
+  console.log(
+    `\n${blockView.body.voluntaryExits.length} execution voluntary exits:`
+  );
+  let validatorExits = 0;
+  for (let i = 0; i < blockView.body.voluntaryExits.length; i++) {
+    const exit = blockView.body.voluntaryExits.get(i);
+    log(
+      `Voluntary exit for validator ${exit.message.validatorIndex}, epoch ${exit.message.epoch}`
+    );
+    if (exit.message.validatorIndex == index) {
+      console.log(`Found voluntary exit at position ${i}`);
+      console.log(`epoch: ${exit.message.epoch}`);
+      validatorExits++;
+    }
+  }
+  console.log(
+    `${validatorExits} voluntary exits found for validator in ${blockView.body.voluntaryExits.length} exits`
+  );
+
+  console.log(
+    `\nNext withdrawable validator is ${stateView.nextWithdrawalValidatorIndex} with withdrawal index ${stateView.nextWithdrawalIndex}`
+  );
+  const currentEpoch = Math.floor(blockView.slot / 32);
+  const earliestExitEpochDiff = stateView.earliestExitEpoch - currentEpoch;
+  const daysToExit = Number(
+    (earliestExitEpochDiff * 12 * 32) / (24 * 60 * 60) // 12 seconds per slot and 32 slots in an epoch, 24 hours in a day
+  ).toFixed(2);
+  console.log(
+    `Earliest exit epoch is ${stateView.earliestExitEpoch} which is ${earliestExitEpochDiff} epochs (${daysToExit} days) away from the current epoch ${currentEpoch}`
+  );
+}
+
+async function getValidators({ pubkeys, slot, epoch }) {
+  if (!pubkeys.match(validatorKeys)) {
+    throw Error(
+      `Public keys not a comma-separated list of public keys with 0x prefixes`
+    );
+  }
+
+  const blockId = resolveBeaconSlot({ slot, epoch });
+  const networkName = await getStrategyNetworkName();
+  const { stateView } = await getBeaconBlock(blockId, networkName);
+
+  const beaconValidators = await getValidatorsBeacon(pubkeys, blockId);
+  const beaconValidatorList = Array.isArray(beaconValidators)
+    ? beaconValidators
+    : [beaconValidators];
+  const validators = beaconValidatorList.map((beaconValidator) => ({
+    index: Number(beaconValidator.validatorindex),
+    pubkey: beaconValidator.pubkey,
+  }));
+
+  console.log(
+    `Validators at slot ${stateView.slot}, epoch ${
+      BigInt(stateView.slot) / 32n
+    }:`
+  );
+
+  const rows = [];
+  for (const { pubkey, index } of validators) {
+    const validator = stateView.validators.get(index);
+    if (
+      !validator ||
+      toHex(validator.node.root) ===
+        "0x0000000000000000000000000000000000000000000000000000000000000000"
+    ) {
+      throw new Error(
+        `Validator ${pubkey} at index ${index} not found for slot ${blockId}`
+      );
+    }
+
+    const withdrawalCredentials = toHex(validator.withdrawalCredentials);
+    const validatorType = getValidatorType(withdrawalCredentials);
+    const linkedStrategy = getLinkedStrategy(
+      withdrawalCredentials,
+      networkName
+    );
+    const balance = stateView.balances.get(index);
+
+    rows.push({
+      Index: String(index),
+      Type: validatorType,
+      Slashed: String(validator.slashed),
+      "Balance ETH": formatUnits(balance, 9),
+      ExitEpoch: formatEpochUtc(validator.exitEpoch, networkName),
+      WithdrawableEpoch: formatEpochUtc(
+        validator.withdrawableEpoch,
+        networkName
+      ),
+      LinkedStrategy: linkedStrategy,
+    });
+  }
+
+  const columns = [
+    "Index",
+    "Type",
+    "Slashed",
+    "Balance ETH",
+    "ExitEpoch",
+    "WithdrawableEpoch",
+    "LinkedStrategy",
+  ];
+  const widths = Object.fromEntries(
+    columns.map((column) => [
+      column,
+      Math.max(column.length, ...rows.map((row) => row[column].length)),
+    ])
+  );
+  const formatRow = (row) =>
+    columns.map((column) => row[column].padEnd(widths[column])).join("  ");
+
+  console.log(
+    formatRow(Object.fromEntries(columns.map((column) => [column, column])))
+  );
+  console.log(columns.map((column) => "-".repeat(widths[column])).join("  "));
+  for (const row of rows) {
+    console.log(formatRow(row));
+  }
+}
+
+module.exports = {
+  requestValidatorWithdraw,
+  beaconRoot,
+  getValidator,
+  getValidators,
+  verifyValidator,
+  verifyDeposit,
+  verifyDeposits,
+  verifyBalances,
+};

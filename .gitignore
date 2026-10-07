@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+out/
+cache/
+artifacts/
+# Large airdrop/claim data (>50MB, not contract code) — kept locally only
+ousd-governance/retroactive/ogn-progress.json
+ousd-governance/scripts/*_data/optional_lockup_claims.json

@@ -1,0 +1,592 @@
+const ethers = require("ethers");
+const { createHash } = require("crypto");
+const { parseUnits } = require("ethers/lib/utils");
+
+const {
+  beaconChainGenesisTimeMainnet,
+  beaconChainGenesisTimeHoodi,
+} = require("./constants");
+
+const log = require("./logger")("utils:beacon");
+
+const fetchImpl =
+  typeof globalThis.fetch === "function"
+    ? globalThis.fetch.bind(globalThis)
+    : (...args) =>
+        import("node-fetch").then(({ default: fetch }) => fetch(...args));
+
+const SLOTS_PER_EPOCH = 32;
+const BEACON_STATE_FETCH_TIMEOUT_MS = 15 * 60 * 1000;
+const normalizeValidatorResponse = ({ index, balance, status, validator }) => ({
+  index: Number(index),
+  validatorindex: Number(index),
+  balance: Number(balance),
+  status,
+  pubkey: ethers.utils.hexlify(validator.pubkey),
+  withdrawalcredentials: ethers.utils.hexlify(validator.withdrawalCredentials),
+  effectivebalance: Number(validator.effectiveBalance),
+  slashed: validator.slashed,
+  activationepoch: Number(validator.activationEpoch),
+  activationeligibilityepoch: Number(validator.activationEligibilityEpoch),
+  exitepoch: Number(validator.exitEpoch),
+  withdrawableepoch: Number(validator.withdrawableEpoch),
+});
+
+/// They following use Lodestar API calls
+
+const getValidatorBalance = async (pubkey) => {
+  const values = await getValidator(pubkey);
+  log(`Got balance ${values.balance} for validator ${values.index}`);
+  return values.balance;
+};
+
+/**
+ * Get the slot for a given block identifier.
+ * @param {string} [blockId=head] - is "head", slot number or the beacon block root.
+ */
+const getSlot = async (blockId = "head") => {
+  const client = await configClient();
+
+  // Get the latest beacon block data using Lodestar
+  log(`Fetching block header for blockId ${blockId} from the beacon node`);
+  const blockHeaderRes = await client.beacon.getBlockHeader({
+    blockId,
+  });
+  if (!blockHeaderRes.ok) {
+    console.error(blockHeaderRes);
+    throw Error(
+      `Failed to get block header for blockId ${blockId}. Status ${blockHeaderRes.status} ${blockHeaderRes.statusText}`
+    );
+  }
+
+  const slot = blockHeaderRes.value().header.message.slot;
+  log(`Got slot ${slot} for block id ${blockId}`);
+
+  return slot;
+};
+
+const getBeaconBlockRoot = async (blockId = "head") => {
+  const client = await configClient();
+
+  log(
+    `Fetching beacon block root for block id ${blockId} from the beacon node`
+  );
+  const blockHeaderRes = await client.beacon.getBlockRoot({
+    blockId,
+  });
+  if (!blockHeaderRes.ok) {
+    console.error(blockHeaderRes);
+    throw Error(
+      `Failed to get beacon block root for block id ${blockId}. Status ${blockHeaderRes.status} ${blockHeaderRes.statusText}`
+    );
+  }
+
+  const root = blockHeaderRes.root;
+  log(`Got beacon block root ${root} for block id ${blockId}`);
+
+  return root;
+};
+
+/**
+ * Gets the full beacon chain data for a given slot, root or "head".
+ * @param {string|number} [slot=head] - The slot to get the beacon block for. Can be "head", a slot number or a beacon block root.
+ */
+const getBeaconBlock = async (slot = "head", networkName = "mainnet") => {
+  const client = await configClient();
+
+  const { ssz } = await import("@lodestar/types");
+
+  // Get the beacon block for the slot from the beacon node.
+  log(`Fetching block for slot ${slot} from the beacon node`);
+  const blockRes = await client.beacon.getBlockV2({ blockId: slot });
+  if (!blockRes.ok) {
+    console.error(blockRes);
+    throw new Error(
+      `Failed to get beacon block for id ${slot}. It could be because the slot was missed or the provider URL does not support beacon chain API. Error: ${blockRes.status} ${blockRes.statusText}`
+    );
+  }
+
+  const fork = blockRes.meta().version;
+  const BeaconBlock = ssz[fork].BeaconBlock;
+  const BeaconState = ssz[fork].BeaconState;
+  const blockView = BeaconBlock.toView(blockRes.value().message);
+
+  const fetchStateSsz = async () => {
+    log(`Fetching state for slot ${blockView.slot} from the beacon node`);
+
+    // [Claude] Bypass the Lodestar API client and fetch beacon state SSZ directly.
+    //
+    // Why: The Lodestar client (v1.38.0) sends an Accept header that allows
+    // both SSZ and JSON (`application/octet-stream;q=1,application/json;q=0.9`).
+    // When the beacon node returns a JSON content-type but the body contains
+    // binary SSZ data, the client calls Response.json() which invokes
+    // TextDecoder.decode() on the binary payload, throwing
+    // ERR_ENCODING_INVALID_DATA. By requesting SSZ-only via a direct fetch
+    // and reading the response body as binary chunks, we avoid text decoding
+    // and can report download progress.
+    let base = process.env.BEACON_PROVIDER_URL;
+    if (!base.endsWith("/")) base += "/";
+    // Concatenate rather than using `new URL(path, base)` to preserve any
+    // path segments in the provider URL (e.g. QuickNode API key in path).
+    const stateUrl = `${base}eth/v2/debug/beacon/states/${blockView.slot}`;
+    const parsedUrl = new URL(stateUrl);
+    // Node's fetch defaults to `accept-encoding: gzip, deflate`, which makes
+    // Lighthouse gzip the ~330MB state and drop content-length. Inflating that
+    // on the main thread backpressures the socket down to ~2 Mbps (a 15min
+    // download that hits the abort below), and the missing content-length also
+    // forces the slow chunk-accumulation path further down. Asking for
+    // identity doubles the wire bytes but the transfer takes ~2s.
+    const headers = {
+      Accept: "application/octet-stream",
+      "Accept-Encoding": "identity",
+    };
+    // Preserve Basic auth credentials embedded in the provider URL
+    if (parsedUrl.username || parsedUrl.password) {
+      const creds = `${decodeURIComponent(
+        parsedUrl.username
+      )}:${decodeURIComponent(parsedUrl.password)}`;
+      headers.Authorization = `Basic ${Buffer.from(creds).toString("base64")}`;
+      parsedUrl.username = "";
+      parsedUrl.password = "";
+    }
+
+    const controller = new AbortController();
+    let contentLength;
+    let downloadedBytes = 0;
+    let progressInterval;
+    const timeout = setTimeout(() => {
+      log(
+        `Aborting state fetch for slot ${blockView.slot} after ${
+          BEACON_STATE_FETCH_TIMEOUT_MS / 60000
+        } minutes, downloaded ${downloadedBytes}/${
+          contentLength || "unknown"
+        } bytes`
+      );
+      controller.abort();
+    }, BEACON_STATE_FETCH_TIMEOUT_MS);
+
+    let stateSszBytes;
+    try {
+      const response = await fetchImpl(parsedUrl.toString(), {
+        method: "GET",
+        headers,
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to get state for slot ${blockView.slot}. Probably because it was missed. Error: ${response.status} ${response.statusText}`
+        );
+      }
+
+      if (!response.body) {
+        throw new Error(
+          `State response for slot ${blockView.slot} did not include a body`
+        );
+      }
+
+      contentLength =
+        Number(response.headers.get("content-length")) || undefined;
+      log(
+        `Received response headers for state at slot ${
+          blockView.slot
+        }, downloading ${contentLength || "unknown"} bytes`
+      );
+
+      const downloadStartedAt = Date.now();
+      progressInterval = setInterval(() => {
+        const elapsedSeconds = (Date.now() - downloadStartedAt) / 1000;
+        const mibPerSecond = downloadedBytes / elapsedSeconds / 1024 / 1024;
+        const percent = contentLength
+          ? `${((downloadedBytes / contentLength) * 100).toFixed(1)}%`
+          : "unknown";
+        log(
+          `Downloaded ${downloadedBytes}/${
+            contentLength || "unknown"
+          } bytes (${percent}) for state at slot ${
+            blockView.slot
+          }, average speed ${mibPerSecond.toFixed(2)} MiB/s`
+        );
+      }, 10_000);
+
+      const chunks = [];
+      if (contentLength) {
+        stateSszBytes = new Uint8Array(contentLength);
+      }
+
+      for await (const chunk of response.body) {
+        if (stateSszBytes) {
+          stateSszBytes.set(chunk, downloadedBytes);
+        } else {
+          chunks.push(chunk);
+        }
+        downloadedBytes += chunk.byteLength;
+      }
+
+      if (contentLength && downloadedBytes !== contentLength) {
+        throw new Error(
+          `Incomplete state response for slot ${blockView.slot}: downloaded ${downloadedBytes}/${contentLength} bytes`
+        );
+      }
+
+      if (!stateSszBytes) {
+        stateSszBytes = new Uint8Array(downloadedBytes);
+        let offset = 0;
+        for (const chunk of chunks) {
+          stateSszBytes.set(chunk, offset);
+          offset += chunk.byteLength;
+        }
+      }
+
+      log(
+        `Downloaded ${stateSszBytes.byteLength} bytes for state at slot ${blockView.slot}`
+      );
+    } finally {
+      clearTimeout(timeout);
+      clearInterval(progressInterval);
+    }
+
+    return stateSszBytes;
+  };
+
+  const stateSsz = await fetchStateSsz();
+  const stateView = BeaconState.deserializeToView(stateSsz);
+
+  const blockTree = blockView.tree.clone();
+  const stateRootGIndex = blockView.type.getPropertyGindex("stateRoot");
+  // Patching the tree by attaching the state in the `stateRoot` field of the block.
+  blockTree.setNode(stateRootGIndex, stateView.node);
+
+  return { blockTree, blockView, stateView };
+};
+
+const concatProof = (proof) => {
+  const witnessLength = proof.witnesses.length;
+  const witnessBytes = new Uint8Array(witnessLength * 32);
+  for (let i = 0; i < witnessLength; i++) {
+    witnessBytes.set(proof.witnesses[i], i * 32);
+  }
+  return witnessBytes;
+};
+
+const hashPubKey = (pubKey) => {
+  // Ensure pubKey is a hex string or Buffer
+  const pubKeyBytes = ethers.utils.arrayify(pubKey);
+
+  // Create 16 bytes of zeros
+  const zeroBytes = ethers.utils.hexZeroPad("0x0", 16);
+
+  // Concatenate pubKey and zero bytes
+  const concatenated = ethers.utils.concat([pubKeyBytes, zeroBytes]);
+
+  // Compute SHA256 hash
+  return ethers.utils.sha256(concatenated);
+};
+
+/**
+ * Gets a Lodestar API client.
+ * @returns {Promise<Client>} - The Lodestar API client.
+ */
+const configClient = async () => {
+  // Get the latest slot from the beacon chain API
+  // Dynamically import the Lodestar API client as its an ESM module
+  const { getClient } = await import("@lodestar/api");
+  const { config } = await import("@lodestar/config/default");
+
+  const baseUrl = process.env.BEACON_PROVIDER_URL;
+
+  const client = await getClient({ baseUrl, timeoutMs: 60000 }, { config });
+
+  return client;
+};
+
+const getValidator = async (pubkey, stateId = "head") => {
+  const client = await configClient();
+
+  log(
+    `Fetching validator details for ${pubkey} at state ${stateId} from the beacon node`
+  );
+  const validatorRes = await client.beacon.getStateValidator({
+    stateId,
+    validatorId: pubkey,
+  });
+  if (!validatorRes.ok) {
+    console.error(validatorRes);
+    throw Error(
+      `Failed to get validator details for ${pubkey} at state ${stateId}. Status ${validatorRes.status} ${validatorRes.statusText}`
+    );
+  }
+
+  return normalizeValidatorResponse(validatorRes.value());
+};
+
+const getValidatorsIndividually = async (client, validatorIds, stateId) => {
+  const validators = [];
+
+  for (const validatorId of validatorIds) {
+    log(
+      `Falling back to single-validator lookup for ${validatorId} at state ${stateId}`
+    );
+
+    const validatorRes = await client.beacon.getStateValidator({
+      stateId,
+      validatorId,
+    });
+    if (!validatorRes.ok) {
+      console.error(validatorRes);
+      throw Error(
+        `Failed to get validator details for ${validatorId} at state ${stateId}. Status ${validatorRes.status} ${validatorRes.statusText}`
+      );
+    }
+
+    validators.push(validatorRes.value());
+  }
+
+  return validators;
+};
+
+const getValidatorsByGet = async (
+  client,
+  validatorIds,
+  stateId,
+  attempts = 2
+) => {
+  let lastError;
+
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      const getValidatorsRes = await client.beacon.getStateValidators({
+        stateId,
+        validatorIds,
+      });
+
+      if (getValidatorsRes.ok) {
+        return getValidatorsRes.value();
+      }
+
+      lastError = new Error(
+        `Bulk validator GET failed with status ${getValidatorsRes.status} ${getValidatorsRes.statusText}`
+      );
+      log(`${lastError.message}. Attempt ${attempt} of ${attempts}.`);
+    } catch (err) {
+      lastError = err;
+      log(
+        `Bulk validator GET threw ${err.name || "Error"}: ${
+          err.message
+        }. Attempt ${attempt} of ${attempts}.`
+      );
+    }
+  }
+
+  if (lastError) {
+    log(`Bulk validator GET failed after ${attempts} attempts.`);
+  }
+
+  return null;
+};
+
+const getValidators = async (pubkeys, stateId = "head") => {
+  const client = await configClient();
+  const validatorIds = Array.isArray(pubkeys) ? pubkeys : pubkeys.split(",");
+
+  log(
+    `Fetching ${validatorIds.length} validator details at state ${stateId} from the beacon node`
+  );
+  let validators = await getValidatorsByGet(client, validatorIds, stateId);
+
+  if (!validators) {
+    validators = await getValidatorsIndividually(client, validatorIds, stateId);
+  }
+
+  validators = validators.map(normalizeValidatorResponse);
+  return validators.length === 1 ? validators[0] : validators;
+};
+
+const getEpoch = async (epochId = "latest") => {
+  if (epochId !== "latest") {
+    return {
+      epoch: Number(epochId),
+    };
+  }
+
+  const slot = await getSlot("head");
+  return {
+    epoch: Math.floor(Number(slot) / SLOTS_PER_EPOCH),
+  };
+};
+
+const serializeUint64 = async (value) => {
+  const { ssz } = await import("@lodestar/types");
+
+  // Need to convert to little-endian Uint8Array
+  const slotLittleEndian = ssz.Slot.serialize(Number(value));
+  // Pad to 32 bytes
+  const leafBuf = Buffer.concat([
+    slotLittleEndian,
+    Buffer.alloc(32 - slotLittleEndian.length),
+  ]);
+  return "0x" + Buffer.from(leafBuf).toString("hex");
+};
+
+/**
+ * Calculates the Merkle root (as hex string) from a leaf and flat Merkle proof.
+ *
+ * @param {string} leafHex - 0x-prefixed 32-byte hex string
+ * @param {string} proofHex - 0x-prefixed hex string containing N × 32-byte proof (concatenated)
+ * @param {bigint} gIndex - Generalized index of the leaf in the Merkle tree
+ * @returns {string} - 0x-prefixed hex string of the calculated Merkle root
+ */
+const calcBeaconBlockRoot = (leafHex, proofHex, gIndex) => {
+  const valueBytes = Buffer.from(leafHex.slice(2), "hex");
+  const proofBytes = Buffer.from(proofHex.slice(2), "hex");
+
+  if (proofBytes.length % 32 !== 0) {
+    throw new Error("proofHex must be a multiple of 32 bytes");
+  }
+
+  const proofCount = proofBytes.length / 32;
+  let value = valueBytes;
+  let index = gIndex;
+
+  for (let i = 0; i < proofCount; i++) {
+    const sibling = proofBytes.slice(i * 32, (i + 1) * 32);
+    const hasher = createHash("sha256");
+
+    if (index % 2n === 0n) {
+      hasher.update(value);
+      hasher.update(sibling);
+    } else {
+      hasher.update(sibling);
+      hasher.update(value);
+    }
+
+    value = hasher.digest();
+    index >>= 1n;
+
+    if (index === 0n) throw new Error("proof has extra item");
+  }
+
+  if (index !== 1n) throw new Error("proof is missing items");
+
+  const rootHex = "0x" + value.toString("hex");
+
+  log(
+    `Calculated beacon block root: ${rootHex} from leaf: ${leafHex} and gindex: ${gIndex}`
+  );
+
+  return rootHex;
+};
+
+const calcBlockTimestamp = (slot, networkName = "mainnet") => {
+  const genesisTime =
+    networkName == "hoodi"
+      ? beaconChainGenesisTimeHoodi
+      : beaconChainGenesisTimeMainnet;
+  return 12n * BigInt(slot) + BigInt(genesisTime);
+};
+
+const calcSlot = (blockTimestamp, networkName = "mainnet") => {
+  const genesisTime =
+    networkName == "hoodi"
+      ? beaconChainGenesisTimeHoodi
+      : beaconChainGenesisTimeMainnet;
+  return (BigInt(blockTimestamp) - BigInt(genesisTime)) / 12n;
+};
+
+const calcEpoch = (blockTimestamp, networkName = "mainnet") => {
+  const slotsPerEpoch = 32n;
+  return calcSlot(blockTimestamp, networkName) / slotsPerEpoch;
+};
+
+// Verifies a validator deposit signature and message root.
+// and a the deposit message root. The latter should also be verified by the Beacon chain
+// deposit contract
+const verifyDepositSignatureAndMessageRoot = async ({
+  pubkey, // validator public key with or without 0x
+  withdrawalCredentials, // withdrawal credentials with or without 0x
+  amount, // amount in eth units
+  signature, // signature without 0x
+  depositMessageRoot, // supplied deposit message root with or without 0x
+  forkVersion, // fork version
+}) => {
+  // Can not import via require since these packages support only ESM mode
+  const bls = await import("@chainsafe/bls");
+  const { ssz } = await import("@lodestar/types/phase0");
+  const { computeDomain, computeSigningRoot } = await import(
+    "@lodestar/state-transition"
+  );
+  const { DOMAIN_DEPOSIT } = await import("@lodestar/params");
+  const { fromHex } = await import("@lodestar/utils");
+
+  log("Validating BLS deposit message signature");
+  log(`pubkey: ${pubkey}`);
+  log(`withdrawalCredentials: ${withdrawalCredentials}`);
+  log(`amount: ${amount}`);
+  log(`signature: ${signature}`);
+  log(`depositMessageRoot: ${depositMessageRoot}`);
+  log(`forkVersion: ${forkVersion}`);
+
+  const amountGwei = parseUnits(amount.toString(), 9);
+  depositMessageRoot = depositMessageRoot.startsWith("0x")
+    ? depositMessageRoot.substring(2)
+    : depositMessageRoot;
+
+  // Prepare the DepositMessage
+  const depositMessage = {
+    pubkey: fromHex(pubkey),
+    withdrawalCredentials: fromHex(withdrawalCredentials),
+    amount: amountGwei.toString(),
+  };
+
+  const domain = computeDomain(
+    DOMAIN_DEPOSIT,
+    fromHex(forkVersion),
+    new Uint8Array(32)
+  );
+
+  // Compute signing root
+  const signingRoot = computeSigningRoot(
+    ssz.DepositMessage,
+    depositMessage,
+    domain
+  );
+
+  if (
+    !bls.default.verify(depositMessage.pubkey, signingRoot, fromHex(signature))
+  ) {
+    throw Error(`BLS signature is invalid`);
+  }
+
+  log(`BLS signature valid`);
+
+  // Compare computed deposit_message_root with provided one for sanity check
+  const computedMessageRoot = ssz.DepositMessage.hashTreeRoot(depositMessage);
+  const computedMessageRootString =
+    Buffer.from(computedMessageRoot).toString("hex");
+  if (depositMessageRoot != computedMessageRootString) {
+    throw Error(
+      `Deposit message root miss-match. Computed value: ${computedMessageRootString} vs supplied value: ${depositMessageRoot}`
+    );
+  }
+  log(
+    `Deposit message root matches the computed message root: ${depositMessageRoot}`
+  );
+};
+
+module.exports = {
+  concatProof,
+  getBeaconBlock,
+  getSlot,
+  getBeaconBlockRoot,
+  calcBlockTimestamp,
+  calcSlot,
+  calcEpoch,
+  getValidator,
+  getValidators,
+  getValidatorBalance,
+  getEpoch,
+  hashPubKey,
+  serializeUint64,
+  calcBeaconBlockRoot,
+  verifyDepositSignatureAndMessageRoot,
+};

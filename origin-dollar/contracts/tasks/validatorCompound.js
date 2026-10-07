@@ -1,0 +1,931 @@
+const addresses = require("../utils/addresses");
+const { readFileSync } = require("fs");
+const path = require("path");
+const { formatUnits, parseUnits } = require("ethers/lib/utils");
+const { BigNumber } = require("ethers");
+
+const { getBlock } = require("../tasks/block");
+const {
+  calcDepositRoot,
+  calcWithdrawalCredential,
+} = require("./beaconTesting");
+const {
+  calcSlot,
+  getValidatorBalance,
+  getBeaconBlock,
+  getValidators: getValidatorsBeacon,
+  hashPubKey,
+} = require("../utils/beacon");
+const { getNetworkName } = require("./lib/network");
+const { getContractAt } = require("./lib/contracts");
+const { getProvider } = require("./lib/network");
+const { getSigner } = require("../utils/signers");
+const { verifyDepositSignatureAndMessageRoot } = require("../utils/beacon");
+const { resolveContract } = require("../utils/resolvers");
+const { logTxDetails } = require("../utils/txLogger");
+const { toHex } = require("../utils/units");
+const {
+  calcTargetBuffer,
+  calcAvailableInVault,
+  totalPartialWithdrawals,
+  withdrawFromStrategyIfNeeded,
+} = require("../utils/vault");
+
+const log = require("../utils/logger")("task:validator:compounding");
+
+const VALIDATOR_STATE_NON_REGISTERED = 0;
+const resolveCompoundingStakingContract = async () => {
+  const proxyName = "CompoundingStakingStrategyProxy";
+  return {
+    creatingDepositState: VALIDATOR_STATE_NON_REGISTERED,
+    proxyName,
+    strategy: await resolveContract(proxyName, "CompoundingStakingStrategy"),
+  };
+};
+
+const toNumber = (value) =>
+  BigNumber.isBigNumber(value) ? value.toNumber() : value;
+
+const getVerifiedValidators = async (strategy, blockTag = "latest") => {
+  const validatorCount = await strategy.verifiedValidatorsLength({ blockTag });
+  const validators = [];
+
+  for (let i = 0; i < toNumber(validatorCount); i++) {
+    const pubKeyHash = await strategy.verifiedValidators(i, { blockTag });
+    const validator = await strategy.validator(pubKeyHash, { blockTag });
+    validators.push({
+      pubKeyHash,
+      index: validator.index,
+      state: validator.state,
+    });
+  }
+
+  return validators;
+};
+
+const getPendingDeposits = async (strategy, blockTag = "latest") => {
+  const depositCount = await strategy.depositListLength({ blockTag });
+  const deposits = [];
+
+  for (let i = 0; i < toNumber(depositCount); i++) {
+    const pendingDepositRoot = await strategy.depositList(i, { blockTag });
+    const deposit = await strategy.deposits(pendingDepositRoot, { blockTag });
+    deposits.push({
+      pendingDepositRoot,
+      pubKeyHash: deposit.pubKeyHash,
+      amountGwei: deposit.amountGwei,
+      slot: deposit.slot,
+    });
+  }
+
+  return deposits;
+};
+
+async function snapBalances() {
+  const signer = await getSigner();
+
+  // TODO check the slot of the first pending deposit is not zero
+
+  const { strategy } = await resolveCompoundingStakingContract();
+
+  log(`About to snap balances on ${strategy.address}`);
+  const tx = await strategy.connect(signer).snapBalances();
+  await logTxDetails(tx, "snapBalances");
+
+  const receipt = await tx.wait();
+
+  const eventTopic = strategy.interface.getEventTopic("BalancesSnapped");
+  const rawLog = receipt.logs.find(
+    (l) =>
+      l.address.toLowerCase() === strategy.address.toLowerCase() &&
+      l.topics[0] === eventTopic
+  );
+  if (!rawLog) {
+    throw new Error("BalancesSnapped event not found in transaction receipt");
+  }
+  const parsed = strategy.interface.parseLog(rawLog);
+  console.log(
+    `Balances snapped successfully. Beacon block root ${
+      parsed.args.blockRoot
+    }, block ${receipt.blockNumber}, ETH balance ${formatUnits(
+      parsed.args.ethBalance
+    )}`
+  );
+}
+
+async function stakeValidator({
+  dryrun,
+  pubkey,
+  sig,
+  amount,
+  withdrawalCredentials,
+  depositMessageRoot,
+  forkVersion,
+  signer: taskSigner,
+}) {
+  const signer = taskSigner || (await getSigner());
+
+  const { creatingDepositState, strategy: depositStrategy } =
+    await resolveCompoundingStakingContract();
+
+  if (!withdrawalCredentials) {
+    withdrawalCredentials = calcWithdrawalCredential(
+      "0x02",
+      depositStrategy.address
+    );
+  }
+
+  const amountWei = parseUnits(amount.toString(), 18);
+  const initialDepositAmountWei =
+    await depositStrategy.initialDepositAmountWei();
+  const validator = await depositStrategy.validator(hashPubKey(pubkey));
+  const isCreatingDeposit = BigNumber.from(validator.state).eq(
+    creatingDepositState
+  );
+
+  if (isCreatingDeposit) {
+    if (!sig) {
+      throw new Error(
+        `The signature is required for the first deposit to a registered validator. Deposit amount: ${formatUnits(
+          amountWei,
+          18
+        )} ETH, initial deposit cap: ${formatUnits(
+          initialDepositAmountWei,
+          18
+        )} ETH`
+      );
+    }
+    await verifyDepositSignatureAndMessageRoot({
+      pubkey,
+      withdrawalCredentials,
+      amount,
+      signature: sig,
+      depositMessageRoot,
+      forkVersion,
+    });
+  } else {
+    // The signatures doesn't mater after the first deposit
+    sig =
+      "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001";
+  }
+
+  const depositDataRoot = await calcDepositRoot(
+    depositStrategy.address,
+    "0x02",
+    pubkey,
+    sig,
+    amount
+  );
+
+  const amountGwei = parseUnits(amount.toString(), 9);
+
+  if (dryrun) {
+    console.log(`About to stake ${amount} ETH to validator with`);
+    console.log(`  pubkey         : ${pubkey}`);
+    console.log(`  signature      : ${sig}`);
+    console.log(`  depositDataRoot: ${depositDataRoot}`);
+    return;
+  }
+
+  log(
+    `About to stake ${amount} ETH to validator with pubkey ${pubkey}, deposit root ${depositDataRoot} and signature ${sig}`
+  );
+  const validatorStakeData = { pubkey, signature: sig, depositDataRoot };
+  const tx = await depositStrategy
+    .connect(signer)
+    .stakeEth(validatorStakeData, amountGwei);
+  const receipt = await logTxDetails(tx, "stakeETH");
+
+  const eventTopic = depositStrategy.interface.getEventTopic("ETHStaked");
+  const rawLog = receipt.logs.find(
+    (l) =>
+      l.address.toLowerCase() === depositStrategy.address.toLowerCase() &&
+      l.topics[0] === eventTopic
+  );
+  if (!rawLog) {
+    throw new Error("ETHStaked event not found in transaction receipt");
+  }
+  const event = depositStrategy.interface.parseLog(rawLog);
+  console.log(`Pending deposit root: ${event.args.pendingDepositRoot}`);
+}
+
+async function autoValidatorDeposits({
+  signer,
+  slot, // undefined = latest slot
+  maxBalance: maxBalanceGwei = parseUnits("2030", 9),
+  minDeposit: minDepositGwei = parseUnits("1.1", 9),
+  buffer: bufferBps = 100, // 1% buffer
+  minStrategyWithdrawAmount = parseUnits("0.1", 18),
+  dryrun = false,
+}) {
+  const networkName = await getNetworkName();
+  const wethAddress = addresses[networkName].WETH;
+  const weth = await getContractAt("IERC20", wethAddress);
+  const { strategy } = await resolveCompoundingStakingContract();
+  const vault = await resolveContract("OETHVaultProxy", "IVault");
+
+  // 1. Calculate the WETH available in the vault = WETH balance - withdrawals queued + withdrawals claimed
+
+  const availableInVault = await calcAvailableInVault({
+    vault,
+    weth,
+    blockTag: "latest",
+  });
+
+  // 2. Calculate the buffer amount = total assets * buffer in basis points
+
+  const buffer = await calcTargetBuffer({ vault, bufferBps });
+
+  // 3. Withdraw any WETH or ETH in the staking strategy if needed in the Vault
+
+  await withdrawFromStrategyIfNeeded({
+    weth,
+    strategy,
+    vault,
+    availableInVault,
+    buffer,
+    minStrategyWithdrawAmount,
+    signer,
+    dryrun,
+  });
+
+  // 4. Calculate how much can be deposited and stop if not enough
+
+  // WETH in the strategy
+  const wethInStrategy = await weth.balanceOf(strategy.address);
+  log(`WETH balance in strategy ${formatUnits(wethInStrategy, 18)}`);
+  // Convert wei balance to gwei
+  let remainingGwei = wethInStrategy.div(parseUnits("1", 9));
+
+  if (remainingGwei.lt(minDepositGwei)) {
+    log(
+      `${formatUnits(
+        remainingGwei,
+        9
+      )} WETH balance in strategy less than ${formatUnits(
+        minDepositGwei,
+        9
+      )} ETH min deposit. Stopping`
+    );
+    return;
+  }
+
+  // 5. Get the staking strategy's active validators and pending deposits
+
+  const verifiedValidators = await getVerifiedValidators(strategy);
+  const activeValidators = verifiedValidators.filter(
+    (validator) => BigNumber.from(validator.state).eq(4) // ACTIVE
+  );
+  const pendingDeposits = await getPendingDeposits(strategy);
+
+  // 6. Calculate validators balances after all the pending deposits have been processed
+
+  // Get beacon chain data
+  const { stateView } = await getBeaconBlock(slot, networkName);
+
+  let validators = [];
+  // Iterate over the active validators
+  for (const validator of activeValidators) {
+    // get the validator's balance
+    let balanceGwei = stateView.balances.get(validator.index);
+    log(
+      `  Validator ${validator.index} balance ${formatUnits(
+        balanceGwei,
+        9
+      )} ETH`
+    );
+
+    // Add any pending deposits for this validator's balance
+    for (const deposit of pendingDeposits) {
+      if (deposit.pubKeyHash === validator.pubKeyHash) {
+        balanceGwei = BigNumber.from(balanceGwei.toString()).add(
+          deposit.amountGwei
+        );
+        log(
+          `  Pending deposit of ${formatUnits(
+            deposit.amountGwei,
+            9
+          )} ETH for validator ${validator.index}. New balance ${formatUnits(
+            balanceGwei,
+            9
+          )} ETH`
+        );
+      }
+    }
+
+    // Get the validator public key
+    const { pubkey } = stateView.validators.get(validator.index);
+    validators.push({
+      index: validator.index,
+      pubKey: toHex(pubkey),
+      balanceGwei: BigNumber.from(balanceGwei.toString()),
+    });
+  }
+
+  // 7. Filter and sort validators
+
+  // Filter out any validators that are already at or above the max balance
+  const filteredValidators = validators.filter((v) =>
+    v.balanceGwei.lt(maxBalanceGwei)
+  );
+  // Sort by largest to smallest balance
+  const sortedValidators = filteredValidators.sort((a, b) =>
+    a.balanceGwei.gt(b.balanceGwei) ? -1 : 1
+  );
+
+  // 8. Iterate over each validator and top up to max ETH if necessary
+
+  const emptySignature =
+    "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+
+  // For each active validator that is under the max balance
+  for (const validator of sortedValidators) {
+    const maxDepositAmount = maxBalanceGwei.sub(validator.balanceGwei);
+    const depositAmountGwei = remainingGwei.lt(maxDepositAmount)
+      ? remainingGwei
+      : maxDepositAmount;
+
+    if (depositAmountGwei.lt(minDepositGwei)) continue;
+
+    log(
+      `About to top up validator ${validator.index} with ${formatUnits(
+        depositAmountGwei,
+        9
+      )} WETH`
+    );
+
+    if (!dryrun) {
+      // Calculate the deposit data root
+      const depositDataRoot = await calcDepositRoot(
+        strategy.address,
+        "0x02",
+        validator.pubKey,
+        // This sig doesn't matter after the first deposit
+        emptySignature,
+        // Need to convert to an ETH amount with no decimals
+        formatUnits(depositAmountGwei, 9)
+      );
+
+      // Call the strategy to deposit to the beacon deposit contract
+      const tx = await strategy.connect(signer).stakeEth(
+        {
+          pubkey: validator.pubKey,
+          signature: emptySignature,
+          depositDataRoot,
+        },
+        depositAmountGwei
+      );
+      await logTxDetails(tx, "stakeEth");
+    }
+
+    // Reduce the remaining amount that needs to be deposited
+    remainingGwei = remainingGwei.sub(depositAmountGwei);
+
+    if (remainingGwei.lt(minDepositGwei)) {
+      log(
+        `${formatUnits(
+          remainingGwei,
+          9
+        )} WETH remaining less than ${formatUnits(
+          minDepositGwei,
+          9
+        )} WETH min deposit. Stopping`
+      );
+      break;
+    }
+  }
+
+  if (remainingGwei.gt(0)) {
+    log(
+      `${formatUnits(
+        remainingGwei,
+        9
+      )} WETH remaining. Need more active validators before it can be deposited`
+    );
+  }
+}
+
+async function withdrawValidator({ pubkey, amount, signer }) {
+  if (amount === undefined) {
+    throw new Error(
+      "Withdrawal amount is required. Use an explicit amount of 0 only for a full validator exit."
+    );
+  }
+  if (typeof amount !== "number" || !Number.isFinite(amount) || amount < 0) {
+    throw new Error("Withdrawal amount must be a non-negative number.");
+  }
+
+  const { strategy } = await resolveCompoundingStakingContract();
+
+  /// Get the validator's balance
+  const balance = await getValidatorBalance(pubkey);
+
+  const isFullExit = amount === 0;
+  const amountGwei = isFullExit ? 0 : parseUnits(amount.toString(), 9);
+  if (isFullExit) {
+    log(
+      `About to fully exit validator with balance ${formatUnits(
+        balance,
+        9
+      )} ETH and pubkey ${pubkey}`
+    );
+  } else {
+    log(
+      `About to partially withdraw ${formatUnits(
+        amountGwei,
+        9
+      )} ETH from validator with balance ${formatUnits(
+        balance,
+        9
+      )} ETH and pubkey ${pubkey}`
+    );
+  }
+  // Send 1 wei of value to cover the request withdrawal fee
+  const tx = await strategy
+    .connect(signer)
+    .validatorWithdrawal(pubkey, amountGwei, { value: 1 });
+  await logTxDetails(tx, "validatorWithdrawal");
+}
+
+async function autoValidatorWithdrawals({
+  signer,
+  slot, // undefined = latest slot
+  buffer: bufferBps = 100, // 1% buffer
+  minValidatorWithdrawAmount = BigInt(10e18),
+  minStrategyWithdrawAmount = parseUnits("0.1", 18),
+  dryrun = false,
+}) {
+  const networkName = await getNetworkName();
+  const wethAddress = addresses[networkName].WETH;
+  const weth = await getContractAt("IERC20", wethAddress);
+  const vaultAddress = addresses[networkName].OETHVaultProxy;
+  const vault = await getContractAt("IVault", vaultAddress);
+  const { strategy } = await resolveCompoundingStakingContract();
+
+  // 1. Calculate the WETH available in the vault = WETH balance - withdrawals queued + withdrawals claimed
+
+  const availableInVault = await calcAvailableInVault({
+    vault,
+    weth,
+    blockTag: "latest",
+  });
+
+  // 2. Get the staking strategy's active validator indexes
+
+  const activeValidators = await getVerifiedValidators(strategy);
+  const validatorIndexes = activeValidators.map((v) => toNumber(v.index));
+
+  // 3. Calculate pending validator partial withdrawal = sum amount in the partial withdrawal from the beacon chain data
+
+  // Get beacon chain data
+  const { stateView } = await getBeaconBlock(slot, networkName);
+
+  const totalPendingPartialWithdrawals = await totalPartialWithdrawals(
+    stateView,
+    validatorIndexes
+  );
+
+  // 4. Calculate the buffer amount = total assets * buffer in basis points
+
+  const buffer = await calcTargetBuffer({ vault, bufferBps });
+
+  // 5. Withdraw any WETH or ETH in the staking strategy if needed in the Vault
+
+  const { availableInStrategy } = await withdrawFromStrategyIfNeeded({
+    weth,
+    strategy,
+    vault,
+    availableInVault,
+    buffer,
+    minStrategyWithdrawAmount,
+    signer,
+    dryrun,
+  });
+
+  // 6. Remaining amount = buffer - WETH available in the vault - pending withdrawals - any ETH or WETH in the staking strategy
+
+  let remainingAmount = buffer
+    .sub(availableInVault)
+    .sub(totalPendingPartialWithdrawals)
+    .sub(availableInStrategy);
+
+  log(`Remaining amount to withdraw ${formatUnits(remainingAmount, 18)}`);
+
+  // 7. Withdraw from the validators is necessary
+
+  // End job if remaining amount < 0
+  if (remainingAmount.lt(0)) {
+    log(`No need to withdraw from the validators.`);
+    return;
+  }
+
+  // Get validator balances from the beacon chain data
+  const validators = [];
+  for (let i = 0; i < activeValidators.length; i++) {
+    const validatorIndex = activeValidators[i].index;
+    const validator = stateView.validators.get(validatorIndex);
+    const balanceGwei = stateView.balances.get(validatorIndex);
+    validators.push({
+      index: validatorIndex,
+      pubKey: toHex(validator.pubkey),
+      balanceWei: parseUnits(balanceGwei.toString(), 9),
+    });
+    log(
+      `  Validator ${validatorIndex} balance ${formatUnits(balanceGwei, 9)} ETH`
+    );
+  }
+
+  // Sort validators by smallest to highest balance
+  const sortedValidators = validators.sort((a, b) =>
+    a.balanceWei.lt(b.balanceWei) ? -1 : 1
+  );
+
+  // For each validator
+  for (const validator of sortedValidators) {
+    const maxValidatorWithdrawal = validator.balanceWei.sub(
+      parseUnits("32.25", 18)
+    );
+    const withdrawalAmount = maxValidatorWithdrawal.lt(remainingAmount)
+      ? maxValidatorWithdrawal
+      : remainingAmount;
+
+    // continue if withdrawal amount < min partial withdraw amount
+    if (withdrawalAmount < minValidatorWithdrawAmount) {
+      log(
+        `  Skipping validator ${
+          validator.index
+        } as withdrawal amount ${formatUnits(
+          withdrawalAmount.toString(),
+          18
+        )} is less than the minimum partial withdrawal amount`
+      );
+      continue;
+    }
+
+    const withdrawalAmountGwei = withdrawalAmount.div(parseUnits("1", 9));
+    log(
+      `  Withdrawing ${formatUnits(
+        withdrawalAmountGwei,
+        9
+      )} ETH from validator ${validator.index}`
+    );
+
+    if (!dryrun) {
+      // Call strategy to partially withdraw from the validator
+      const tx = await strategy
+        .connect(signer)
+        .validatorWithdrawal(
+          validator.pubKey,
+          withdrawalAmountGwei.toString(),
+          {
+            value: 1,
+          }
+        );
+      await logTxDetails(tx, "validatorWithdrawal");
+    }
+
+    remainingAmount = remainingAmount.sub(withdrawalAmount);
+    if (remainingAmount.lte(0)) {
+      log(`  Reached the required withdrawal amount`);
+      break;
+    }
+  }
+
+  if (remainingAmount.gt(0)) {
+    log(
+      `  Still need to withdraw ${formatUnits(
+        remainingAmount,
+        18
+      )} ETH from the validators next time`
+    );
+  }
+}
+
+async function snapStakingStrategy({
+  buffer: bufferBps = 100, // 1% buffer
+  block,
+}) {
+  let blockTag = await getBlock(block);
+  // Don't use the latest block as the slot probably won't be available yet
+  if (!block) blockTag -= 1;
+
+  const { timestamp } = await getProvider().getBlock(blockTag);
+  const networkName = await getNetworkName();
+  const slot = calcSlot(timestamp, networkName);
+  log(`Snapping block ${blockTag} at slot ${slot}`);
+
+  const { stateView } = await getBeaconBlock(slot, networkName);
+
+  const wethAddress = addresses[networkName].WETH;
+  const weth = await getContractAt("IERC20", wethAddress);
+  const { proxyName, strategy } = await resolveCompoundingStakingContract();
+  const vault = await resolveContract("OETHVaultProxy", "IVault");
+
+  // Pending deposits
+  const totalDeposits = await logDeposits(
+    strategy,
+    proxyName,
+    networkName,
+    blockTag,
+    stateView
+  );
+
+  if (stateView.pendingDeposits.length === 0) {
+    console.log("No pending beacon chain deposits");
+  } else {
+    const firstBeaconDeposit = stateView.pendingDeposits.get(0);
+    console.log(
+      `${
+        stateView.pendingDeposits.length
+      } beacon chain deposits. The first has slot ${
+        firstBeaconDeposit.slot
+      } and public key ${toHex(firstBeaconDeposit.pubkey)}`
+    );
+  }
+
+  // Pending withdrawals
+  const activeValidators = await getVerifiedValidators(strategy);
+  const validatorIndexes = activeValidators.map((v) => toNumber(v.index));
+
+  const totalWithdrawals = await totalPartialWithdrawals(
+    stateView,
+    validatorIndexes,
+    true
+  );
+
+  // Verified validators
+  const verifiedValidators = await getVerifiedValidators(strategy, blockTag);
+  console.log(`\n${verifiedValidators.length || "No"} verified validators:`);
+  if (verifiedValidators.length > 0) {
+    console.log(
+      `  amount (ETH)   index   status   public key                                                                                         Withdrawable Exit epoch`
+    );
+  }
+  let totalValidators = BigNumber.from(0);
+  for (const validator of verifiedValidators) {
+    const balance = stateView.balances.get(validator.index);
+    const validatorData = await strategy.validator(validator.pubKeyHash, {
+      blockTag,
+    });
+    const beaconValidator = stateView.validators.get(validator.index);
+    console.log(
+      `  ${formatUnits(balance, 9).padEnd(14)} ${
+        validator.index
+      } ${validatorStatus(validatorData.state).padEnd(8)} ${toHex(
+        beaconValidator.pubkey
+      )} ${beaconValidator.withdrawableEpoch || "\t\t"}     ${
+        beaconValidator.exitEpoch || ""
+      }`
+    );
+    totalValidators = totalValidators.add(balance);
+  }
+  console.log(
+    `${
+      stateView.pendingPartialWithdrawals.length || "No"
+    } pending beacon chain withdrawals`
+  );
+
+  const stratWethBalance = await weth.balanceOf(strategy.address, { blockTag });
+  const stratEthBalance = await getProvider().getBalance(
+    strategy.address,
+    blockTag
+  );
+  const stratBalance = await strategy.checkBalance(wethAddress, {
+    blockTag,
+  });
+  const totalAssets = parseUnits(totalDeposits.toString(), 9)
+    .add(parseUnits(totalValidators.toString(), 9))
+    .add(stratWethBalance)
+    .add(stratEthBalance);
+  const assetDiff = totalAssets.sub(stratBalance);
+  const snappedBalance = await strategy.snappedBalance({
+    blockTag,
+  });
+  const vaultTotalValue = await vault.totalValue({ blockTag });
+  const targetBuffer = vaultTotalValue.mul(bufferBps).div(10000);
+  const availableInVault = await calcAvailableInVault({
+    vault,
+    weth,
+    blockTag,
+  });
+  const snappedSlot =
+    snappedBalance.timestamp == 0
+      ? 0n
+      : calcSlot(snappedBalance.timestamp, networkName);
+  const lastVerifiedEthBalance = await strategy.lastVerifiedEthBalance({
+    blockTag,
+  });
+  const depositedWethAccountedFor = await strategy.depositedWethAccountedFor({
+    blockTag,
+  });
+
+  console.log(`\nBalances at block ${blockTag}, slot ${slot}:`);
+  console.log(`Total deposit      : ${formatUnits(totalDeposits, 9)}`);
+  console.log(`Total withdrawals  : ${formatUnits(totalWithdrawals, 18)}`);
+  console.log(`Validator balances : ${formatUnits(totalValidators, 9)}`);
+  console.log(`WETH in strategy   : ${formatUnits(stratWethBalance, 18)}`);
+  console.log(`ETH in strategy    : ${formatUnits(stratEthBalance, 18)}`);
+  console.log(`Total assets       : ${formatUnits(totalAssets, 18)}`);
+  console.log(
+    `Strategy balance   : ${formatUnits(stratBalance, 18)} diff ${formatUnits(
+      assetDiff,
+      18
+    )}`
+  );
+  console.log(`Vault total value  : ${formatUnits(vaultTotalValue, 18)}`);
+  console.log(`Target buffer (1%) : ${formatUnits(targetBuffer, 18)}`);
+  console.log(`Available in vault : ${formatUnits(availableInVault, 18)}`);
+  console.log(
+    `Last verified ETH  : ${formatUnits(lastVerifiedEthBalance, 18)}`
+  );
+  console.log(
+    `Last snapped ETH   : ${formatUnits(snappedBalance.ethBalance, 18)}`
+  );
+  console.log(`Last snapped root  : ${snappedBalance.blockRoot}`);
+  console.log(
+    `Last snap timestamp: ${snappedBalance.timestamp} ${new Date(
+      snappedBalance.timestamp * 1000
+    ).toISOString()} `
+  );
+  console.log(
+    `Last snap slot     : ${snappedSlot} (${slot - snappedSlot} slots ago)`
+  );
+  console.log(
+    `WETH Deposits      : ${formatUnits(depositedWethAccountedFor, 18)}`
+  );
+}
+
+async function logDeposits(
+  strategy,
+  proxyName,
+  networkName,
+  blockTag = "latest",
+  stateView
+) {
+  const deposits = await getPendingDeposits(strategy, blockTag);
+  const depositsMissingPubKeys = deposits.filter(
+    ({ pendingDepositRoot }) =>
+      !findDepositInQueue(pendingDepositRoot, stateView).pendingDeposit
+  );
+  const eventPubKeys = await getDepositPubKeysFromEvents(
+    strategy,
+    proxyName,
+    networkName,
+    depositsMissingPubKeys,
+    blockTag
+  );
+  const validatorIndexes = await getValidatorIndexes(
+    [...eventPubKeys.values()],
+    stateView.slot
+  );
+  let totalDeposits = BigNumber.from(0);
+  console.log(`\n${deposits.length || "No"} pending strategy deposits:`);
+  if (deposits.length > 0) {
+    console.log(
+      `  Pending deposit root                                               amount (ETH)   slot     Q pos V index public key`
+    );
+  }
+  for (const deposit of deposits) {
+    const { pendingDeposit, position } = findDepositInQueue(
+      deposit.pendingDepositRoot,
+      stateView
+    );
+    const pubKey = pendingDeposit
+      ? toHex(pendingDeposit.pubkey)
+      : eventPubKeys.get(deposit.pendingDepositRoot) || deposit.pubKeyHash;
+    const validatorIndex = pendingDeposit
+      ? "-"
+      : validatorIndexes.get(pubKey.toLowerCase()) ?? "-";
+    console.log(
+      `  ${deposit.pendingDepositRoot} ${formatUnits(
+        deposit.amountGwei,
+        9
+      ).padEnd(14)} ${deposit.slot} ${position
+        .toString()
+        .padStart(5)} ${validatorIndex.toString().padStart(7)} ${pubKey}`
+    );
+    totalDeposits = totalDeposits.add(deposit.amountGwei);
+  }
+
+  return totalDeposits;
+}
+
+async function getDepositPubKeysFromEvents(
+  strategy,
+  proxyName,
+  networkName,
+  deposits,
+  blockTag
+) {
+  const pubKeys = new Map();
+  if (deposits.length === 0) return pubKeys;
+
+  try {
+    const deploymentPath = path.join(
+      __dirname,
+      "..",
+      "deployments",
+      networkName,
+      `${proxyName}.json`
+    );
+    const deployment = JSON.parse(readFileSync(deploymentPath, "utf8"));
+    const fromBlock = deployment.receipt.blockNumber;
+    const eventTopic = strategy.interface.getEventTopic("ETHStaked");
+    const pubKeyHashes = deposits.map(({ pubKeyHash }) => pubKeyHash);
+    const blockBatchSize = 10000;
+
+    for (let startBlock = fromBlock; startBlock <= blockTag; ) {
+      const endBlock = Math.min(startBlock + blockBatchSize - 1, blockTag);
+      const logs = await strategy.provider.getLogs({
+        address: strategy.address,
+        topics: [eventTopic, pubKeyHashes],
+        fromBlock: startBlock,
+        toBlock: endBlock,
+      });
+      for (const rawLog of logs) {
+        const event = strategy.interface.parseLog(rawLog);
+        pubKeys.set(event.args.pendingDepositRoot, event.args.pubKey);
+      }
+      if (pubKeys.size === deposits.length) break;
+      startBlock = endBlock + 1;
+    }
+  } catch (err) {
+    log(
+      `Failed to load full validator public keys from ETHStaked events: ${err}`
+    );
+  }
+
+  return pubKeys;
+}
+
+async function getValidatorIndexes(pubKeys, stateId) {
+  const indexes = new Map();
+  if (pubKeys.length === 0) return indexes;
+
+  try {
+    const validators = await getValidatorsBeacon(pubKeys, stateId);
+    const validatorList = Array.isArray(validators) ? validators : [validators];
+    for (const validator of validatorList) {
+      indexes.set(validator.pubkey.toLowerCase(), validator.index);
+    }
+  } catch (err) {
+    log(`Failed to load processed validator indexes: ${err}`);
+  }
+
+  return indexes;
+}
+
+function findDepositInQueue(pendingDepositRoot, stateView) {
+  for (let i = 0; i < stateView.pendingDeposits.length; i++) {
+    const pendingDeposit = stateView.pendingDeposits.get(i);
+    if (toHex(pendingDeposit.hashTreeRoot()) === pendingDepositRoot) {
+      return { pendingDeposit, position: i };
+    }
+  }
+  return { pendingDeposit: undefined, position: -1 };
+}
+
+function validatorStatus(status) {
+  if (status === 0) {
+    return "NON_REGISTERED";
+  } else if (status === 1) {
+    return "REGISTERED";
+  } else if (status === 2) {
+    return "STAKED";
+  } else if (status === 3) {
+    return "VERIFIED";
+  } else if (status === 4) {
+    return "ACTIVE";
+  } else if (status === 5) {
+    return "EXITING";
+  } else if (status === 6) {
+    return "EXITED";
+  } else if (status === 7) {
+    return "REMOVED";
+  } else if (status === 8) {
+    return "INVALID";
+  } else {
+    return "UNKNOWN";
+  }
+}
+
+async function setRegistrator({ account }) {
+  const signer = await getSigner();
+
+  const strategy = (await resolveCompoundingStakingContract()).strategy;
+
+  const tx = await strategy.connect(signer).setRegistrator(account);
+  await logTxDetails(tx, "setRegistrator");
+}
+
+module.exports = {
+  snapBalances,
+  stakeValidator,
+  autoValidatorDeposits,
+  snapStakingStrategy,
+  logDeposits,
+  setRegistrator,
+  validatorStatus,
+  withdrawValidator,
+  autoValidatorWithdrawals,
+};

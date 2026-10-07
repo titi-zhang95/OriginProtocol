@@ -1,0 +1,49 @@
+# Compiler files
+cache/
+out/
+bin/
+
+# Ignores development broadcast logs
+!/broadcast
+/broadcast/*/31337/
+/broadcast/**/dry-run/
+broadcast
+logs
+
+# Dotenv file
+.env
+
+# npm
+node_modules
+.pnpm-store/
+*.log
+
+# hardhat
+cache_hardhat
+artifacts
+
+# Forge
+.gas-snapshot
+snapshots/
+dependencies/
+soldeer.lock
+test/invariants/.foundry-corpus
+test/invariants/.foundry-failures
+
+# Coverage
+lcov.info*
+crytic-export
+
+dist
+cache_hardhat
+
+build/deployments-fork*.json
+
+# Reports. eg stats.html
+*.html
+
+# Other
+.DS_Store
+
+# Cursor solidity plugin
+remappings.txt

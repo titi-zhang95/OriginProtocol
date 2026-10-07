@@ -1,0 +1,2207 @@
+{
+  "address": "0xb08442baB7ae5B12db276E4F0Cd74f7d7C227DaE",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_weth",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_threshold",
+          "type": "uint256"
+        }
+      ],
+      "name": "AllocateThresholdUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_strategy",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "AssetAllocated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_strategy",
+          "type": "address"
+        }
+      ],
+      "name": "AssetDefaultStrategyUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        }
+      ],
+      "name": "AssetRemoved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        }
+      ],
+      "name": "AssetSupported",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "CapitalPaused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "CapitalUnpaused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "dripDuration",
+          "type": "uint256"
+        }
+      ],
+      "name": "DripDurationChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_dripper",
+          "type": "address"
+        }
+      ],
+      "name": "DripperChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousGovernor",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "GovernorshipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "maxSupplyDiff",
+          "type": "uint256"
+        }
+      ],
+      "name": "MaxSupplyDiffChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_addr",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Mint",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_threshold",
+          "type": "uint256"
+        }
+      ],
+      "name": "NetOusdMintForStrategyThresholdChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_ousdMetaStrategy",
+          "type": "address"
+        }
+      ],
+      "name": "OusdMetaStrategyUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousGovernor",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "PendingGovernorshipTransfer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_priceProvider",
+          "type": "address"
+        }
+      ],
+      "name": "PriceProviderUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "RebasePaused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "rebaseRatePerSecond",
+          "type": "uint256"
+        }
+      ],
+      "name": "RebasePerSecondMaxChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_threshold",
+          "type": "uint256"
+        }
+      ],
+      "name": "RebaseThresholdUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "RebaseUnpaused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_addr",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Redeem",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_redeemFeeBps",
+          "type": "uint256"
+        }
+      ],
+      "name": "RedeemFeeUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "StrategistUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "strategy",
+          "type": "address"
+        }
+      ],
+      "name": "StrategyAddedToMintWhitelist",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_addr",
+          "type": "address"
+        }
+      ],
+      "name": "StrategyApproved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_addr",
+          "type": "address"
+        }
+      ],
+      "name": "StrategyRemoved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "strategy",
+          "type": "address"
+        }
+      ],
+      "name": "StrategyRemovedFromMintWhitelist",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_basis",
+          "type": "uint256"
+        }
+      ],
+      "name": "SwapAllowedUndervalueChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_basis",
+          "type": "uint256"
+        }
+      ],
+      "name": "SwapSlippageChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_fromAsset",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_toAsset",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_fromAssetAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_toAssetAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Swapped",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "SwapperChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "TrusteeAddressChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_basis",
+          "type": "uint256"
+        }
+      ],
+      "name": "TrusteeFeeBpsChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_vaultBuffer",
+          "type": "uint256"
+        }
+      ],
+      "name": "VaultBufferUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_newDelay",
+          "type": "uint256"
+        }
+      ],
+      "name": "WithdrawalClaimDelayUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_claimable",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_newClaimable",
+          "type": "uint256"
+        }
+      ],
+      "name": "WithdrawalClaimable",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_withdrawer",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "_requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "WithdrawalClaimed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_withdrawer",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "_requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_queued",
+          "type": "uint256"
+        }
+      ],
+      "name": "WithdrawalRequested",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_yield",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "YieldDistribution",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "strategyAddr",
+          "type": "address"
+        }
+      ],
+      "name": "addStrategyToMintWhitelist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "adminImplPosition",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "allowedSwapUndervalue",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_addr",
+          "type": "address"
+        }
+      ],
+      "name": "approveStrategy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "assetDefaultStrategies",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "autoAllocateThreshold",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        }
+      ],
+      "name": "cacheDecimals",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "capitalPaused",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claimGovernance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_strategyToAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address[]",
+          "name": "_assets",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_amounts",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "depositToStrategy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "dripDuration",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "dripper",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "governor",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isGovernor",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "isMintWhitelistedStrategy",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lastRebase",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maxSupplyDiff",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "netOusdMintForStrategyThreshold",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "netOusdMintedForStrategy",
+      "outputs": [
+        {
+          "internalType": "int256",
+          "name": "",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "oUSD",
+      "outputs": [
+        {
+          "internalType": "contract OUSD",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ousdMetaStrategy",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pauseCapital",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pauseRebase",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "priceProvider",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rebasePaused",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rebasePerSecondMax",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rebasePerSecondTarget",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rebaseThreshold",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "redeemFeeBps",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        }
+      ],
+      "name": "removeAsset",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_addr",
+          "type": "address"
+        }
+      ],
+      "name": "removeStrategy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "strategyAddr",
+          "type": "address"
+        }
+      ],
+      "name": "removeStrategyFromMintWhitelist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newImpl",
+          "type": "address"
+        }
+      ],
+      "name": "setAdminImpl",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_strategy",
+          "type": "address"
+        }
+      ],
+      "name": "setAssetDefaultStrategy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_threshold",
+          "type": "uint256"
+        }
+      ],
+      "name": "setAutoAllocateThreshold",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_dripDuration",
+          "type": "uint256"
+        }
+      ],
+      "name": "setDripDuration",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_dripper",
+          "type": "address"
+        }
+      ],
+      "name": "setDripper",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_maxSupplyDiff",
+          "type": "uint256"
+        }
+      ],
+      "name": "setMaxSupplyDiff",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_threshold",
+          "type": "uint256"
+        }
+      ],
+      "name": "setNetOusdMintForStrategyThreshold",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint16",
+          "name": "_allowedOracleSlippageBps",
+          "type": "uint16"
+        }
+      ],
+      "name": "setOracleSlippage",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_ousdMetaStrategy",
+          "type": "address"
+        }
+      ],
+      "name": "setOusdMetaStrategy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_priceProvider",
+          "type": "address"
+        }
+      ],
+      "name": "setPriceProvider",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "yearlyApr",
+          "type": "uint256"
+        }
+      ],
+      "name": "setRebaseRateMax",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_threshold",
+          "type": "uint256"
+        }
+      ],
+      "name": "setRebaseThreshold",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_redeemFeeBps",
+          "type": "uint256"
+        }
+      ],
+      "name": "setRedeemFeeBps",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "setStrategistAddr",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "_basis",
+          "type": "uint16"
+        }
+      ],
+      "name": "setSwapAllowedUndervalue",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_swapperAddr",
+          "type": "address"
+        }
+      ],
+      "name": "setSwapper",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "setTrusteeAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_basis",
+          "type": "uint256"
+        }
+      ],
+      "name": "setTrusteeFeeBps",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_vaultBuffer",
+          "type": "uint256"
+        }
+      ],
+      "name": "setVaultBuffer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_delay",
+          "type": "uint256"
+        }
+      ],
+      "name": "setWithdrawalClaimDelay",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "strategies",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isSupported",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_deprecated",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "strategistAddr",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_unitConversion",
+          "type": "uint8"
+        }
+      ],
+      "name": "supportAsset",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_fromAsset",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_toAsset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_fromAssetAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minToAssetAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_data",
+          "type": "bytes"
+        }
+      ],
+      "name": "swapCollateral",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "toAssetAmount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "swapper",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "swapper_",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newGovernor",
+          "type": "address"
+        }
+      ],
+      "name": "transferGovernance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "trusteeAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "trusteeFeeBps",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "unpauseCapital",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "unpauseRebase",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "vaultBuffer",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "weth",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdrawAllFromStrategies",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_strategyAddr",
+          "type": "address"
+        }
+      ],
+      "name": "withdrawAllFromStrategy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_strategyFromAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address[]",
+          "name": "_assets",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_amounts",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "withdrawFromStrategy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdrawalClaimDelay",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdrawalQueueMetadata",
+      "outputs": [
+        {
+          "internalType": "uint128",
+          "name": "queued",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint128",
+          "name": "claimable",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint128",
+          "name": "claimed",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint128",
+          "name": "nextWithdrawalIndex",
+          "type": "uint128"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdrawalRequests",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "withdrawer",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "claimed",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint40",
+          "name": "timestamp",
+          "type": "uint40"
+        },
+        {
+          "internalType": "uint128",
+          "name": "amount",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint128",
+          "name": "queued",
+          "type": "uint128"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 3979,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "initialized",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 3982,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "initializing",
+        "offset": 1,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 4022,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "______gap",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_array(t_uint256)50_storage"
+      },
+      {
+        "astId": 6221,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "assets",
+        "offset": 0,
+        "slot": "51",
+        "type": "t_mapping(t_address,t_struct(Asset)6215_storage)"
+      },
+      {
+        "astId": 6225,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "allAssets",
+        "offset": 0,
+        "slot": "52",
+        "type": "t_array(t_address)dyn_storage"
+      },
+      {
+        "astId": 6236,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "strategies",
+        "offset": 0,
+        "slot": "53",
+        "type": "t_mapping(t_address,t_struct(Strategy)6230_storage)"
+      },
+      {
+        "astId": 6240,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "allStrategies",
+        "offset": 0,
+        "slot": "54",
+        "type": "t_array(t_address)dyn_storage"
+      },
+      {
+        "astId": 6243,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "priceProvider",
+        "offset": 0,
+        "slot": "55",
+        "type": "t_address"
+      },
+      {
+        "astId": 6246,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "rebasePaused",
+        "offset": 20,
+        "slot": "55",
+        "type": "t_bool"
+      },
+      {
+        "astId": 6249,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "capitalPaused",
+        "offset": 21,
+        "slot": "55",
+        "type": "t_bool"
+      },
+      {
+        "astId": 6252,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "redeemFeeBps",
+        "offset": 0,
+        "slot": "56",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 6255,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "vaultBuffer",
+        "offset": 0,
+        "slot": "57",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 6258,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "autoAllocateThreshold",
+        "offset": 0,
+        "slot": "58",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 6261,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "rebaseThreshold",
+        "offset": 0,
+        "slot": "59",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 6265,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "oUSD",
+        "offset": 0,
+        "slot": "60",
+        "type": "t_contract(OUSD)3919"
+      },
+      {
+        "astId": 6276,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "_deprecated_rebaseHooksAddr",
+        "offset": 0,
+        "slot": "61",
+        "type": "t_address"
+      },
+      {
+        "astId": 6283,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "_deprecated_uniswapAddr",
+        "offset": 0,
+        "slot": "62",
+        "type": "t_address"
+      },
+      {
+        "astId": 6290,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "strategistAddr",
+        "offset": 0,
+        "slot": "63",
+        "type": "t_address"
+      },
+      {
+        "astId": 6295,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "assetDefaultStrategies",
+        "offset": 0,
+        "slot": "64",
+        "type": "t_mapping(t_address,t_address)"
+      },
+      {
+        "astId": 6298,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "maxSupplyDiff",
+        "offset": 0,
+        "slot": "65",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 6301,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "trusteeAddress",
+        "offset": 0,
+        "slot": "66",
+        "type": "t_address"
+      },
+      {
+        "astId": 6304,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "trusteeFeeBps",
+        "offset": 0,
+        "slot": "67",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 6308,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "_deprecated_swapTokens",
+        "offset": 0,
+        "slot": "68",
+        "type": "t_array(t_address)dyn_storage"
+      },
+      {
+        "astId": 6314,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "ousdMetaStrategy",
+        "offset": 0,
+        "slot": "69",
+        "type": "t_address"
+      },
+      {
+        "astId": 6317,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "netOusdMintedForStrategy",
+        "offset": 0,
+        "slot": "70",
+        "type": "t_int256"
+      },
+      {
+        "astId": 6320,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "netOusdMintForStrategyThreshold",
+        "offset": 0,
+        "slot": "71",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 6342,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "swapConfig",
+        "offset": 0,
+        "slot": "72",
+        "type": "t_struct(SwapConfig)6332_storage"
+      },
+      {
+        "astId": 6346,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "isMintWhitelistedStrategy",
+        "offset": 0,
+        "slot": "73",
+        "type": "t_mapping(t_address,t_bool)"
+      },
+      {
+        "astId": 6349,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "dripper",
+        "offset": 0,
+        "slot": "74",
+        "type": "t_address"
+      },
+      {
+        "astId": 6363,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "withdrawalQueueMetadata",
+        "offset": 0,
+        "slot": "75",
+        "type": "t_struct(WithdrawalQueueMetadata)6359_storage"
+      },
+      {
+        "astId": 6380,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "withdrawalRequests",
+        "offset": 0,
+        "slot": "77",
+        "type": "t_mapping(t_uint256,t_struct(WithdrawalRequest)6374_storage)"
+      },
+      {
+        "astId": 6383,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "withdrawalClaimDelay",
+        "offset": 0,
+        "slot": "78",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 6386,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "lastRebase",
+        "offset": 0,
+        "slot": "79",
+        "type": "t_uint64"
+      },
+      {
+        "astId": 6389,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "dripDuration",
+        "offset": 8,
+        "slot": "79",
+        "type": "t_uint64"
+      },
+      {
+        "astId": 6392,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "rebasePerSecondMax",
+        "offset": 16,
+        "slot": "79",
+        "type": "t_uint64"
+      },
+      {
+        "astId": 6395,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "rebasePerSecondTarget",
+        "offset": 24,
+        "slot": "79",
+        "type": "t_uint64"
+      },
+      {
+        "astId": 6410,
+        "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+        "label": "__gap",
+        "offset": 0,
+        "slot": "80",
+        "type": "t_array(t_uint256)43_storage"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_address)dyn_storage": {
+        "encoding": "dynamic_array",
+        "label": "address[]",
+        "numberOfBytes": "32",
+        "base": "t_address"
+      },
+      "t_array(t_uint256)43_storage": {
+        "encoding": "inplace",
+        "label": "uint256[43]",
+        "numberOfBytes": "1376",
+        "base": "t_uint256"
+      },
+      "t_array(t_uint256)50_storage": {
+        "encoding": "inplace",
+        "label": "uint256[50]",
+        "numberOfBytes": "1600",
+        "base": "t_uint256"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_contract(OUSD)3919": {
+        "encoding": "inplace",
+        "label": "contract OUSD",
+        "numberOfBytes": "20"
+      },
+      "t_enum(UnitConversion)6205": {
+        "encoding": "inplace",
+        "label": "enum VaultStorage.UnitConversion",
+        "numberOfBytes": "1"
+      },
+      "t_int256": {
+        "encoding": "inplace",
+        "label": "int256",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_address)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => address)",
+        "numberOfBytes": "32",
+        "value": "t_address"
+      },
+      "t_mapping(t_address,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_mapping(t_address,t_struct(Asset)6215_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct VaultStorage.Asset)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Asset)6215_storage"
+      },
+      "t_mapping(t_address,t_struct(Strategy)6230_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct VaultStorage.Strategy)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Strategy)6230_storage"
+      },
+      "t_mapping(t_uint256,t_struct(WithdrawalRequest)6374_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct VaultStorage.WithdrawalRequest)",
+        "numberOfBytes": "32",
+        "value": "t_struct(WithdrawalRequest)6374_storage"
+      },
+      "t_struct(Asset)6215_storage": {
+        "encoding": "inplace",
+        "label": "struct VaultStorage.Asset",
+        "numberOfBytes": "32",
+        "members": [
+          {
+            "astId": 6207,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "isSupported",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool"
+          },
+          {
+            "astId": 6210,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "unitConversion",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_enum(UnitConversion)6205"
+          },
+          {
+            "astId": 6212,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "decimals",
+            "offset": 2,
+            "slot": "0",
+            "type": "t_uint8"
+          },
+          {
+            "astId": 6214,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "allowedOracleSlippageBps",
+            "offset": 3,
+            "slot": "0",
+            "type": "t_uint16"
+          }
+        ]
+      },
+      "t_struct(Strategy)6230_storage": {
+        "encoding": "inplace",
+        "label": "struct VaultStorage.Strategy",
+        "numberOfBytes": "64",
+        "members": [
+          {
+            "astId": 6227,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "isSupported",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool"
+          },
+          {
+            "astId": 6229,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "_deprecated",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          }
+        ]
+      },
+      "t_struct(SwapConfig)6332_storage": {
+        "encoding": "inplace",
+        "label": "struct VaultStorage.SwapConfig",
+        "numberOfBytes": "32",
+        "members": [
+          {
+            "astId": 6329,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "swapper",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 6331,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "allowedUndervalueBps",
+            "offset": 20,
+            "slot": "0",
+            "type": "t_uint16"
+          }
+        ]
+      },
+      "t_struct(WithdrawalQueueMetadata)6359_storage": {
+        "encoding": "inplace",
+        "label": "struct VaultStorage.WithdrawalQueueMetadata",
+        "numberOfBytes": "64",
+        "members": [
+          {
+            "astId": 6352,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "queued",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint128"
+          },
+          {
+            "astId": 6354,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "claimable",
+            "offset": 16,
+            "slot": "0",
+            "type": "t_uint128"
+          },
+          {
+            "astId": 6356,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "claimed",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint128"
+          },
+          {
+            "astId": 6358,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "nextWithdrawalIndex",
+            "offset": 16,
+            "slot": "1",
+            "type": "t_uint128"
+          }
+        ]
+      },
+      "t_struct(WithdrawalRequest)6374_storage": {
+        "encoding": "inplace",
+        "label": "struct VaultStorage.WithdrawalRequest",
+        "numberOfBytes": "64",
+        "members": [
+          {
+            "astId": 6365,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "withdrawer",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 6367,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "claimed",
+            "offset": 20,
+            "slot": "0",
+            "type": "t_bool"
+          },
+          {
+            "astId": 6369,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "timestamp",
+            "offset": 21,
+            "slot": "0",
+            "type": "t_uint40"
+          },
+          {
+            "astId": 6371,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "amount",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint128"
+          },
+          {
+            "astId": 6373,
+            "contract": "contracts/vault/OETHBaseVaultAdmin.sol:OETHBaseVaultAdmin",
+            "label": "queued",
+            "offset": 16,
+            "slot": "1",
+            "type": "t_uint128"
+          }
+        ]
+      },
+      "t_uint128": {
+        "encoding": "inplace",
+        "label": "uint128",
+        "numberOfBytes": "16"
+      },
+      "t_uint16": {
+        "encoding": "inplace",
+        "label": "uint16",
+        "numberOfBytes": "2"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      },
+      "t_uint40": {
+        "encoding": "inplace",
+        "label": "uint40",
+        "numberOfBytes": "5"
+      },
+      "t_uint64": {
+        "encoding": "inplace",
+        "label": "uint64",
+        "numberOfBytes": "8"
+      },
+      "t_uint8": {
+        "encoding": "inplace",
+        "label": "uint8",
+        "numberOfBytes": "1"
+      }
+    }
+  }
+}

@@ -1,0 +1,251 @@
+name: Foundry
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  push:
+    branches:
+      - master
+      - staging
+      - stable
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+concurrency:
+  cancel-in-progress: true
+  group: foundry-${{ github.ref }}
+
+jobs:
+  # ── Formatting & Lint ───────────────────────────────────────
+  fmt:
+    name: Formatting & Lint
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Check Solidity formatting (forge)
+        working-directory: contracts
+        run: forge fmt --check scripts/ tests/
+      - name: Check JS formatting (prettier)
+        working-directory: contracts
+        run: npx prettier -c "*.js" "scripts/**/*.js" "tasks/**/*.js" "utils/**/*.js"
+      - name: Check Solidity formatting (prettier)
+        working-directory: contracts
+        run: npx prettier -c --plugin=prettier-plugin-solidity "contracts/**/*.sol"
+      - name: Lint
+        working-directory: contracts
+        run: pnpm run lint
+      - name: Typecheck
+        working-directory: contracts
+        run: pnpm run typecheck
+      - name: Check unused imports
+        working-directory: contracts
+        run: make lint-imports
+
+  # ── Build ───────────────────────────────────────────────────
+  build:
+    name: Build
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Check contract sizes
+        working-directory: contracts
+        run: forge build --sizes --skip "test/**" --skip "tests/**" --skip "script/**" --skip "scripts/**"
+
+  # ── Unit Tests ──────────────────────────────────────────────
+  unit-tests:
+    name: Unit Tests
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Run unit tests
+        working-directory: contracts
+        run: make test-unit
+
+      # `make test-unit` has just rebuilt contracts/, so out/ carries a current
+      # storageLayout for every pinned contract.
+      - name: Pinned storage layouts
+        working-directory: contracts
+        run: pnpm run test:layouts
+
+  # ── Script Tests (JS) ───────────────────────────────────────
+  script-tests:
+    name: Script Tests (JS)
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: contracts/pnpm-lock.yaml
+      - name: Configure Git to use HTTPS for GitHub
+        run: git config --global url."https://github.com/".insteadOf "git@github.com:"
+      - name: Install deps
+        working-directory: contracts
+        run: pnpm install --frozen-lockfile
+      # No foundry-setup on purpose: these tests fake `forge` on PATH and must
+      # never need a toolchain or a build. If that changes, this job breaks
+      # loudly rather than quietly absorbing a multi-minute build.
+      - name: Run script tests
+        working-directory: contracts
+        run: pnpm run test:scripts
+      - name: Run standalone ops tests
+        working-directory: contracts
+        run: pnpm run test:tasks
+      - name: Typecheck standalone CLIs
+        working-directory: contracts
+        run: pnpm run typecheck
+      - name: Run Brownie bridge tests
+        working-directory: contracts
+        run: pnpm run test:brownie
+      # Install only the pinned Anvil binary after script tests have verified
+      # that they do not depend on Foundry being present.
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.7.1
+      - name: Run Anvil node tests
+        working-directory: contracts
+        run: pnpm run test:anvil
+
+  # ── Fork Tests ──────────────────────────────────────────────
+  fork-tests-mainnet:
+    name: Fork Tests (Mainnet)
+    runs-on: ubuntu-latest
+    env:
+      MAINNET_PROVIDER_URL: ${{ secrets.PROVIDER_URL }}
+      BEACON_PROVIDER_URL: ${{ secrets.BEACON_PROVIDER_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Run Mainnet fork tests
+        working-directory: contracts
+        run: make test-fork-mainnet
+
+  fork-tests-base:
+    name: Fork Tests (Base)
+    runs-on: ubuntu-latest
+    env:
+      BASE_PROVIDER_URL: ${{ secrets.BASE_PROVIDER_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Run Base fork tests
+        working-directory: contracts
+        run: make test-fork-base
+
+  fork-tests-hyperevm:
+    name: Fork Tests (HyperEVM)
+    runs-on: ubuntu-latest
+    env:
+      HYPEREVM_PROVIDER_URL: ${{ secrets.HYPEREVM_PROVIDER_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Run HyperEVM fork tests
+        working-directory: contracts
+        run: make test-fork-hyperevm
+
+  # ── Smoke Tests ─────────────────────────────────────────────
+  smoke-tests-mainnet:
+    name: Smoke Tests (Mainnet)
+    runs-on: ubuntu-latest
+    env:
+      MAINNET_PROVIDER_URL: ${{ secrets.PROVIDER_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Run Mainnet smoke tests
+        working-directory: contracts
+        run: make test-smoke-mainnet
+
+  smoke-tests-base:
+    name: Smoke Tests (Base)
+    runs-on: ubuntu-latest
+    env:
+      BASE_PROVIDER_URL: ${{ secrets.BASE_PROVIDER_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Run Base smoke tests
+        working-directory: contracts
+        run: make test-smoke-base
+
+  smoke-tests-hyperevm:
+    name: Smoke Tests (HyperEVM)
+    runs-on: ubuntu-latest
+    env:
+      HYPEREVM_PROVIDER_URL: ${{ secrets.HYPEREVM_PROVIDER_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Run HyperEVM smoke tests
+        working-directory: contracts
+        run: make test-smoke-hyperevm
+
+  # ── Static Analysis ────────────────────────────────────────
+  slither:
+    name: Slither
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ./.github/actions/foundry-setup
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install Slither
+        run: |
+          wget https://github.com/ethereum/solidity/releases/download/v0.8.7/solc-static-linux
+          chmod +x solc-static-linux
+          sudo mv solc-static-linux /usr/local/bin/solc
+          pip3 install slither-analyzer
+      - name: Run Slither
+        working-directory: contracts
+        run: slither . --config-file slither.config.json
+
+  snyk:
+    name: Snyk
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high  --all-projects

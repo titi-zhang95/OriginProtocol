@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd contracts
+pnpm run lint:js

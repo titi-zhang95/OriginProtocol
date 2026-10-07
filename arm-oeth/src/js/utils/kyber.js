@@ -1,0 +1,150 @@
+const axios = require("axios");
+const { parseUnits } = require("ethers");
+
+const addresses = require("./addresses");
+const { sleep } = require("./time");
+
+const log = require("./logger")("utils:kyber");
+
+const KYBER_API_ENDPOINT = "https://aggregator-api.kyberswap.com";
+
+const originSources = "generic-arm";
+
+/**
+ * Gets a swap quote from Kyber's swap route API
+ * @param tokenIn The address of the asset to swap from.
+ * @param tokenOut The address of the asset to swap to.
+ * @param amountIn The unit amount of tokenIn to swap. eg 1.1 WETH = 1.1e18
+ * See https://docs.kyberswap.com/kyberswap-solutions/kyberswap-aggregator/aggregator-api-specification/evm-swaps#get-chain-api-v1-routes
+ */
+const getKyberSwapQuote = async ({
+  tokenIn,
+  tokenOut,
+  amountIn,
+  excludedSources,
+}) => {
+  const params = {
+    tokenIn,
+    tokenOut,
+    amountIn: amountIn.toString(),
+    gasInclude: false,
+    excludedSources: excludedSources || [],
+  };
+  log("swap API params: ", params);
+
+  let retries = 5;
+
+  while (retries > 0) {
+    const url = `${KYBER_API_ENDPOINT}/ethereum/api/v1/routes`;
+    try {
+      const response = await axios.get(url, {
+        params,
+        headers: {
+          "X-Client-Id": "Origin-ARM",
+        },
+      });
+
+      if (!response.data?.data?.routeSummary?.amountOut) {
+        console.error(response.data);
+        throw Error("response is missing data.data.routeSummary.amountOut");
+      }
+
+      log("swap API response data: %j", response.data);
+
+      return response.data.data.routeSummary;
+    } catch (err) {
+      if (err.response) {
+        console.error("Response data  : ", err.response.data);
+        console.error("Response status: ", err.response.status);
+        console.error("Response status: ", err.response.statusText);
+      }
+      // 429 is rate-limiting; 5xx is Kyber shedding load (eg code 50301
+      // "service temporarily overloaded"). Both are transient.
+      const status = err.response?.status;
+      const kyberCode = err.response?.data?.code;
+      // 4003 "invalid swap" is Kyber's route validation failing intermittently
+      if (status == 429 || status >= 500 || kyberCode == 4003) {
+        retries = retries - 1;
+        const delay = kyberCode == 4003 ? 1000 : 5000;
+        console.error(
+          `Failed to get a Kyber swap route (HTTP ${status}, code ${kyberCode}). Will try again in ${delay / 1000}s with ${retries} retries left`,
+        );
+        await new Promise((r) => setTimeout(r, delay));
+        continue;
+      }
+      throw Error(`Call to Kyber swap route API failed: ${err.message}`);
+    }
+  }
+
+  throw Error(
+    `Call to Kyber swap route API failed: still failing after 5 attempts`,
+  );
+};
+
+// Scale a token amount to 18 decimals so price ratios are 1e18-scaled even
+// when the base and liquidity assets have different decimals (6 or 18).
+const scaleTo18 = (amount, decimals) => amount * 10n ** BigInt(18 - decimals);
+
+/**
+ * Gets Kyber prices for buying and selling the base asset using the liquid asset.
+ * @param {*} amount Amount not scaled to token decimals
+ * @param {*} assets liquidity and base asset addresses. eg WETH and stETH
+ * @param {*} baseDecimals decimals of the base asset. eg 18 for stETH, 6 for PYUSD
+ * @param {*} liquidityDecimals decimals of the liquidity asset. eg 18 for WETH, 6 for USDC
+ */
+const getKyberPrices = async (
+  amount,
+  assets = {
+    liquid: addresses.mainnet.WETH,
+    base: addresses.mainnet.stETH,
+  },
+  baseDecimals = 18,
+  liquidityDecimals = baseDecimals,
+) => {
+  const liquidAmountIn = parseUnits(amount.toString(), liquidityDecimals);
+
+  const buyQuote = await getKyberSwapQuote({
+    tokenIn: assets.liquid,
+    tokenOut: assets.base,
+    amountIn: liquidAmountIn, // liquid amount
+    excludedSources: originSources,
+  });
+  const buyToAmount = BigInt(buyQuote.amountOut);
+  // stETH/ETH rate = ETH amount / stETH amount
+  const buyPrice =
+    (scaleTo18(liquidAmountIn, liquidityDecimals) * BigInt(1e18)) /
+    scaleTo18(buyToAmount, baseDecimals);
+
+  await sleep(800);
+
+  const baseAmountIn = parseUnits(amount.toString(), baseDecimals);
+  const sellQuote = await getKyberSwapQuote({
+    tokenIn: assets.base,
+    tokenOut: assets.liquid,
+    amountIn: baseAmountIn, // base amount
+    excludedSources: originSources,
+  });
+  const sellToAmount = BigInt(sellQuote.amountOut);
+  // stETH/WETH rate = WETH amount / stETH amount
+  const sellPrice =
+    (scaleTo18(sellToAmount, liquidityDecimals) * BigInt(1e18)) /
+    scaleTo18(baseAmountIn, baseDecimals);
+
+  const midPrice = (buyPrice + sellPrice) / 2n;
+  const spread = buyPrice - sellPrice;
+
+  return {
+    buyQuote,
+    buyToAmount,
+    buyPrice,
+    buyGas: buyQuote.gas,
+    sellQuote,
+    sellToAmount,
+    sellPrice,
+    sellGas: sellQuote.gas,
+    midPrice,
+    spread,
+  };
+};
+
+module.exports = { getKyberSwapQuote, getKyberPrices };

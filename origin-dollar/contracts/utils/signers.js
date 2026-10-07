@@ -1,0 +1,69 @@
+const { parseEther } = require("ethers/lib/utils");
+const { getKmsSigner } = require("./signersStandalone");
+const { ethereumAddress } = require("./regex");
+
+const log = require("./logger")("utils:signers");
+
+// These modules are TypeScript and belong to the standalone Talos runtime.
+// Resolve them lazily so importing this CommonJS helper still works when the
+// optional Talos dependencies are not installed.
+function getProvider() {
+  return require("../tasks/lib/network").getProvider();
+}
+
+async function getStandaloneSigner() {
+  return await require("../tasks/lib/signer").getSigner();
+}
+
+/**
+ * Signer factory for the standalone action runtime.
+ * - If an address is passed, return a JSON-RPC signer for it on the ambient
+ *   provider (fork impersonation tooling).
+ * - Otherwise delegate to tasks/lib/signer.getSigner(), which selects AWS KMS /
+ *   private key / fork impersonation and applies the Postgres nonce queue when
+ *   DATABASE_URL is set.
+ * @param {string} [address] optional address of the signer
+ */
+async function getSigner(address = undefined) {
+  if (address) {
+    if (!address.match(ethereumAddress)) {
+      throw Error(`Invalid format of address`);
+    }
+    return await getProvider().getSigner(address);
+  }
+  return await getStandaloneSigner();
+}
+
+/**
+ * Impersonate an account on a forked Anvil node via raw RPC.
+ * @param {string} account address to impersonate
+ * @returns an Ethers.js Signer object
+ */
+async function impersonateAccount(account) {
+  log(`Impersonating account ${account}`);
+  const provider = getProvider();
+  await provider.send("anvil_impersonateAccount", [account]);
+  return await provider.getSigner(account);
+}
+
+/**
+ * Impersonate an account and fund it with Ether on a forked node.
+ * @param {string} account address to impersonate
+ * @param {string|number} amount ETH to fund (converted to wei)
+ * @returns an Ethers.js Signer object
+ */
+async function impersonateAndFund(account, amount = "100") {
+  const signer = await impersonateAccount(account);
+  log(`Funding account ${account} with ${amount} ETH`);
+  const wei = parseEther(amount.toString()).toHexString();
+  const provider = getProvider();
+  await provider.send("anvil_setBalance", [account, wei]);
+  return signer;
+}
+
+module.exports = {
+  getSigner,
+  impersonateAccount,
+  impersonateAndFund,
+  getKmsSigner,
+};

@@ -1,0 +1,51 @@
+@startuml
+
+title "Origin USD Contract Dependencies"
+
+object "VaultValueChecker" as checker <<Origin>> #DeepSkyBlue {
+}
+
+object "wOUSD" as wousd <<Origin>><<Proxy>> #DeepSkyBlue {
+    asset: OUSD
+    symbol: wOUSD
+    name: Wrapped OUSD
+}
+
+object "OUSD" as ousd <<Origin>><<Proxy>> #DeepSkyBlue {
+    symbol: OUSD
+    name: Origin Dollar
+}
+
+object "Vault" as vault <<Origin>><<Proxy>> #DeepSkyBlue {
+    assets: USDC 
+}
+
+' Strategies
+object "Morpho OUSD v2\nStrategy" as musd <<Origin>><<Proxy>> #DeepSkyBlue {
+    asset: USDC
+    Morpho vault: mUSD
+    rewards: MORPHO
+}
+object "Curve USDC AMO\nStrategy" as curveAmoStrat <<Origin>><<Proxy>> #DeepSkyBlue {
+    asset: USDC
+    Curve pool: OUSD/USDC
+    rewards: CRV
+}
+object "Morpho Base\nCross-chain Strategy" as baseCrossStrat <<Origin>><<Proxy>> #DeepSkyBlue {
+    asset: USDC
+    Morpho vault: OUSD V2
+    rewards: MORPHO
+}
+
+checker ..> ousd
+checker ..> vault
+
+wousd ..> ousd
+ousd <.> vault
+
+' Strategies
+vault <..> musd
+vault <..> curveAmoStrat
+vault <..> baseCrossStrat
+
+@enduml

@@ -1,0 +1,351 @@
+@startuml
+
+title "OETH Flow of Value"
+
+actor "User" as user
+actor "Anyone" as anyone
+actor "Block\nBuilder" as mev
+actor "Trustee" as trust <<Origin>> #DeepSkyBlue
+participant "Zapper" as zap <<Origin>> #DeepSkyBlue
+participant "OETH\nVault" as vault <<Origin>> #DeepSkyBlue
+
+participant "Native ETH\nStrategy" as nativeStrat <<Origin>> #DeepSkyBlue
+participant "Native ETH\nFee Accumulator" as feeAcc <<Origin>> #DeepSkyBlue
+participant "SSV Network" as ssvNetwork <<SSV>>
+participant "Deposit" as dep <<Beacon>>
+participant "Validator" as val <<Beacon>>
+
+participant "Curve AMO\nStrategy" as crvStrat <<Origin>> #DeepSkyBlue
+participant "OETH-ETH\nMetapool" as oethCrv <<Curve>>
+participant "OETH-ETH\nPool" as oethCvx <<Convex>>
+participant "Rewards\nPool" as cvxRewards <<Convex>>
+participant "Locked\nCVX" as icvx <<Convex>>
+
+participant "TriCrv\ncrvUSD/ETH/CRV" as triCrv <<Curve>>
+participant "cvxeth\nCVX/ETH" as cvxeth <<Curve>>
+participant "Universal\nRouter" as uniRouter <<Uniswap>>
+participant "OETH/ETH\nV3 Pool" as uniOeth <<Uniswap>>
+participant "OGV/ETH\nV3 Pool" as uniOgv <<Uniswap>>
+participant "CVX/ETH\nV3 Pool" as uniCvx <<Uniswap>>
+
+participant "Wrapped ETH" as weth <<DappHub>><<WETH>>
+participant "Harvester" as harv <<Origin>> #DeepSkyBlue
+participant "Dripper" as drip <<Origin>> #DeepSkyBlue
+participant "Swapper" as swapper <<Origin>> #DeepSkyBlue
+participant "OGV\nRewards" as ogvRewards <<Origin>> #DeepSkyBlue
+participant "Buyback" as buyBack <<Origin>> #DeepSkyBlue
+
+' Deposit ETH via Zapper
+group User deposit ETH [> 10 OETH]
+user -> zap : ETH
+note left : ETH in user tx
+
+zap -> weth : ETH
+note left : swap ETH for WETH
+weth o-> zap : WETH
+
+vault o-> buyBack : OETH
+note left : 20% performance\nfee from rebase
+
+zap -> vault : WETH
+
+note over vault : Currently no default WETH strategy\nso there is no auto allocation.
+
+vault o-> user : OETH
+note left : mint OETH\nto match ETH
+end
+
+
+' Mint
+group User mint [< 10 OETH]
+vault o-> buyBack : OETH
+note left : 20% performance\nfee from rebase
+
+user -> vault : WETH
+note left: Only to vault,\nnot strategy as <10 ETH
+vault o-> user : OETH
+note left : mint OETH to\nETH value of deposit
+end
+
+' Curve AMO Strategy
+group Strategist deposits to Curve AMO Strategy [unallocated WETH in vault]
+vault -> crvStrat : WETH
+note left : Vault transfers\nWETH to strategy
+crvStrat -x weth : WETH
+note left : WETH is burned
+weth -> crvStrat : ETH
+note left : ETH is withdrawn
+
+vault o-> crvStrat : OETH
+note left : Vault mints OETH
+crvStrat -> oethCrv : ETH, OETH
+note left : add liquidity to the Metapool
+oethCrv o-> crvStrat : OETHCRV-f
+note left: strategy gets Metapool LP tokens
+
+crvStrat -> oethCvx : OETHCRV-f
+note left : deposit Metapool LP to Convex
+oethCvx o-> cvxRewards : cvxOETHCRV-f
+note left : stake Convex LP tokens
+end
+
+' Native staking strategy
+group Strategist deposits to Native Staking Strategy [unallocated WETH in vault]
+
+... deposit to strategy ...
+
+vault -> nativeStrat : WETH
+note left : Vault transfers\nWETH to strategy
+
+... register SSV validator ...
+
+nativeStrat -> ssvNetwork : SSV
+note left : deposit SSV to SSV Cluster to pay SSV Operators
+
+... stake to validator ...
+
+nativeStrat -x weth : WETH
+note left : WETH is burned
+weth -> nativeStrat : ETH
+note left : ETH is withdrawn
+
+nativeStrat -> dep : 32 ETH
+note left : deposit 32 ETH to\nSSV Beacon Chain
+
+... 1024 execution blocks (~4 hours) ...
+... 32 consensus epochs (~3.5 hours) ...
+
+dep -> val : 32 ETH
+
+note over val : Pending Activation
+
+... four validators are activated each epoch from the Validator Queue (0.5-10 days) ...
+
+note over val : Active
+
+end
+
+
+group Native staking rewards
+
+... partial withdraw from Beacon chain very 8-10 days ...
+
+val -> nativeStrat : ETH
+note right : Beacon chain\nconsensus rewards
+
+... when a validator produces a block (~4 times a year) ...
+
+mev -> feeAcc : ETH
+note right : MEV rewards from block production
+
+anyone -> nativeStrat : ETH
+note right : tx priority fees from block production
+
+end
+
+group Validator registrator exits a validator
+
+... validator exit ...
+
+... wait until validator has exited.\nmin four epochs (~25 min), currently 1.5 hours but can take a number of days depending on the number of validators in the exit queue ...
+
+... wait for the validator to be swept on the Beacon chain\ncurrent time is every 8-10 days ...
+
+val -> nativeStrat : ETH
+note right : Beacon chain sweeps ETH\nto the Native Staking strategy
+
+... validator registrator does accounting ...
+
+nativeStrat -> weth : ETH
+note left : deposit ETH into Wrapped ETH
+weth o-> nativeStrat : WETH
+note left : mint WETH to Native Staking Strategy
+
+nativeStrat -> vault : WETH
+note right : transfer WETH to Vault
+
+end
+
+group Strategist withdraw from Native Staking Strategy [WETH in strategy from deposits]
+
+nativeStrat -> vault : WETH
+note right : transfer WETH to Vault
+
+note over nativeStrat : Once WETH has been staked in a validator, the exist validator process must be used.
+
+end
+
+' Curve AMO Strategy
+group Strategist withdraw from Curve AMO Strategy [not enough WETH in vault]
+cvxRewards -x oethCvx : cvxOETHCRV-f
+note left : unstake and burn Convex LP tokens
+oethCvx -> crvStrat : OETHCRV-f
+note left : withdraw Metapool LP tokens
+
+crvStrat -x oethCrv : OETHCRV-f
+note left : burn Metapool LP tokens
+oethCrv -> crvStrat : ETH, OETH
+note left : remove liquidity from the Metapool
+
+crvStrat -x crvStrat : OETH
+note left : burn OETH withdrawn from Curve
+
+crvStrat -> weth : ETH
+note left : deposit ETH into Wrapped ETH
+weth o-> user : WETH
+note left : transfer directly to user
+' weth o-> vault : WETH
+' note left : transfer to vault
+end
+
+' Redeem
+group User redeem OETH
+vault o-> buyBack : OETH
+note left : 20% performance\nfee from rebase
+
+user -x vault : OETH
+note left : burn User's OETH
+
+vault -> user : WETH
+note right : 0.1% fee applied to redeemed assets.\nThis adds to the yield in the next rebase.
+
+end
+
+
+' Curve AMO Strategy - mint and add oTokens
+group Strategist mints and adds oTokens to Metapool [too much ETH in Metapool]
+vault o-> crvStrat : OETH
+note left : Vault mints OETH
+crvStrat -> oethCrv : OETH
+note left : one-sided add liquidity to the Metapool
+oethCrv o-> crvStrat : OETHCRV-f
+note left: strategy gets Metapool LP tokens
+
+crvStrat -> oethCvx : OETHCRV-f
+note left : deposit Metapool LP to Convex
+oethCvx o-> cvxRewards : cvxOETHCRV-f
+note left : stake Convex LP tokens
+end
+
+' Curve AMO Strategy - remove and burn OETH
+group Strategist removes and burns oTokens from Metapool [too much OETH in Metapool]
+cvxRewards -x oethCvx : cvxOETHCRV-f
+note left : unstake and burn Convex LP tokens
+oethCvx -> crvStrat : OETHCRV-f
+note left : withdraw Metapool LP tokens
+
+crvStrat -x oethCrv : OETHCRV-f
+note left : burn Metapool LP tokens
+oethCrv -> crvStrat : OETH
+note left : on-sided remove liquidity from the Metapool
+
+crvStrat -x crvStrat : OETH
+note left : burn OETH withdrawn from Curve
+end
+
+' Curve AMO Strategy - remove ETH
+group Strategist removes ETH from Metapool [too much ETH in Metapool]
+cvxRewards -x oethCvx : cvxOETHCRV-f
+note left : unstake and burn Convex LP tokens
+oethCvx -> crvStrat : OETHCRV-f
+note left : withdraw Metapool LP tokens
+
+crvStrat -x oethCrv : OETHCRV-f
+note left : burn Metapool LP tokens
+oethCrv -> crvStrat : ETH
+note left : on-sided remove liquidity from the Metapool
+
+crvStrat -> weth : ETH
+note left : deposit ETH into Wrapped ETH
+weth o-> vault : WETH
+note left : transfer to vault
+end
+
+' Harvest and swap Convex AMO
+group Harvest and swap Convex AMO rewards [can be called by anyone]
+
+feeAcc -> nativeStrat : ETH
+note left : transfer execution rewards to Native Staking Strategy
+nativeStrat -> weth : ETH
+note left : deposit ETH from execution and consensus rewards into Wrapped ETH
+weth o-> nativeStrat : WETH
+note left : mint WETH to Native Staking Strategy
+nativeStrat -> harv : WETH
+note left : transfer WETH to Harvester
+harv -> drip : 100% WETH
+note left : 100% of WETH to Dripper
+
+cvxRewards -> crvStrat : CVX & CRV
+note left : collect Convex rewards
+crvStrat -> harv : CVX & CRV
+note left : transfer rewards to Harvester
+
+harv -> cvxeth : CVX
+note left : exchange CVX for ETH\nmax 2,500 CVX
+cvxeth -> weth : ETH
+note left : withdraw ETH from Wrapped ETH
+weth o-> cvxeth : WETH
+cvxeth -> harv : WETH
+harv -> drip : 98% WETH
+note left : 98% of WETH to Dripper
+harv -> anyone : 2% WETH
+note left : 2% of WETH\nto Harvest caller
+
+harv -> triCrv : CRV
+note left : exchange CRV for WETH\nmax 4,000 CRV
+triCrv -> weth : ETH
+note left : withdraw ETH from Wrapped ETH
+weth o-> triCrv : WETH
+triCrv -> harv : WETH
+harv -> drip : 98% WETH
+note left : 98% of WETH to Dripper
+harv -> anyone : 2% WETH
+note left : 2% of WETH\nto Harvest caller
+end
+
+' Collect and Rebase
+group Collect and Rebase [can be called by anyone]
+
+drip -> vault : WETH
+note left : stream harvested WETH\nto Vault over 14 days
+
+group Rebase [increase in underlying assets]
+vault o-> vault : 80% OETH
+note left : 80% of rebased\nto OETH holders
+
+vault o-> buyBack : 20% OETH
+note left : 20% of rebase\nto Buyback as\nperformance fee
+end 
+end
+
+group OETH rewards
+
+group OGV buyback for OGV stakers
+buyBack -> uniRouter : 50% OETH
+note left : transfer to Uniswap Router
+uniRouter -> uniOeth : OETH
+note left : swap OETH for WETH\nusing OETH/WETH V3 pool
+uniOeth -> uniOgv : WETH
+note left : swap WETH for OGV\nusing OGV/WETH V3 pool
+uniOgv -> ogvRewards : OGV
+note left : transfer OGV\nto Staking Rewards
+end
+
+group CVX buyback and locking for increased Convex rewards
+buyBack -> uniRouter : 50% OETH
+note left : transfer to Uniswap Router
+uniRouter -> uniOeth : OETH
+note left : swap OETH for WETH\nusing OETH/WETH V3 pool
+uniOeth -> uniRouter : WETH
+uniRouter -> uniCvx : WETH
+note left : swap WETH for CVX\nusing CVX/WETH V3 pool
+uniCvx -> buyBack : CVX
+buyBack -> icvx : CVX
+note left : lock CVX for \ngauge voting power
+icvx o-> trust : vlCVX
+note over trust : Trustee delegates\nvoting power
+end
+
+end
+
+@enduml

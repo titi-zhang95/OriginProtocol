@@ -1,0 +1,134 @@
+import { ethers } from "ethers";
+import { types } from "hardhat/config";
+
+import { action } from "../lib/action";
+import { setPrices } from "../armPrices";
+import { setPricesForBases } from "../../utils/priceActionUtils";
+import { mainnet } from "../../utils/addresses";
+const lidoARMAbi = require("../../../abis/LidoARM.json");
+
+action({
+  name: "setPricesLido",
+  description: "Set prices for Lido ARM",
+  chains: [1],
+  // Price points are operator-overridable from the scheduled command in
+  // talos (talos UI → schedules → command field). Defaults match what
+  // was hardcoded previously so existing seed commands without overrides
+  // keep their old behavior.
+  params: (t) =>
+    t
+      .addOptionalParam(
+        "buyPrice",
+        "Exact buy price; when set, sellPrice must also be set (ETH per base asset).",
+        undefined,
+        types.float,
+      )
+      .addOptionalParam(
+        "sellPrice",
+        "Exact sell price; when set, buyPrice must also be set (base asset per ETH).",
+        undefined,
+        types.float,
+      )
+      .addOptionalParam(
+        "maxBuyPrice",
+        "Upper bound for buy-side price (ETH per stETH).",
+        0.9999,
+        types.float,
+      )
+      .addOptionalParam(
+        "minBuyPrice",
+        "Lower bound for buy-side price (ETH per stETH).",
+        0.998,
+        types.float,
+      )
+      .addOptionalParam(
+        "maxSellPrice",
+        "Upper bound for sell-side price (stETH per ETH).",
+        1.0,
+        types.float,
+      )
+      .addOptionalParam(
+        "minSellPrice",
+        "Lower bound for sell-side price (stETH per ETH).",
+        0.9999,
+        types.float,
+      )
+      .addOptionalParam(
+        "amount",
+        "Override the automatically detected DEX swap amount used to fetch the reference price quote.",
+        undefined,
+        types.float,
+      )
+      .addOptionalParam(
+        "inch",
+        "Use 1Inch as the aggregator price source.",
+        true,
+        types.boolean,
+      )
+      .addOptionalParam(
+        "kyber",
+        "Use Kyber as the aggregator price source.",
+        false,
+        types.boolean,
+      )
+      .addOptionalParam(
+        "offset",
+        "Price offset applied to aggregator quotes.",
+        0.2,
+        types.float,
+      )
+      .addOptionalParam(
+        "dynamicOffset",
+        "Use a dynamic offset that scales from zero at cross price to the DEX spread at the full-spread price.",
+        false,
+        types.boolean,
+      )
+      .addOptionalParam(
+        "dynamicOffsetFullSpreadPrice",
+        "DEX sell price where dynamic offset reaches 100% of the DEX spread.",
+        0.999,
+        types.float,
+      )
+      .addOptionalParam(
+        "tolerance",
+        "Tolerance used when comparing target and current prices.",
+        0.1,
+        types.float,
+      )
+      .addOptionalParam(
+        "fee",
+        "Swap fee in basis points used by setPrices when computing target prices.",
+        2,
+        types.float,
+      ),
+  run: async ({ signer, log, args }) => {
+    const arm = new ethers.Contract(mainnet.lidoARM, lidoARMAbi, signer);
+
+    log.info("Setting prices for Lido ARM");
+    await setPricesForBases({
+      setPrices,
+      bases: ["STETH", "WSTETH"],
+      options: {
+        signer,
+        arm,
+        armName: "Lido",
+        buyPrice: args.buyPrice,
+        sellPrice: args.sellPrice,
+        maxSellPrice: args.maxSellPrice,
+        minSellPrice: args.minSellPrice,
+        maxBuyPrice: args.maxBuyPrice,
+        minBuyPrice: args.minBuyPrice,
+        kyber: args.kyber,
+        inch: args.inch,
+        amount: args.amount,
+        tolerance: args.tolerance,
+        fee: args.fee,
+        offset: args.offset,
+        dynamicOffset: args.dynamicOffset,
+        dynamicOffsetFullSpreadPrice: args.dynamicOffsetFullSpreadPrice,
+        priceOffset: true,
+        blockTag: "latest",
+      },
+    });
+  },
+});

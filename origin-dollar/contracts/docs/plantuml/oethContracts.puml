@@ -1,0 +1,102 @@
+@startuml
+
+!$originColor = DeepSkyBlue
+' !$originColor = WhiteSmoke
+!$newColor = LightGreen
+!$changedColor = Orange
+!$thirdPartyColor = WhiteSmoke
+
+' legend
+' blue - Origin
+' green - New
+' ' orange - Changed
+' white - 3rd Party
+' end legend
+
+title "Origin Ether Contract Dependencies"
+
+object "OETHZapper" as zap <<Origin>> #$originColor {
+    assets: ETH
+}
+
+object "OETHVaultValueChecker" as checker <<Origin>> #$originColor {
+}
+
+object "WOETH" as woeth <<Origin>><<Proxy>> #$originColor {
+    asset: OETH
+    symbol: WOETH
+    name: Wrapped OETH
+}
+
+object "OETH" as oeth <<Origin>><<Proxy>> #$originColor {
+    symbol: OETH
+    name: Origin Ether
+}
+
+object "OETH Vault" as oethv <<Origin>><<Proxy>> #$originColor {
+    asset: WETH
+}
+
+' Strategies
+object "CurveAMOStrategy" as amoStrat <<Origin>><<Proxy>> #$originColor {
+    asset: WETH
+    Curve pool: OETH/WETH
+    Rewards: CRV
+}
+
+object "CompoundingStakingStrategy" as compStrat <<Origin>><<Proxy>> #$originColor {
+    assets: WETH, ETH
+}
+object "CompoundingStakingStrategyView" as compView <<Origin>> #$originColor {
+
+}
+object "BeaconProofs" as proofs <<Origin>> #$originColor {
+
+}
+
+' object "DepositContract" as deposit <<System>> #$thirdPartyColor {
+'  asset : ETH
+' }
+
+' object "WithdrawalRequest" as withdraw <<System>> #$thirdPartyColor {
+
+' }
+
+' object "BeaconRoots" as roots <<System>> #$thirdPartyColor {
+
+' }
+
+
+' ' Curve
+' object "Gauge" as gauge <<Curve>> {
+'     asset: OETHCRV-f
+'     symbol: OETHCRV-f-gauge
+'     name: Curve.fi OETHCRV-f Gauge Deposit
+' }
+' object "StableSwap" as crvPool <<Curve>> {
+'     assets: [ETH, OETH]
+'     symbol: OETHCRV-f
+'     name: Curve.fi Factory Pool: OETH
+' }
+
+zap ..> oeth
+zap ..> oethv
+
+checker ..> oeth
+checker ..> oethv
+
+woeth ..> oeth
+oeth <.> oethv
+
+' Curve AMO Strategy
+oethv <...> amoStrat
+oeth <... amoStrat
+
+oethv <...> compStrat
+compStrat ..> proofs
+compStrat <.. compView
+' compStrat ...> deposit
+' compStrat ...> withdraw
+' compStrat ...> roots
+
+@enduml

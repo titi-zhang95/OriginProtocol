@@ -1,0 +1,110 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.36;
+
+library Common {
+    address public constant ZERO = address(0);
+}
+
+library Mainnet {
+    // Governance, Multisig and EOAs
+    address public constant TIMELOCK = 0x35918cDE7233F2dD33fA41ae3Cb6aE0e42E0e69F;
+    address public constant GOVERNANCE = 0x1D3Fbd4d129Ddd2372EA85c5Fa00b2682081c9EC;
+    address public constant TREASURY_LP = 0x6E3fddab68Bf1EBaf9daCF9F7907c7Bc0951D1dc;
+    address public constant MULTISIG_2_OF_8 = 0x4FF1b9D9ba8558F5EAfCec096318eA0d8b541971;
+    address public constant MULTISIG_5_OF_8 = 0xbe2AB3d3d8F6a32b96414ebbd865dBD276d3d899;
+    address public constant BUYBACK_OPERATOR = 0xBB077E716A5f1F1B63ed5244eBFf5214E50fec8c;
+    address public constant ARM_TALOS_RELAYER = 0x739212d5bAfE6AAC8Be49a60B7d003bD41DBf38b;
+
+    // ETH - Tokens
+    address public constant OETH = 0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3;
+    address public constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    address public constant EETH = 0x35fA164735182de50811E8e2E824cFb9B6118ac2;
+    address public constant RETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
+    address public constant WEETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
+    address public constant STETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
+    address public constant WOETH = 0xDcEe70654261AF21C44c093C300eD3Bb97b78192;
+    address public constant WSTETH = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0;
+    // USD - Tokens
+    address public constant OUSD = 0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86;
+    address public constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+    address public constant USDG = 0xe343167631d89B6Ffc58B88d6b7fB0228795491D;
+    address public constant USDE = 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3;
+    address public constant IUSD = 0x48f9e38f3070AD8945DFEae3FA70987722E3D89c;
+    address public constant SUSDE = 0x9D39A5DE30e57443BfF2A8307A4256c8797A3497;
+    address public constant SIUSD = 0xDBDC1Ef57537E34680B898E1FEBD3D68c7389bCB;
+    address public constant PYUSD = 0x6c3ea9036406852006290770BEdFcAbA0e23A0e8;
+    // Tokens
+    address public constant MORPHO = 0x58D97B57BB95320F9a05dC918Aef65434969c2B2;
+
+    // Morpho Vaults
+    address public constant MORPHO_WETH_VAULT = 0x3Dfe70B05657949A5dB340754aD664810ac63b21;
+
+    // Origin
+    address public constant OETH_VAULT = 0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab;
+
+    // Lido
+    address public constant LIDO_WITHDRAWAL = 0x889edC2eDab5f40e902b864aD4d7AdE8E412F9B1;
+
+    // EtherFi
+    address public constant ETHERFI_WITHDRAWAL = 0x308861A430be4cce5502d0A12724771Fc6DaF216;
+    address public constant ETHERFI_LIQUIDITY_POOL = 0x308861A430be4cce5502d0A12724771Fc6DaF216;
+    address public constant ETHERFI_WITHDRAWAL_NFT = 0x7d5706f6ef3F89B3951E23e557CDFBC3239D4E2c;
+
+    // Merkle Distributor
+    address public constant MERKLE_DISTRIBUTOR = 0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae;
+
+    // Paxos
+    // Placeholder Paxos deposit address the Stables ARM adapters redeem to.
+    // TODO: replace with the real Paxos deposit address once Paxos provides it.
+    address public constant PAXOS_RECIPIENT = 0x000000000000000000000000000000000000dEaD;
+}
+
+library Holesky {
+    // Multisig and EOAs
+    address public constant INITIAL_DEPLOYER = 0x1b94CA50D3Ad9f8368851F8526132272d1a5028C;
+    address public constant RELAYER = 0x3C6B0c7835a2E2E0A45889F64DcE4ee14c1D5CB4;
+
+    // Tokens
+    address public constant OETH = 0xB1876706d2402d300bf263F9e53335CEFc53d9Cb;
+    address public constant WETH = 0x94373a4919B3240D86eA41593D5eBa789FEF3848;
+
+    // Contracts
+    address public constant OETH_VAULT = 0x19d2bAaBA949eFfa163bFB9efB53ed8701aA5dD9;
+    address public constant OETH_ARM = 0x8c7a302e208885ee4658E7422f9E259364cC993b;
+}
+
+library Sonic {
+    // Governance
+    address public constant TIMELOCK = 0x31a91336414d3B955E494E7d485a6B06b55FC8fB;
+
+    // Multisig and EOAs
+    address public constant INITIAL_DEPLOYER = 0x3Ba227D87c2A7aB89EAaCEFbeD9bfa0D15Ad249A;
+    // 2/8 multisig
+    address public constant MULTISIG_2_OF_8 = 0x63cdd3072F25664eeC6FAEFf6dAeB668Ea4de94a;
+    // 5/8 multisig
+    address public constant ADMIN = 0xAdDEA7933Db7d83855786EB43a238111C69B00b6;
+    address public constant RELAYER = 0x531B8D5eD6db72A56cF1238D4cE478E7cB7f2825;
+    address public constant TALOS_RELAYER = 0x739212d5bAfE6AAC8Be49a60B7d003bD41DBf38b;
+
+    // Tokens
+    address public constant OS = 0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794;
+    address public constant WS = 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38;
+    address public constant WOS = 0x9F0dF7799f6FDAd409300080cfF680f5A23df4b1;
+    address public constant BES = 0x871A101Dcf22fE4fE37be7B654098c801CBA1c88;
+    address public constant SILO = 0xb098AFC30FCE67f1926e735Db6fDadFE433E61db;
+
+    // Contracts
+    address public constant OS_VAULT = 0xa3c0eCA00D2B76b4d1F170b0AB3FdeA16C180186;
+    address public constant ORIGIN_ARM = 0x2F872623d1E1Af5835b08b0E49aAd2d81d649D30;
+
+    // Silo lending markets
+    // wOS - S market (bwS-22)
+    address public constant SILO_OS = 0x112380065A2cb73A5A429d9Ba7368cc5e8434595;
+    address public constant SILO_stS = 0x47d8490Be37ADC7Af053322d6d779153689E13C1;
+    address public constant SILO_USDC = 0xf55902DE87Bd80c6a35614b48d7f8B612a083C12;
+    address public constant SILO_VARLAMORE_S_VAULT = 0xDED4aC8645619334186f28B8798e07ca354CFa0e;
+    address public constant SILO_VARLAMORE_S_GAUGE = 0x542Ed7D6f2e4c25f84D9c205C139234D6A4d000d;
+
+    // Magpie aggregator - MagpieRouterV3_1
+    address public constant MAGPIE_ROUTER = 0xc325856e5585823aaC0D1Fd46c35c608D95E65A9;
+}

@@ -1,0 +1,646 @@
+{
+  "address": "0xA87c0f95235eAb23a9F197FF86F3e1C1FEfFbC3c",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_validatorRegistrator",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_nativeStakingStrategy2",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_compoundingStakingSsvStrategy",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_targetStrategy",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes32",
+              "name": "balancesContainerRoot",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "balancesContainerProof",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "validatorBalanceLeaves",
+              "type": "bytes32[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "validatorBalanceProofs",
+              "type": "bytes[]"
+            }
+          ],
+          "internalType": "struct CompoundingStakingStrategy.BalanceProofs",
+          "name": "balanceProofs",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "bytes32",
+              "name": "pendingDepositContainerRoot",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pendingDepositContainerProof",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint32[]",
+              "name": "pendingDepositIndexes",
+              "type": "uint32[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "pendingDepositProofs",
+              "type": "bytes[]"
+            }
+          ],
+          "internalType": "struct CompoundingStakingStrategy.PendingDepositProofs",
+          "name": "pendingDepositProofs",
+          "type": "tuple"
+        }
+      ],
+      "name": "confirmConsolidation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "consolidationCount",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "consolidationStartTimestamp",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sourceStrategy",
+          "type": "address"
+        }
+      ],
+      "name": "doAccounting",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "accountingValid",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sourceStrategy",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "publicKey",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint64[]",
+          "name": "operatorIds",
+          "type": "uint64[]"
+        }
+      ],
+      "name": "exitSsvValidator",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes[]",
+          "name": "sourcePubKeys",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "failConsolidation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sourceStrategy",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "publicKeys",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "uint64[]",
+          "name": "operatorIds",
+          "type": "uint64[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "sharesData",
+          "type": "bytes[]"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "validatorCount",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint64",
+              "name": "networkFeeIndex",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "index",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "active",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Cluster",
+          "name": "cluster",
+          "type": "tuple"
+        }
+      ],
+      "name": "registerSsvValidators",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sourceStrategy",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "publicKey",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint64[]",
+          "name": "operatorIds",
+          "type": "uint64[]"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "validatorCount",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint64",
+              "name": "networkFeeIndex",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "index",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "active",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Cluster",
+          "name": "cluster",
+          "type": "tuple"
+        }
+      ],
+      "name": "removeSsvValidator",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sourceStrategy",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "sourcePubKeys",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "bytes",
+          "name": "targetPubKey",
+          "type": "bytes"
+        }
+      ],
+      "name": "requestConsolidation",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "snapBalances",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "sourceStrategy",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "pubkey",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "depositDataRoot",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct CompoundingStakingStrategy.ValidatorStakeData",
+          "name": "validatorStakeData",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint64",
+          "name": "depositAmountGwei",
+          "type": "uint64"
+        }
+      ],
+      "name": "stakeEth",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sourceStrategy",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "pubkey",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "depositDataRoot",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct ValidatorStakeData[]",
+          "name": "validators",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "stakeEth",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "targetPubKeyHash",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "validatorRegistrator",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "publicKey",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint64",
+          "name": "amountGwei",
+          "type": "uint64"
+        }
+      ],
+      "name": "validatorWithdrawal",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes32",
+              "name": "balancesContainerRoot",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "balancesContainerProof",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "validatorBalanceLeaves",
+              "type": "bytes32[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "validatorBalanceProofs",
+              "type": "bytes[]"
+            }
+          ],
+          "internalType": "struct CompoundingStakingStrategy.BalanceProofs",
+          "name": "balanceProofs",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "bytes32",
+              "name": "pendingDepositContainerRoot",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pendingDepositContainerProof",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint32[]",
+              "name": "pendingDepositIndexes",
+              "type": "uint32[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "pendingDepositProofs",
+              "type": "bytes[]"
+            }
+          ],
+          "internalType": "struct CompoundingStakingStrategy.PendingDepositProofs",
+          "name": "pendingDepositProofs",
+          "type": "tuple"
+        }
+      ],
+      "name": "verifyBalances",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 7,
+        "contract": "contracts/strategies/NativeStaking/ConsolidationController.sol:ConsolidationController",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 5384,
+        "contract": "contracts/strategies/NativeStaking/ConsolidationController.sol:ConsolidationController",
+        "label": "consolidationCount",
+        "offset": 20,
+        "slot": "0",
+        "type": "t_uint64"
+      },
+      {
+        "astId": 5387,
+        "contract": "contracts/strategies/NativeStaking/ConsolidationController.sol:ConsolidationController",
+        "label": "consolidationStartTimestamp",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint64"
+      },
+      {
+        "astId": 5390,
+        "contract": "contracts/strategies/NativeStaking/ConsolidationController.sol:ConsolidationController",
+        "label": "sourceStrategy",
+        "offset": 8,
+        "slot": "1",
+        "type": "t_address"
+      },
+      {
+        "astId": 5393,
+        "contract": "contracts/strategies/NativeStaking/ConsolidationController.sol:ConsolidationController",
+        "label": "targetPubKeyHash",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_bytes32"
+      },
+      {
+        "astId": 5398,
+        "contract": "contracts/strategies/NativeStaking/ConsolidationController.sol:ConsolidationController",
+        "label": "pendingSourceInRound",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_bytes32,t_bool)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_bytes32,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_bytes32",
+        "label": "mapping(bytes32 => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_uint64": {
+        "encoding": "inplace",
+        "label": "uint64",
+        "numberOfBytes": "8"
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+#!/usr/bin/env tsx
+/**
+ * Dump the action registry as the Talos admin catalog JSON. Run at image-build
+ * time under tsx:
+ *   tsx dump-actions-catalog.ts > /app/actions-catalog.json
+ */
+import "dotenv/config";
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
+import type { ActionParam, ActionsCatalog } from "@oplabs/talos-client";
+import { registry } from "./tasks/lib/action";
+
+// Per-task parameter allow-lists — only these params are editable from the
+// Talos admin UI.
+const TALOS_PARAM_ALLOWLISTS: Record<string, Set<string>> = {
+  cowHarvest: new Set(["dryrun", "slippageBps"]),
+  removeValidator: new Set(["pubkey"]),
+  stakeValidator: new Set(["amount", "depositMessageRoot", "pubkey", "sig"]),
+  withdrawValidator: new Set(["amount", "pubkey"]),
+};
+
+function camelToKebab(s: string): string {
+  return s.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
+}
+
+async function loadActions(): Promise<void> {
+  const actionsDir = join(__dirname, "tasks", "actions");
+  for (const file of readdirSync(actionsDir).sort()) {
+    if (!file.endsWith(".ts") || file.startsWith("_")) continue;
+    await import(join(actionsDir, file));
+  }
+}
+
+async function main(): Promise<void> {
+  await loadActions();
+  const catalog: ActionsCatalog = {};
+  for (const [name, entry] of registry) {
+    const allow = TALOS_PARAM_ALLOWLISTS[name];
+    catalog[name] = entry.params
+      .filter((p) => !allow || allow.has(p.name))
+      .map<ActionParam>((p) => ({
+        paramName: p.name,
+        cliFlag: `--${camelToKebab(p.name)}`,
+        description: p.description,
+        type: p.type,
+        isOptional: p.isOptional,
+        isFlag: p.isFlag,
+        hasDefault: p.hasDefault,
+        defaultValue: p.defaultValue as ActionParam["defaultValue"],
+      }));
+  }
+  process.stdout.write(JSON.stringify(catalog));
+}
+
+void main();
