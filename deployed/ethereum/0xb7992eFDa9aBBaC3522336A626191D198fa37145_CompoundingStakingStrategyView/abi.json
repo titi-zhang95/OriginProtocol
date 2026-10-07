@@ -1,0 +1,91 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_stakingStrategy",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "getPendingDeposits",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "pendingDepositRoot",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "pubKeyHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "amountGwei",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "slot",
+            "type": "uint64"
+          }
+        ],
+        "internalType": "struct CompoundingStakingStrategyView.DepositView[]",
+        "name": "pendingDeposits",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getVerifiedValidators",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "pubKeyHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "index",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint8",
+            "name": "state",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct CompoundingStakingStrategyView.ValidatorView[]",
+        "name": "validators",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stakingStrategy",
+    "outputs": [
+      {
+        "internalType": "contract CompoundingStakingStrategy",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

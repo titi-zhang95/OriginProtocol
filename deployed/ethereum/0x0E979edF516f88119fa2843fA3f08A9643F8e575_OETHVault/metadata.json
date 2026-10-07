@@ -1,0 +1,50 @@
+{
+  "name": "OETHVault",
+  "file_path": "contracts/vault/OETHVault.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-05-10T09:57:02.431997Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+  "decoded_constructor_args": [
+    [
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      {
+        "internalType": "address",
+        "name": "_weth",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x0E979edF516f88119fa2843fA3f08A9643F8e575",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

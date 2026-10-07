@@ -1,0 +1,41 @@
+{
+  "name": "WOETH",
+  "file_path": "contracts/token/WOETH.sol",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2025-04-30T13:36:29.683263Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x000000000000000000000000856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3",
+  "decoded_constructor_args": [
+    [
+      "0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3",
+      {
+        "internalType": "contract ERC20",
+        "name": "underlying_",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x388782b21275F75255f3ee08e23Bd3991d4eB830",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

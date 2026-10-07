@@ -1,0 +1,63 @@
+{
+  "name": "ClaimStrategyRewardsSafeModule",
+  "file_path": "contracts/automation/ClaimStrategyRewardsSafeModule.sol",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2025-08-05T21:15:50.865102Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x0000000000000000000000004ff1b9d9ba8558f5eafcec096318ea0d8b5419710000000000000000000000004b91827516f79d6f6a1f292ed99671663b09169a0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000500000000000000000000000026a02ec47acc2a3442b757f45e0a82b8e993ce11000000000000000000000000ba0e352ab5c13861c26e4e773e7a833c3a223fe60000000000000000000000002b8f37893ee713a4e9ff0ceb79f27539f20a32a1000000000000000000000000e3ae7c80a1b02ccd3fb0227773553aeb14e32f26000000000000000000000000603cdeaec82a60e3c4a10da6ab546459e5f64fa0",
+  "decoded_constructor_args": [
+    [
+      "0x4FF1b9D9ba8558F5EAfCec096318eA0d8b541971",
+      {
+        "internalType": "address",
+        "name": "_safeAddress",
+        "type": "address"
+      }
+    ],
+    [
+      "0x4b91827516f79d6F6a1F292eD99671663b09169a",
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    [
+      [
+        "0x26a02ec47ACC2A3442b757F45E0A82B8e993Ce11",
+        "0xba0e352AB5c13861C26e4E773e7a833C3A223FE6",
+        "0x2B8f37893EE713A4E9fF0cEb79F27539f20a32a1",
+        "0xe3ae7C80a1B02Ccd3FB0227773553AEB14e32F26",
+        "0x603CDEAEC82A60E3C4A10dA6ab546459E5f64Fa0"
+      ],
+      {
+        "internalType": "address[]",
+        "name": "_strategies",
+        "type": "address[]"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x1b84E64279D63f48DdD88B9B2A7871e817152A44",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

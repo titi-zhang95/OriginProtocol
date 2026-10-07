@@ -1,0 +1,33 @@
+{
+  "name": "InitializeGovernedUpgradeabilityProxy",
+  "file_path": "InitializeGovernedUpgradeabilityProxy.sol",
+  "compiler_version": "0.5.11+commit.c082d0b4",
+  "evm_version": "petersburg",
+  "optimization_enabled": false,
+  "optimization_runs": null,
+  "compiler_settings": {
+    "evmVersion": "petersburg",
+    "libraries": {},
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0xA7B7c59a1705E4A624eA8a4ad8a06F9DE22Dcc33",
+      "name": "OUSD"
+    }
+  ],
+  "verified_at": "2023-11-20T15:35:23.231541Z",
+  "is_fully_verified": false,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

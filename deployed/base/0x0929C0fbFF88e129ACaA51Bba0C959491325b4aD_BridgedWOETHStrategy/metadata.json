@@ -1,0 +1,34 @@
+{
+  "name": "BridgedWOETHStrategy",
+  "fullyQualifiedName": "contracts/strategies/BridgedWOETHStrategy.sol:BridgedWOETHStrategy",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2026-02-25T09:14:20Z",
+  "proxy_resolution": {
+    "isProxy": false,
+    "proxyType": null,
+    "implementations": []
+  },
+  "deployment": {
+    "transactionHash": "0xdb53f4717e64fbdbd11f79dbaa43ae2600976d973c9340158a45eb00cfa78b85",
+    "blockNumber": "42610751",
+    "transactionIndex": "93",
+    "deployer": "0x074105fdD39e982B2ffE749A193c942db1046AB9"
+  },
+  "address": "0x0929C0fbFF88e129ACaA51Bba0C959491325b4aD",
+  "chain": "base",
+  "source": "sourcify"
+}

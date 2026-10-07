@@ -1,0 +1,37 @@
+{
+  "name": "WOETHProxy",
+  "file_path": "contracts/proxies/Proxies.sol",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "evm_version": "london",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x388782b21275F75255f3ee08e23Bd3991d4eB830",
+      "name": "WOETH"
+    }
+  ],
+  "verified_at": "2024-02-25T22:23:38.387586Z",
+  "is_fully_verified": true,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xDcEe70654261AF21C44c093C300eD3Bb97b78192",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

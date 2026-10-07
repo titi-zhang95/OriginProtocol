@@ -1,0 +1,39 @@
+{
+  "name": "OETHBaseCurveAMOProxy",
+  "fullyQualifiedName": "contracts/proxies/Proxies.sol:OETHBaseCurveAMOProxy",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2025-02-10T19:26:24Z",
+  "proxy_resolution": {
+    "isProxy": true,
+    "proxyType": "EIP1967Proxy",
+    "implementations": [
+      {
+        "address": "0xEA24e9Bac006DE9635Ac7fA4D767fFb64FB5645c",
+        "name": "BaseCurveAMOStrategy"
+      }
+    ]
+  },
+  "deployment": {
+    "transactionHash": "0x8b8f766fd49d37f6b1b6997a762b44519fe11416a9727c49e25652a363a25a54",
+    "blockNumber": "26212490",
+    "transactionIndex": "59",
+    "deployer": "0x074105fdD39e982B2ffE749A193c942db1046AB9"
+  },
+  "address": "0x9cfcAF81600155e01c63e4D2993A8A81A8205829",
+  "chain": "base",
+  "source": "sourcify"
+}

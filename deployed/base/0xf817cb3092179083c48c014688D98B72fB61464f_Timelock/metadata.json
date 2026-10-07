@@ -1,0 +1,48 @@
+{
+  "name": "Timelock",
+  "fullyQualifiedName": "contracts/Timelock.sol:Timelock",
+  "compiler_version": "0.8.10+commit.fc410830",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": [
+      ":OpenZeppelin/openzeppelin-contracts-upgradeable@4.6.0/=lib/openzeppelin-contracts-upgradeable/",
+      ":OpenZeppelin/openzeppelin-contracts-upgradeable@a16f26a063cd018c4c986832c3df332a131f53b9/=lib/openzeppelin-contracts-upgradeable/",
+      ":OpenZeppelin/openzeppelin-contracts@02fcc75bb7f35376c22def91b0fb9bc7a50b9458/=lib/openzeppelin-contracts/",
+      ":OpenZeppelin/openzeppelin-contracts@4.6.0/=lib/openzeppelin-contracts/",
+      ":contracts/=contracts/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":paulrberg/prb-math@2.5.0/=lib/prb-math/",
+      ":prb-math/=lib/prb-math/contracts/",
+      ":script/=script/",
+      ":tests/=tests/",
+      ":utils/=contracts/utils/"
+    ]
+  },
+  "match": "exact_match",
+  "verified_at": "2024-09-17T09:18:07Z",
+  "proxy_resolution": {
+    "isProxy": false,
+    "proxyType": null,
+    "implementations": []
+  },
+  "deployment": {
+    "transactionHash": "0x2e2cbd5f5527b64e5bf33794ef09a908acfa75dceaed5bba811f7ecd22888a4e",
+    "blockNumber": "19242767",
+    "transactionIndex": "57",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0xf817cb3092179083c48c014688D98B72fB61464f",
+  "chain": "base",
+  "source": "sourcify"
+}

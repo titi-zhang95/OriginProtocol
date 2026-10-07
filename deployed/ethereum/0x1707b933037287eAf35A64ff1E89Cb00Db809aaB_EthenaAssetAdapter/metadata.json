@@ -1,0 +1,67 @@
+{
+  "name": "EthenaAssetAdapter",
+  "file_path": "src/contracts/adapters/EthenaAssetAdapter.sol",
+  "compiler_version": "0.8.23+commit.f704f362",
+  "evm_version": "shanghai",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@openzeppelin/contracts-upgradeable/=dependencies/@openzeppelin-contracts-upgradeable-5.0.2-5.0.2/contracts/",
+      ":@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-5.0.2-5.0.2/contracts/",
+      ":@pendle-sy/=dependencies/@pendle-sy-1.0.0-1.0.0/contracts/",
+      ":@solmate/=dependencies/solmate-6.7.0/src/",
+      ":contracts/=src/contracts/",
+      ":forge-std/=dependencies/forge-std-1.9.7/src/",
+      ":script/=script/",
+      ":test/=test/",
+      ":utils/=src/contracts/utils/",
+      "dependencies/@pendle-sy-1.0.0-1.0.0/:@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.9.3-4.9.3/contracts/"
+    ]
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-06-16T19:26:39.884096Z",
+  "is_fully_verified": false,
+  "constructor_args": "0x000000000000000000000000ceda2d856238aa0d12f6329de20b9115f07c366d0000000000000000000000004c9edd5852cd905f086c759e8383e09bff1e68b30000000000000000000000009d39a5de30e57443bff2a8307a4256c8797a3497",
+  "decoded_constructor_args": [
+    [
+      "0xCEDa2d856238aA0D12f6329de20B9115f07C366d",
+      {
+        "internalType": "address",
+        "name": "_arm",
+        "type": "address"
+      }
+    ],
+    [
+      "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
+      {
+        "internalType": "address",
+        "name": "_usde",
+        "type": "address"
+      }
+    ],
+    [
+      "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497",
+      {
+        "internalType": "address",
+        "name": "_susde",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x1707b933037287eAf35A64ff1E89Cb00Db809aaB",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

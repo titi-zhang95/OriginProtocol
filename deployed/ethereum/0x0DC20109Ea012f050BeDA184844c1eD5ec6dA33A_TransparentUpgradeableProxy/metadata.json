@@ -1,0 +1,92 @@
+{
+  "name": "TransparentUpgradeableProxy",
+  "file_path": "lib/openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+  "compiler_version": "v0.8.23+commit.f704f362",
+  "evm_version": "shanghai",
+  "optimization_enabled": true,
+  "optimization_runs": 30000,
+  "compiler_settings": {
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "none",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 30000
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    },
+    "remappings": [
+      "@aave-v3-core/=lib/aave-v3-core/contracts/",
+      "@aave-v3-periphery/=lib/aave-v3-periphery/contracts/",
+      "ds-test/=lib/solmate/lib/ds-test/src/",
+      "erc4626-tests/=lib/erc4626-tests/",
+      "forge-std/=lib/forge-std/src/",
+      "solmate/=lib/solmate/src/",
+      "@openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+      "@openzeppelin-v5/=lib/openzeppelin-contracts-v5.3.0/contracts/",
+      "@openzeppelin/=lib/openzeppelin-contracts/contracts/",
+      "@pcaversaccio/createx/=lib/createx/src/",
+      "aave-v3-core/=lib/aave-v3-core/",
+      "aave-v3-periphery/=lib/aave-v3-periphery/contracts/",
+      "createx/=lib/createx/src/",
+      "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      "openzeppelin/=lib/createx/lib/openzeppelin-contracts/contracts/",
+      "solady/=lib/createx/lib/solady/"
+    ],
+    "viaIR": false
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x7396F87F71BfBd285F1bFD76e824384031f07424",
+      "name": "ATokenVault"
+    }
+  ],
+  "verified_at": "2025-11-28T00:56:39.122658Z",
+  "is_fully_verified": false,
+  "constructor_args": "0x0000000000000000000000007396f87f71bfbd285f1bfd76e824384031f0742400000000000000000000000035918cde7233f2dd33fa41ae3cb6ae0e42e0e69f00000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000124008b187b00000000000000000000000035918cde7233f2dd33fa41ae3cb6ae0e42e0e69f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000000000000d57726170706564206155534465000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006776155534465000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  "decoded_constructor_args": [
+    [
+      "0x7396F87F71BfBd285F1bFD76e824384031f07424",
+      {
+        "internalType": "address",
+        "name": "_logic",
+        "type": "address"
+      }
+    ],
+    [
+      "0x35918cDE7233F2dD33fA41ae3Cb6aE0e42E0e69F",
+      {
+        "internalType": "address",
+        "name": "admin_",
+        "type": "address"
+      }
+    ],
+    [
+      "0x008b187b00000000000000000000000035918cde7233f2dd33fa41ae3cb6ae0e42e0e69f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000000000000d577261707065642061555344650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000067761555344650000000000000000000000000000000000000000000000000000",
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x0DC20109Ea012f050BeDA184844c1eD5ec6dA33A",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

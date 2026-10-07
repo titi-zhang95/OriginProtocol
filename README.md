@@ -14,6 +14,10 @@ Notes:
 - Nested `.git` removed; ousd-governance submodules (OZ, forge-std, prb-math, ds-test) are not vendored — run `forge install` as needed.
 - Large JSON claim data in ousd-governance is excluded via `.gitignore`.
 
+## Deployed sources
+
+`deployed/` contains the verified on-chain source of all in-scope contracts (proxy + current implementation). See [deployed/README.md](deployed/README.md) for the asset → contract mapping.
+
 ## In-scope assets (Smart Contracts)
 
 | Name | Address |

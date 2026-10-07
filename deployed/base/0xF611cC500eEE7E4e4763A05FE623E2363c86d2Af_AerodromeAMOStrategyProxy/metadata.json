@@ -1,0 +1,39 @@
+{
+  "name": "AerodromeAMOStrategyProxy",
+  "fullyQualifiedName": "contracts/proxies/Proxies.sol:AerodromeAMOStrategyProxy",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2024-08-28T22:02:53Z",
+  "proxy_resolution": {
+    "isProxy": true,
+    "proxyType": "EIP1967Proxy",
+    "implementations": [
+      {
+        "address": "0x8bb67820E8aC1a775DA25E50391718C1457d07ac",
+        "name": "AerodromeAMOStrategy"
+      }
+    ]
+  },
+  "deployment": {
+    "transactionHash": "0x1f7dce67d761190ee1305134e0eaab1273ab0870ee393edf1ef6c28621689e61",
+    "blockNumber": "19046354",
+    "transactionIndex": "7",
+    "deployer": "0xFD9E6005187F448957a0972a7d0C0A6dA2911236"
+  },
+  "address": "0xF611cC500eEE7E4e4763A05FE623E2363c86d2Af",
+  "chain": "base",
+  "source": "sourcify"
+}

@@ -1,0 +1,97 @@
+{
+  "name": "CurveAMOStrategy",
+  "file_path": "contracts/strategies/CurveAMOStrategy.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-04-01T10:11:58.746212Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x000000000000000000000000cc7d5785ad5755b6164e21495e07adb0ff11c2a800000000000000000000000039254033945aa2e4809cc2977e7087bee48bd7ab000000000000000000000000856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc200000000000000000000000036cc1d791704445a5b6b9c36a667e511d4702f3f000000000000000000000000d061d61a4d941c39e5453435b6345dc261c2fce0",
+  "decoded_constructor_args": [
+    [
+      [
+        "0xcc7d5785AD5755B6164e21495E07aDb0Ff11C2A8",
+        "0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab"
+      ],
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "platformAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "vaultAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct InitializableAbstractStrategy.BaseStrategyConfig",
+        "name": "_baseConfig",
+        "type": "tuple"
+      }
+    ],
+    [
+      "0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3",
+      {
+        "internalType": "address",
+        "name": "_otoken",
+        "type": "address"
+      }
+    ],
+    [
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      {
+        "internalType": "address",
+        "name": "_hardAsset",
+        "type": "address"
+      }
+    ],
+    [
+      "0x36cC1d791704445A5b6b9c36a667e511d4702F3f",
+      {
+        "internalType": "address",
+        "name": "_gauge",
+        "type": "address"
+      }
+    ],
+    [
+      "0xd061D61a4d941c39E5453435B6345Dc261C2fcE0",
+      {
+        "internalType": "address",
+        "name": "_minter",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x2C08fa7F2c44753267d4b6783cFc2fF2F53797c5",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

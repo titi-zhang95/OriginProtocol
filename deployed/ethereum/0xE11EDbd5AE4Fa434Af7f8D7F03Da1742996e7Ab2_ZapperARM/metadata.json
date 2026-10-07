@@ -1,0 +1,64 @@
+{
+  "name": "ZapperARM",
+  "file_path": "src/contracts/ZapperARM.sol",
+  "compiler_version": "v0.8.23+commit.f704f362",
+  "evm_version": "shanghai",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    },
+    "remappings": [
+      "dependencies/@pendle-sy-1.0.0-1.0.0/:@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.9.3-4.9.3/contracts/",
+      "contracts/=src/contracts/",
+      "script/=script/",
+      "test/=test/",
+      "utils/=src/contracts/utils/",
+      "@solmate/=dependencies/solmate-6.7.0/src/",
+      "forge-std/=dependencies/forge-std-1.9.7/src/",
+      "@pendle-sy/=dependencies/@pendle-sy-1.0.0-1.0.0/contracts/",
+      "@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-5.0.2-5.0.2/contracts/",
+      "@openzeppelin/contracts-upgradeable/=dependencies/@openzeppelin-contracts-upgradeable-5.0.2-5.0.2/contracts/"
+    ],
+    "viaIR": false
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-02-19T23:39:05.657697Z",
+  "is_fully_verified": false,
+  "constructor_args": "0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+  "decoded_constructor_args": [
+    [
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      {
+        "internalType": "address",
+        "name": "_wrappedCurrency",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xE11EDbd5AE4Fa434Af7f8D7F03Da1742996e7Ab2",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

@@ -1,0 +1,58 @@
+{
+  "name": "Timelock",
+  "file_path": "contracts/Timelock.sol",
+  "compiler_version": "v0.8.10+commit.fc410830",
+  "evm_version": "london",
+  "optimization_enabled": false,
+  "optimization_runs": null,
+  "compiler_settings": {
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.bytecode.sourceMap",
+          "evm.bytecode.linkReferences",
+          "evm.deployedBytecode.object",
+          "evm.deployedBytecode.sourceMap",
+          "evm.deployedBytecode.linkReferences",
+          "evm.deployedBytecode.immutableReferences",
+          "evm.methodIdentifiers",
+          "metadata"
+        ]
+      }
+    },
+    "remappings": [
+      "contracts/=contracts/",
+      "script/=script/",
+      "tests/=tests/",
+      "utils/=contracts/utils/",
+      "OpenZeppelin/openzeppelin-contracts@02fcc75bb7f35376c22def91b0fb9bc7a50b9458/=lib/openzeppelin-contracts/",
+      "OpenZeppelin/openzeppelin-contracts-upgradeable@a16f26a063cd018c4c986832c3df332a131f53b9/=lib/openzeppelin-contracts-upgradeable/",
+      "OpenZeppelin/openzeppelin-contracts@4.6.0/=lib/openzeppelin-contracts/",
+      "OpenZeppelin/openzeppelin-contracts-upgradeable@4.6.0/=lib/openzeppelin-contracts-upgradeable/",
+      "paulrberg/prb-math@2.5.0/=lib/prb-math/",
+      "ds-test/=lib/forge-std/lib/ds-test/src/",
+      "forge-std/=lib/forge-std/src/",
+      "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      "prb-math/=lib/prb-math/contracts/"
+    ],
+    "viaIR": false
+  },
+  "verified_at": "2026-09-20T15:02:22.638125Z",
+  "address": "0x77121911A387c9e4Eae46345E0f831A6da8a1364",
+  "chain": "hyperevm",
+  "source": "twin:plume-blockscout",
+  "note": "Not verified on HyperEVM. Runtime bytecode is byte-identical (11481 bytes) to the verified Plume Timelock 0x6C6f8F839A7648949873D3D2beEa936FC2932e5c; sources taken from explorer.plume.org."
+}

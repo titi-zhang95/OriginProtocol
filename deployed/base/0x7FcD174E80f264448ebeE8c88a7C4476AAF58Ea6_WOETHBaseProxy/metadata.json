@@ -1,0 +1,39 @@
+{
+  "name": "WOETHBaseProxy",
+  "fullyQualifiedName": "contracts/proxies/Proxies.sol:WOETHBaseProxy",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2024-08-20T17:10:30Z",
+  "proxy_resolution": {
+    "isProxy": true,
+    "proxyType": "EIP1967Proxy",
+    "implementations": [
+      {
+        "address": "0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794",
+        "name": "WOETHBase"
+      }
+    ]
+  },
+  "deployment": {
+    "transactionHash": "0x2a08501f4a28e184120742c19db531fd0553ea8d297616d9bea53040a7770ff0",
+    "blockNumber": "17819707",
+    "transactionIndex": "37",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6",
+  "chain": "base",
+  "source": "sourcify"
+}

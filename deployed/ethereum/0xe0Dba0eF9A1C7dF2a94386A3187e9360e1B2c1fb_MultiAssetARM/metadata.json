@@ -1,0 +1,88 @@
+{
+  "name": "MultiAssetARM",
+  "file_path": "src/contracts/MultiAssetARM.sol",
+  "compiler_version": "v0.8.23+commit.f704f362",
+  "evm_version": "shanghai",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    },
+    "remappings": [
+      "dependencies/@pendle-sy-1.0.0-1.0.0/:@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.9.3-4.9.3/contracts/",
+      "contracts/=src/contracts/",
+      "script/=script/",
+      "test/=test/",
+      "utils/=src/contracts/utils/",
+      "@solmate/=dependencies/solmate-6.7.0/src/",
+      "forge-std/=dependencies/forge-std-1.9.7/src/",
+      "@pendle-sy/=dependencies/@pendle-sy-1.0.0-1.0.0/contracts/",
+      "@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-5.0.2-5.0.2/contracts/",
+      "@openzeppelin/contracts-upgradeable/=dependencies/@openzeppelin-contracts-upgradeable-5.0.2-5.0.2/contracts/"
+    ],
+    "viaIR": false
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-07-28T11:26:02.523265Z",
+  "is_fully_verified": false,
+  "constructor_args": "0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000000000000000000000000000000000000000025800000000000000000000000000000000000000000000000000000000009896800000000000000000000000000000000000000000000000000de0b6b3a7640000",
+  "decoded_constructor_args": [
+    [
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      {
+        "internalType": "address",
+        "name": "_liquidityAsset",
+        "type": "address"
+      }
+    ],
+    [
+      "600",
+      {
+        "internalType": "uint256",
+        "name": "_claimDelay",
+        "type": "uint256"
+      }
+    ],
+    [
+      "10000000",
+      {
+        "internalType": "uint256",
+        "name": "_minSharesToRedeem",
+        "type": "uint256"
+      }
+    ],
+    [
+      "1000000000000000000",
+      {
+        "internalType": "int256",
+        "name": "_allocateThreshold",
+        "type": "int256"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xe0Dba0eF9A1C7dF2a94386A3187e9360e1B2c1fb",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

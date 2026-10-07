@@ -1,0 +1,32 @@
+{
+  "name": "OETH",
+  "file_path": "contracts/token/OETH.sol",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2025-07-09T21:33:22.923058Z",
+  "is_fully_verified": true,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xD86756dBb01e75A11AaDaCB75c8495759ED92033",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

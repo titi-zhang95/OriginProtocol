@@ -1,0 +1,39 @@
+{
+  "name": "OETHBaseVaultProxy",
+  "fullyQualifiedName": "contracts/proxies/Proxies.sol:OETHBaseVaultProxy",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2024-08-20T17:09:54Z",
+  "proxy_resolution": {
+    "isProxy": true,
+    "proxyType": "EIP1967Proxy",
+    "implementations": [
+      {
+        "address": "0xfdBE6A80e1D22ff652Cbff44FEaD2E52287393E8",
+        "name": "OETHBaseVault"
+      }
+    ]
+  },
+  "deployment": {
+    "transactionHash": "0x10a0d4a6575b07e71efdff2884818c9abef1c5c579d553ad0f059baec3b4e245",
+    "blockNumber": "17819710",
+    "transactionIndex": "65",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0x98a0CbeF61bD2D21435f433bE4CD42B56B38CC93",
+  "chain": "base",
+  "source": "sourcify"
+}

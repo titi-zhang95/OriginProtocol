@@ -1,0 +1,34 @@
+{
+  "name": "OETHBase",
+  "fullyQualifiedName": "contracts/token/OETHBase.sol:OETHBase",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2025-07-08T04:06:18Z",
+  "proxy_resolution": {
+    "isProxy": false,
+    "proxyType": null,
+    "implementations": []
+  },
+  "deployment": {
+    "transactionHash": "0x7da85e09ec859d2dda198047a765d8e016c7d9b3b79120f5a3d1ffebebf0e833",
+    "blockNumber": "32332280",
+    "transactionIndex": "194",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0xCcd483cE093682D7D9a41e645EEb710AFaa88249",
+  "chain": "base",
+  "source": "sourcify"
+}

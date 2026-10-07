@@ -1,0 +1,32 @@
+{
+  "name": "OUSD",
+  "file_path": "contracts/token/OUSD.sol",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2025-07-10T07:09:38.766206Z",
+  "is_fully_verified": true,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xA7B7c59a1705E4A624eA8a4ad8a06F9DE22Dcc33",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

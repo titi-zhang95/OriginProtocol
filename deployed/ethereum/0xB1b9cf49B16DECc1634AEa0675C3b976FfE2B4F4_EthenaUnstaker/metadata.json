@@ -1,0 +1,61 @@
+{
+  "name": "EthenaUnstaker",
+  "file_path": "src/contracts/EthenaUnstaker.sol",
+  "compiler_version": "0.8.23+commit.f704f362",
+  "evm_version": "shanghai",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "shanghai",
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      "dependencies/@pendle-sy-1.0.0-1.0.0/:@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.9.3-4.9.3/contracts/",
+      "contracts/=src/contracts/",
+      "script/=script/",
+      "test/=test/",
+      "utils/=src/contracts/utils/",
+      "@solmate/=dependencies/solmate-6.7.0/src/",
+      "forge-std/=dependencies/forge-std-1.9.7/src/",
+      "@pendle-sy/=dependencies/@pendle-sy-1.0.0-1.0.0/contracts/",
+      "@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-5.0.2-5.0.2/contracts/",
+      "@openzeppelin/contracts-upgradeable/=dependencies/@openzeppelin-contracts-upgradeable-5.0.2-5.0.2/contracts/"
+    ],
+    "viaIR": false
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-08-10T09:21:59.122906Z",
+  "is_fully_verified": false,
+  "constructor_args": "0x000000000000000000000000e620afb67223ae03c260112ae21a717af94c90f00000000000000000000000009d39a5de30e57443bff2a8307a4256c8797a3497",
+  "decoded_constructor_args": [
+    [
+      "0xE620aFB67223AE03C260112aE21A717Af94C90f0",
+      {
+        "internalType": "address",
+        "name": "_arm",
+        "type": "address"
+      }
+    ],
+    [
+      "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497",
+      {
+        "internalType": "contract IStakedUSDe",
+        "name": "_susde",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xB1b9cf49B16DECc1634AEa0675C3b976FfE2B4F4",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

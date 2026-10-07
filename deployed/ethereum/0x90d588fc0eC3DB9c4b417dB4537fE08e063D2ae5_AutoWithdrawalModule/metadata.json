@@ -1,0 +1,74 @@
+{
+  "name": "AutoWithdrawalModule",
+  "file_path": "contracts/automation/AutoWithdrawalModule.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-02-24T08:35:51.508138Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x0000000000000000000000004ff1b9d9ba8558f5eafcec096318ea0d8b5419710000000000000000000000004b91827516f79d6f6a1f292ed99671663b09169a000000000000000000000000e75d77b1865ae93c7eaa3040b038d7aa7bc02f700000000000000000000000003643cafa6ef3dd7fcc2adad1cabf708075afff6e",
+  "decoded_constructor_args": [
+    [
+      "0x4FF1b9D9ba8558F5EAfCec096318eA0d8b541971",
+      {
+        "internalType": "address",
+        "name": "_safeContract",
+        "type": "address"
+      }
+    ],
+    [
+      "0x4b91827516f79d6F6a1F292eD99671663b09169a",
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
+    ],
+    [
+      "0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70",
+      {
+        "internalType": "address",
+        "name": "_vault",
+        "type": "address"
+      }
+    ],
+    [
+      "0x3643cafA6eF3dd7Fcc2ADaD1cabf708075AFFf6e",
+      {
+        "internalType": "address",
+        "name": "_strategy",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x90d588fc0eC3DB9c4b417dB4537fE08e063D2ae5",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

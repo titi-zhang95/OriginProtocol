@@ -1,0 +1,80 @@
+{
+  "name": "PaxosAssetAdapter",
+  "file_path": "src/contracts/adapters/PaxosAssetAdapter.sol",
+  "compiler_version": "v0.8.23+commit.f704f362",
+  "evm_version": "shanghai",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    },
+    "remappings": [
+      "dependencies/@pendle-sy-1.0.0-1.0.0/:@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.9.3-4.9.3/contracts/",
+      "contracts/=src/contracts/",
+      "script/=script/",
+      "test/=test/",
+      "utils/=src/contracts/utils/",
+      "@solmate/=dependencies/solmate-6.7.0/src/",
+      "forge-std/=dependencies/forge-std-1.9.7/src/",
+      "@pendle-sy/=dependencies/@pendle-sy-1.0.0-1.0.0/contracts/",
+      "@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-5.0.2-5.0.2/contracts/",
+      "@openzeppelin/contracts-upgradeable/=dependencies/@openzeppelin-contracts-upgradeable-5.0.2-5.0.2/contracts/"
+    ],
+    "viaIR": false
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-07-29T07:06:44.490000Z",
+  "is_fully_verified": false,
+  "constructor_args": "0x0000000000000000000000009e3a7026e5767f2d7ff5e83b0ed011005f45a170000000000000000000000000e343167631d89b6ffc58b88d6b7fb0228795491d000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  "decoded_constructor_args": [
+    [
+      "0x9E3A7026E5767F2d7Ff5e83b0ed011005f45a170",
+      {
+        "internalType": "address",
+        "name": "_arm",
+        "type": "address"
+      }
+    ],
+    [
+      "0xe343167631d89B6Ffc58B88d6b7fB0228795491D",
+      {
+        "internalType": "address",
+        "name": "_baseAsset",
+        "type": "address"
+      }
+    ],
+    [
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      {
+        "internalType": "address",
+        "name": "_liquidityAsset",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xB4723D7a5724D6Ce35AACf6c3A6E6E2BeE0c2E05",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

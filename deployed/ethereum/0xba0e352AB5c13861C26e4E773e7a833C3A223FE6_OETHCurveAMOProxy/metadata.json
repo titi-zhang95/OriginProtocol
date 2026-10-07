@@ -1,0 +1,46 @@
+{
+  "name": "OETHCurveAMOProxy",
+  "file_path": "contracts/proxies/Proxies.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x2C08fa7F2c44753267d4b6783cFc2fF2F53797c5",
+      "name": "CurveAMOStrategy"
+    }
+  ],
+  "verified_at": "2025-11-24T16:26:58.774098Z",
+  "is_fully_verified": true,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xba0e352AB5c13861C26e4E773e7a833C3A223FE6",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

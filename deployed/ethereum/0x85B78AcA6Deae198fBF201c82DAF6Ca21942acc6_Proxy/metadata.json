@@ -1,0 +1,39 @@
+{
+  "name": "Proxy",
+  "file_path": "src/Proxy.sol",
+  "compiler_version": "0.8.23+commit.f704f362",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=lib/forge-std/src/"
+    ]
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x850da2E21F1F71479E2A307EDab114777D9F6217",
+      "name": "LidoARM"
+    }
+  ],
+  "verified_at": "2024-05-16T16:07:32.856710Z",
+  "is_fully_verified": true,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

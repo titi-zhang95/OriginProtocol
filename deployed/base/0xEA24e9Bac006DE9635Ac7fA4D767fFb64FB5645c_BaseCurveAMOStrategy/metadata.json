@@ -1,0 +1,34 @@
+{
+  "name": "BaseCurveAMOStrategy",
+  "fullyQualifiedName": "contracts/strategies/BaseCurveAMOStrategy.sol:BaseCurveAMOStrategy",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2025-04-02T05:36:44Z",
+  "proxy_resolution": {
+    "isProxy": false,
+    "proxyType": null,
+    "implementations": []
+  },
+  "deployment": {
+    "transactionHash": "0x03fe052048766d21980d2047edc17188384589633bb3507e5941570318a26ab5",
+    "blockNumber": "28390613",
+    "transactionIndex": "109",
+    "deployer": "0x3Ba227D87c2A7aB89EAaCEFbeD9bfa0D15Ad249A"
+  },
+  "address": "0xEA24e9Bac006DE9635Ac7fA4D767fFb64FB5645c",
+  "chain": "base",
+  "source": "sourcify"
+}

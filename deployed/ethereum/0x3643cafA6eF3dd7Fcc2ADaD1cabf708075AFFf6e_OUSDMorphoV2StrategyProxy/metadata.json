@@ -1,0 +1,46 @@
+{
+  "name": "OUSDMorphoV2StrategyProxy",
+  "file_path": "contracts/proxies/Proxies.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x5cbD4e769d0a8833a3e7862857Db7AF3b34BA9c8",
+      "name": "MorphoV2Strategy"
+    }
+  ],
+  "verified_at": "2025-12-17T19:12:54.028247Z",
+  "is_fully_verified": true,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x3643cafA6eF3dd7Fcc2ADaD1cabf708075AFFf6e",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

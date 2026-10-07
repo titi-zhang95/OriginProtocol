@@ -1,0 +1,34 @@
+{
+  "name": "BridgedWOETH",
+  "fullyQualifiedName": "contracts/token/BridgedWOETH.sol:BridgedWOETH",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2024-08-08T13:11:32Z",
+  "proxy_resolution": {
+    "isProxy": false,
+    "proxyType": null,
+    "implementations": []
+  },
+  "deployment": {
+    "transactionHash": "0xd5a07982315a0931970f94a7e2510360de7f08df37ba0ca99cf5f614268244b0",
+    "blockNumber": "13327092",
+    "transactionIndex": "1",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0xF66886e242e20cAb2496AF1d411eBcFb73440270",
+  "chain": "base",
+  "source": "sourcify"
+}

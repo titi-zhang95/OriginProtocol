@@ -1,0 +1,87 @@
+{
+  "name": "ATokenVault",
+  "file_path": "src/ATokenVault.sol",
+  "compiler_version": "v0.8.23+commit.f704f362",
+  "evm_version": "shanghai",
+  "optimization_enabled": true,
+  "optimization_runs": 30000,
+  "compiler_settings": {
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "none",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 30000
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    },
+    "remappings": [
+      "@aave-v3-core/=lib/aave-v3-core/contracts/",
+      "@aave-v3-periphery/=lib/aave-v3-periphery/contracts/",
+      "ds-test/=lib/solmate/lib/ds-test/src/",
+      "erc4626-tests/=lib/erc4626-tests/",
+      "forge-std/=lib/forge-std/src/",
+      "solmate/=lib/solmate/src/",
+      "@openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+      "@openzeppelin-v5/=lib/openzeppelin-contracts-v5.3.0/contracts/",
+      "@openzeppelin/=lib/openzeppelin-contracts/contracts/",
+      "@pcaversaccio/createx/=lib/createx/src/",
+      "aave-v3-core/=lib/aave-v3-core/",
+      "aave-v3-periphery/=lib/aave-v3-periphery/contracts/",
+      "createx/=lib/createx/src/",
+      "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      "openzeppelin/=lib/createx/lib/openzeppelin-contracts/contracts/",
+      "solady/=lib/createx/lib/solady/"
+    ],
+    "viaIR": false
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2025-11-28T00:58:54.722266Z",
+  "is_fully_verified": false,
+  "constructor_args": "0x0000000000000000000000004c9edd5852cd905f086c759e8383e09bff1e68b300000000000000000000000000000000000000000000000000000000000000000000000000000000000000002f39d218133afab8f2b819b1066c7e434ad94e9e",
+  "decoded_constructor_args": [
+    [
+      "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
+      {
+        "internalType": "address",
+        "name": "underlying",
+        "type": "address"
+      }
+    ],
+    [
+      "0",
+      {
+        "internalType": "uint16",
+        "name": "referralCode",
+        "type": "uint16"
+      }
+    ],
+    [
+      "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e",
+      {
+        "internalType": "contract IPoolAddressesProvider",
+        "name": "poolAddressesProvider",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x7396F87F71BfBd285F1bFD76e824384031f07424",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

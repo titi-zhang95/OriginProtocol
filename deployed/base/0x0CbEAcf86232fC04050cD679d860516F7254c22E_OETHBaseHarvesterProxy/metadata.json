@@ -1,0 +1,39 @@
+{
+  "name": "OETHBaseHarvesterProxy",
+  "fullyQualifiedName": "contracts/proxies/BaseProxies.sol:OETHBaseHarvesterProxy",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2025-07-15T12:57:06Z",
+  "proxy_resolution": {
+    "isProxy": true,
+    "proxyType": "EIP1967Proxy",
+    "implementations": [
+      {
+        "address": "0x74c9097cb03bEe2C0fDB45Bb40E1E1438681D32D",
+        "name": "SuperOETHHarvester"
+      }
+    ]
+  },
+  "deployment": {
+    "transactionHash": "0x37804ec9e2fef8068302efdde9f5866011ae2a85530e19531f7f8ca46bff5710",
+    "blockNumber": "32622389",
+    "transactionIndex": "87",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0x0CbEAcf86232fC04050cD679d860516F7254c22E",
+  "chain": "base",
+  "source": "sourcify"
+}

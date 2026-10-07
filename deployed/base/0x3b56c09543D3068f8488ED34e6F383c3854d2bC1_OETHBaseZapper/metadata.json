@@ -1,0 +1,34 @@
+{
+  "name": "OETHBaseZapper",
+  "fullyQualifiedName": "contracts/vault/OETHBaseZapper.sol:OETHBaseZapper",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2024-08-26T05:58:08Z",
+  "proxy_resolution": {
+    "isProxy": false,
+    "proxyType": null,
+    "implementations": []
+  },
+  "deployment": {
+    "transactionHash": "0x639eb05fc99993d36f2a071dda032567de27185ed84cdf27550d370dfc5ad4de",
+    "blockNumber": "18931220",
+    "transactionIndex": "77",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0x3b56c09543D3068f8488ED34e6F383c3854d2bC1",
+  "chain": "base",
+  "source": "sourcify"
+}

@@ -1,0 +1,53 @@
+{
+  "name": "ZapperLidoARM",
+  "file_path": "src/ZapperLidoARM.sol",
+  "compiler_version": "0.8.23+commit.f704f362",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+      ":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+      ":@solmate/=lib/solmate/src/",
+      ":forge-std/=lib/forge-std/src/"
+    ]
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2024-10-17T00:06:29.560166Z",
+  "is_fully_verified": false,
+  "constructor_args": "0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc200000000000000000000000085b78aca6deae198fbf201c82daf6ca21942acc6",
+  "decoded_constructor_args": [
+    [
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      {
+        "internalType": "address",
+        "name": "_weth",
+        "type": "address"
+      }
+    ],
+    [
+      "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6",
+      {
+        "internalType": "address",
+        "name": "_lidoArm",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x01F30B7358Ba51f637d1aa05D9b4A60f76DAD680",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

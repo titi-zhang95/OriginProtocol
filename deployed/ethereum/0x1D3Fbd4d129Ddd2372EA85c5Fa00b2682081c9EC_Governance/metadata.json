@@ -1,0 +1,63 @@
+{
+  "name": "Governance",
+  "file_path": "contracts/Governance.sol",
+  "compiler_version": "0.8.10+commit.fc410830",
+  "evm_version": "london",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":OpenZeppelin/openzeppelin-contracts-upgradeable@4.6.0/=lib/openzeppelin-contracts-upgradeable/",
+      ":OpenZeppelin/openzeppelin-contracts-upgradeable@a16f26a063cd018c4c986832c3df332a131f53b9/=lib/openzeppelin-contracts-upgradeable/",
+      ":OpenZeppelin/openzeppelin-contracts@02fcc75bb7f35376c22def91b0fb9bc7a50b9458/=lib/openzeppelin-contracts/",
+      ":OpenZeppelin/openzeppelin-contracts@4.6.0/=lib/openzeppelin-contracts/",
+      ":contracts/=contracts/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":paulrberg/prb-math@2.5.0/=lib/prb-math/",
+      ":prb-math/=lib/prb-math/contracts/",
+      ":script/=script/",
+      ":tests/=tests/",
+      ":utils/=contracts/utils/"
+    ]
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2024-07-03T00:04:39.872397Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x00000000000000000000000063898b3b6ef3d39332082178656e9862bee45c5700000000000000000000000035918cde7233f2dd33fa41ae3cb6ae0e42e0e69f",
+  "decoded_constructor_args": [
+    [
+      "0x63898b3b6Ef3d39332082178656E9862bee45C57",
+      {
+        "internalType": "contract ERC20Votes",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    [
+      "0x35918cDE7233F2dD33fA41ae3Cb6aE0e42E0e69F",
+      {
+        "internalType": "contract TimelockController",
+        "name": "_timelock",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x1D3Fbd4d129Ddd2372EA85c5Fa00b2682081c9EC",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

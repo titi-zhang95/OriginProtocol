@@ -1,0 +1,46 @@
+{
+  "name": "CrossChainStrategyProxy",
+  "file_path": "contracts/proxies/create2/CrossChainStrategyProxy.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x0318D444B1da733dfEBa55A5B7A0C3B134F39197",
+      "name": "CrossChainMasterStrategy"
+    }
+  ],
+  "verified_at": "2026-03-17T15:17:43.197360Z",
+  "is_fully_verified": true,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xE0228DB13F8C4Eb00fD1e08e076b09eF5cD0EA1e",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

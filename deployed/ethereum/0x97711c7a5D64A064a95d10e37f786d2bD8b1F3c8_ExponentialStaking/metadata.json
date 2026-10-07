@@ -1,0 +1,81 @@
+{
+  "name": "ExponentialStaking",
+  "file_path": "contracts/ExponentialStaking.sol",
+  "compiler_version": "0.8.10+commit.fc410830",
+  "evm_version": "london",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "compilationTarget": {
+      "contracts/ExponentialStaking.sol": "ExponentialStaking"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":OpenZeppelin/openzeppelin-contracts-upgradeable@4.6.0/=lib/openzeppelin-contracts-upgradeable/",
+      ":OpenZeppelin/openzeppelin-contracts-upgradeable@a16f26a063cd018c4c986832c3df332a131f53b9/=lib/openzeppelin-contracts-upgradeable/",
+      ":OpenZeppelin/openzeppelin-contracts@02fcc75bb7f35376c22def91b0fb9bc7a50b9458/=lib/openzeppelin-contracts/",
+      ":OpenZeppelin/openzeppelin-contracts@4.6.0/=lib/openzeppelin-contracts/",
+      ":contracts/=contracts/",
+      ":ds-test/=lib/forge-std/lib/ds-test/src/",
+      ":forge-std/=lib/forge-std/src/",
+      ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+      ":openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      ":paulrberg/prb-math@2.5.0/=lib/prb-math/",
+      ":prb-math/=lib/prb-math/contracts/",
+      ":script/=script/",
+      ":tests/=tests/"
+    ]
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2024-05-24T19:34:15.645707Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x0000000000000000000000008207c1ffc5b6804f6024322ccf34f29c3541ae26000000000000000000000000000000000000000000000000000000006657f9c00000000000000000000000000000000000000000000000000000000000278d000000000000000000000000007609c88e5880e934dd3a75bcfef44e31b1badb8b",
+  "decoded_constructor_args": [
+    [
+      "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26",
+      {
+        "internalType": "address",
+        "name": "asset_",
+        "type": "address"
+      }
+    ],
+    [
+      "1717041600",
+      {
+        "internalType": "uint256",
+        "name": "epoch_",
+        "type": "uint256"
+      }
+    ],
+    [
+      "2592000",
+      {
+        "internalType": "uint256",
+        "name": "minStakeDuration_",
+        "type": "uint256"
+      }
+    ],
+    [
+      "0x7609c88E5880e934dd3A75bCFef44E31b1Badb8b",
+      {
+        "internalType": "address",
+        "name": "rewardsSource_",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x97711c7a5D64A064a95d10e37f786d2bD8b1F3c8",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

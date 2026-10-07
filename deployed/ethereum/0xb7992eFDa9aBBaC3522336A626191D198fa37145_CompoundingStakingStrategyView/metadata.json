@@ -1,0 +1,50 @@
+{
+  "name": "CompoundingStakingStrategyView",
+  "file_path": "contracts/strategies/NativeStaking/CompoundingStakingView.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-06-10T06:05:04.287598Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x00000000000000000000000025e1d468b14005716111d5e8464573e5135275f4",
+  "decoded_constructor_args": [
+    [
+      "0x25e1d468B14005716111d5e8464573e5135275f4",
+      {
+        "internalType": "address",
+        "name": "_stakingStrategy",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xb7992eFDa9aBBaC3522336A626191D198fa37145",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

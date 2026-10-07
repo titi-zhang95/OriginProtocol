@@ -1,0 +1,74 @@
+{
+  "name": "OETHZapper",
+  "file_path": "contracts/vault/OETHZapper.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2025-11-11T10:19:21.892789Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x000000000000000000000000856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3000000000000000000000000dcee70654261af21c44c093c300ed3bb97b7819200000000000000000000000039254033945aa2e4809cc2977e7087bee48bd7ab000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+  "decoded_constructor_args": [
+    [
+      "0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3",
+      {
+        "internalType": "address",
+        "name": "_oeth",
+        "type": "address"
+      }
+    ],
+    [
+      "0xDcEe70654261AF21C44c093C300eD3Bb97b78192",
+      {
+        "internalType": "address",
+        "name": "_woeth",
+        "type": "address"
+      }
+    ],
+    [
+      "0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab",
+      {
+        "internalType": "address",
+        "name": "_vault",
+        "type": "address"
+      }
+    ],
+    [
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      {
+        "internalType": "address",
+        "name": "_weth",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xDA0485c1E74A7ef690E99D8286C243942eDAa07B",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

@@ -1,0 +1,112 @@
+{
+  "name": "CrossChainMasterStrategy",
+  "file_path": "contracts/strategies/crosschain/CrossChainMasterStrategy.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-02-10T15:49:18.856804Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e75d77b1865ae93c7eaa3040b038d7aa7bc02f7000000000000000000000000028b5a0e9c621a5badaa536219b3a228c8168cf5d00000000000000000000000081d40f21f12a8f0e3252bccb954d722d4c464b640000000000000000000000000000000000000000000000000000000000000006000000000000000000000000b1d624fc40824683e2bfbefd19eb208dbbe00866000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+  "decoded_constructor_args": [
+    [
+      [
+        "0x0000000000000000000000000000000000000000",
+        "0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70"
+      ],
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "platformAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "vaultAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct InitializableAbstractStrategy.BaseStrategyConfig",
+        "name": "_stratConfig",
+        "type": "tuple"
+      }
+    ],
+    [
+      [
+        "0x28b5a0e9C621a5BadaA536219b3a228C8168cf5d",
+        "0x81D40F21F12A8F0E3252Bccb954D722d4c464B64",
+        "6",
+        "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+        "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+      ],
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "cctpTokenMessenger",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "cctpMessageTransmitter",
+            "type": "address"
+          },
+          {
+            "internalType": "uint32",
+            "name": "peerDomainID",
+            "type": "uint32"
+          },
+          {
+            "internalType": "address",
+            "name": "peerStrategy",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "usdcToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "peerUsdcToken",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct AbstractCCTPIntegrator.CCTPIntegrationConfig",
+        "name": "_cctpConfig",
+        "type": "tuple"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x2567fc741C6b9EFE589F2583e4431Ac4E69D8B8d",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

@@ -1,0 +1,39 @@
+{
+  "name": "CrossChainStrategyProxy",
+  "fullyQualifiedName": "contracts/proxies/create2/CrossChainStrategyProxy.sol:CrossChainStrategyProxy",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2026-02-10T15:33:39Z",
+  "proxy_resolution": {
+    "isProxy": true,
+    "proxyType": "EIP1967Proxy",
+    "implementations": [
+      {
+        "address": "0xAA8af8Db4B6a827B51786334d26349eb03569731",
+        "name": "CrossChainRemoteStrategy"
+      }
+    ]
+  },
+  "deployment": {
+    "transactionHash": "0xbba525e78530807cef3c2e41be23ce982c6b2bb047162a5c0206386ce1797fe0",
+    "blockNumber": "41974134",
+    "transactionIndex": "47",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+  "chain": "base",
+  "source": "sourcify"
+}

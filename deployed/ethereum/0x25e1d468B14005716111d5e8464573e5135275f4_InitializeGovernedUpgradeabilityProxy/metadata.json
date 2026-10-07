@@ -1,0 +1,46 @@
+{
+  "name": "InitializeGovernedUpgradeabilityProxy",
+  "file_path": "contracts/proxies/InitializeGovernedUpgradeabilityProxy.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x689Dd7a91cC353de2b8B1b09Cd9DBd57f7546dCe",
+      "name": "CompoundingStakingStrategy"
+    }
+  ],
+  "verified_at": "2026-06-10T06:07:43.629653Z",
+  "is_fully_verified": false,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x25e1d468B14005716111d5e8464573e5135275f4",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

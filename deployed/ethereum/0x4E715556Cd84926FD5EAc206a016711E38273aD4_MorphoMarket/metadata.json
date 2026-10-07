@@ -1,0 +1,72 @@
+{
+  "name": "MorphoMarket",
+  "file_path": "src/contracts/markets/MorphoMarket.sol",
+  "compiler_version": "v0.8.23+commit.f704f362",
+  "evm_version": "shanghai",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    },
+    "remappings": [
+      "dependencies/@pendle-sy-1.0.0-1.0.0/:@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.9.3-4.9.3/contracts/",
+      "contracts/=src/contracts/",
+      "script/=script/",
+      "test/=test/",
+      "utils/=src/contracts/utils/",
+      "@solmate/=dependencies/solmate-6.7.0/src/",
+      "forge-std/=dependencies/forge-std-1.9.7/src/",
+      "@pendle-sy/=dependencies/@pendle-sy-1.0.0-1.0.0/contracts/",
+      "@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-5.0.2-5.0.2/contracts/",
+      "@openzeppelin/contracts-upgradeable/=dependencies/@openzeppelin-contracts-upgradeable-5.0.2-5.0.2/contracts/"
+    ],
+    "viaIR": false
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-07-27T13:52:46.122114Z",
+  "is_fully_verified": false,
+  "constructor_args": "0x00000000000000000000000068025a4615407993a680102b08a23a61d11c657c0000000000000000000000003dfe70b05657949a5db340754ad664810ac63b21",
+  "decoded_constructor_args": [
+    [
+      "0x68025A4615407993A680102b08a23A61D11C657C",
+      {
+        "internalType": "address",
+        "name": "_arm",
+        "type": "address"
+      }
+    ],
+    [
+      "0x3Dfe70B05657949A5dB340754aD664810ac63b21",
+      {
+        "internalType": "address",
+        "name": "_market",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x4E715556Cd84926FD5EAc206a016711E38273aD4",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

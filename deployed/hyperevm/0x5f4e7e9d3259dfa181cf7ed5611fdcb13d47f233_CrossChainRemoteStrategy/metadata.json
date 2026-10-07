@@ -1,0 +1,31 @@
+{
+  "name": "CrossChainRemoteStrategy",
+  "fullyQualifiedName": "contracts/strategies/crosschain/CrossChainRemoteStrategy.sol:CrossChainRemoteStrategy",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "compiler_settings": {
+    "metadata": {
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "paris"
+  },
+  "match": "exact_match",
+  "verified_at": "2026-06-06T22:55:03Z",
+  "proxy_resolution": {
+    "isProxy": false,
+    "proxyType": null,
+    "implementations": []
+  },
+  "deployment": {
+    "transactionHash": "0x628990fd7e1120cb5b2051c53c9264d33b23f9df5a732ddd8b9a0e7c3de89c91",
+    "blockNumber": "30002257",
+    "transactionIndex": "2",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0x5f4e7e9d3259dfa181cf7ed5611fdcb13d47f233",
+  "chain": "hyperevm",
+  "source": "sourcify"
+}

@@ -1,0 +1,47 @@
+{
+  "name": "Proxy",
+  "file_path": "src/contracts/Proxy.sol",
+  "compiler_version": "0.8.23+commit.f704f362",
+  "evm_version": "shanghai",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "shanghai",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs"
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": [
+      ":@openzeppelin/contracts-upgradeable/=dependencies/@openzeppelin-contracts-upgradeable-5.0.2-5.0.2/contracts/",
+      ":@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-5.0.2-5.0.2/contracts/",
+      ":@pendle-sy/=dependencies/@pendle-sy-1.0.0-1.0.0/contracts/",
+      ":@solmate/=dependencies/solmate-6.7.0/src/",
+      ":contracts/=src/contracts/",
+      ":forge-std/=dependencies/forge-std-1.9.7/src/",
+      ":script/=script/",
+      ":test/=test/",
+      ":utils/=src/contracts/utils/",
+      "dependencies/@pendle-sy-1.0.0-1.0.0/:@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.9.3-4.9.3/contracts/"
+    ]
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x1707b933037287eAf35A64ff1E89Cb00Db809aaB",
+      "name": "EthenaAssetAdapter"
+    }
+  ],
+  "verified_at": "2026-06-16T19:26:10.202651Z",
+  "is_fully_verified": false,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xE620aFB67223AE03C260112aE21A717Af94C90f0",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

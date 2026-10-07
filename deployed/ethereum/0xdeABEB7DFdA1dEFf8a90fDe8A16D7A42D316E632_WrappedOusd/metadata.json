@@ -1,0 +1,41 @@
+{
+  "name": "WrappedOusd",
+  "file_path": "contracts/token/WrappedOusd.sol",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2025-05-26T04:03:49.873239Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x0000000000000000000000002a8e1e676ec238d8a992307b495b45b3feaa5e86",
+  "decoded_constructor_args": [
+    [
+      "0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86",
+      {
+        "internalType": "contract ERC20",
+        "name": "underlying_",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xdeABEB7DFdA1dEFf8a90fDe8A16D7A42D316E632",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

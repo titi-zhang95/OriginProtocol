@@ -1,0 +1,39 @@
+{
+  "name": "BridgedBaseWOETHProxy",
+  "fullyQualifiedName": "contracts/proxies/Proxies.sol:BridgedBaseWOETHProxy",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2024-08-08T13:02:56Z",
+  "proxy_resolution": {
+    "isProxy": true,
+    "proxyType": "EIP1967Proxy",
+    "implementations": [
+      {
+        "address": "0xF66886e242e20cAb2496AF1d411eBcFb73440270",
+        "name": "BridgedWOETH"
+      }
+    ]
+  },
+  "deployment": {
+    "transactionHash": "0x9f53a8101d7f327f3a12e51f060a24de1957f5364aac26d466180bd0f4bf9907",
+    "blockNumber": "13327014",
+    "transactionIndex": "1",
+    "deployer": "0x58890A9cB27586E83Cb51d2d26bbE18a1a647245"
+  },
+  "address": "0xD8724322f44E5c58D7A815F542036fb17DbbF839",
+  "chain": "base",
+  "source": "sourcify"
+}

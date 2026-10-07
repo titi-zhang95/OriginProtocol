@@ -1,0 +1,55 @@
+{
+  "name": "InitializeGovernedUpgradeabilityProxy",
+  "file_path": "contracts/proxies/InitializeGovernedUpgradeabilityProxy.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "prague",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "prague",
+    "libraries": {},
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    },
+    "remappings": [
+      "@openzeppelin/contracts/=dependencies/@openzeppelin-contracts-4.4.2/contracts/",
+      "@chainlink/contracts-ccip/=dependencies/@chainlink-contracts-ccip-1.2.1/package/",
+      "forge-std/=dependencies/forge-std-1.15.0/src/",
+      "tests/=tests/",
+      "@solmate/=dependencies/solmate-89365b880c4f3c786bdd453d4b8e8fe410344a69/src/"
+    ],
+    "viaIR": false
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x24c811d39F453f035cC28Be5ce8012A8653894Dc",
+      "name": "OETHVaultLens"
+    }
+  ],
+  "verified_at": "2026-08-28T10:58:22.341725Z",
+  "is_fully_verified": false,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xad2b1657E2c3243750B32Cb9A51169575945b05B",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

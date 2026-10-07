@@ -1,0 +1,73 @@
+{
+  "name": "MorphoV2Strategy",
+  "file_path": "contracts/strategies/MorphoV2Strategy.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-04-01T10:12:49.796649Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x000000000000000000000000fb154c729a16802c4ad1e8f7ff539a8b9f49c960000000000000000000000000e75d77b1865ae93c7eaa3040b038d7aa7bc02f70000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  "decoded_constructor_args": [
+    [
+      [
+        "0xFB154c729A16802c4ad1E8f7FF539a8b9f49c960",
+        "0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70"
+      ],
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "platformAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "vaultAddress",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct InitializableAbstractStrategy.BaseStrategyConfig",
+        "name": "_baseConfig",
+        "type": "tuple"
+      }
+    ],
+    [
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      {
+        "internalType": "address",
+        "name": "_assetToken",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x5cbD4e769d0a8833a3e7862857Db7AF3b34BA9c8",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

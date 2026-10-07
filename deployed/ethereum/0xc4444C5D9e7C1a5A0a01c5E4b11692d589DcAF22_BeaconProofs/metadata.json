@@ -1,0 +1,32 @@
+{
+  "name": "BeaconProofs",
+  "file_path": "contracts/beacon/BeaconProofs.sol",
+  "compiler_version": "0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-01-20T19:42:06.482617Z",
+  "is_fully_verified": true,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xc4444C5D9e7C1a5A0a01c5E4b11692d589DcAF22",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

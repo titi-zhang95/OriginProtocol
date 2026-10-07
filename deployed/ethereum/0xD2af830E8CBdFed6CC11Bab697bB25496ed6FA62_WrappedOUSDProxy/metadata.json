@@ -1,0 +1,37 @@
+{
+  "name": "WrappedOUSDProxy",
+  "file_path": "contracts/proxies/Proxies.sol",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "evm_version": "london",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0xdeABEB7DFdA1dEFf8a90fDe8A16D7A42D316E632",
+      "name": "WrappedOusd"
+    }
+  ],
+  "verified_at": "2023-12-12T17:26:59.099197Z",
+  "is_fully_verified": true,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xD2af830E8CBdFed6CC11Bab697bB25496ed6FA62",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

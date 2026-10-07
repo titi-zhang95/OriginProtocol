@@ -1,0 +1,84 @@
+{
+  "name": "WOETHCCIPZapper",
+  "file_path": "contracts/zapper/WOETHCCIPZapper.sol",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "evm_version": "london",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "compilationTarget": {
+      "contracts/zapper/WOETHCCIPZapper.sol": "WOETHCCIPZapper"
+    },
+    "evmVersion": "london",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2024-04-29T14:45:53.986332Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x00000000000000000000000080226fc0ee2b096224eeac085bb9a8cba1146f7d00000000000000000000000000000000000000000000000044ae84d8e9a37444000000000000000000000000dcee70654261af21c44c093c300ed3bb97b78192000000000000000000000000d8724322f44e5c58d7a815f542036fb17dbbf8390000000000000000000000009858e47bcbbe6fbac040519b02d7cd4b2c470c66000000000000000000000000856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3",
+  "decoded_constructor_args": [
+    [
+      "0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D",
+      {
+        "internalType": "address",
+        "name": "_ccipRouter",
+        "type": "address"
+      }
+    ],
+    [
+      "4949039107694359620",
+      {
+        "internalType": "uint64",
+        "name": "_destinationChainSelector",
+        "type": "uint64"
+      }
+    ],
+    [
+      "0xDcEe70654261AF21C44c093C300eD3Bb97b78192",
+      {
+        "internalType": "contract IERC4626",
+        "name": "_woethOnSourceChain",
+        "type": "address"
+      }
+    ],
+    [
+      "0xD8724322f44E5c58D7A815F542036fb17DbbF839",
+      {
+        "internalType": "contract IERC20",
+        "name": "_woethOnDestinationChain",
+        "type": "address"
+      }
+    ],
+    [
+      "0x9858e47BCbBe6fBAC040519B02d7cd4B2C470C66",
+      {
+        "internalType": "contract IOETHZapper",
+        "name": "_oethZapper",
+        "type": "address"
+      }
+    ],
+    [
+      "0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3",
+      {
+        "internalType": "contract IERC20",
+        "name": "_oeth",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x438731b5Ee8fEcC02a28532713E237b93260C3F8",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

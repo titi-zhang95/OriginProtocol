@@ -1,0 +1,1572 @@
+[
+  {
+    "asset": "OUSD Morpho V2 CrossChain Master Strategy",
+    "chain": "ethereum",
+    "address": "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+    "result": {
+      "address": "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x2567fc741C6b9EFE589F2583e4431Ac4E69D8B8d",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "CrossChainMasterStrategy",
+          "dir": "ethereum/0x2567fc741C6b9EFE589F2583e4431Ac4E69D8B8d_CrossChainMasterStrategy",
+          "files": 19,
+          "source": "blockscout",
+          "compiler": "v0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "CrossChainStrategyProxy",
+      "dir": "ethereum/0xB1d624fc40824683e2bFBEfd19eB208DbBE00866_CrossChainStrategyProxy",
+      "files": 5,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x2567fc741c6b9efe589f2583e4431ac4e69d8b8d"
+    }
+  },
+  {
+    "asset": "OUSD Morpho V2 CrossChain Remote Strategy",
+    "chain": "base",
+    "address": "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+    "result": {
+      "address": "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0xAA8af8Db4B6a827B51786334d26349eb03569731",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "CrossChainRemoteStrategy",
+          "dir": "base/0xAA8af8Db4B6a827B51786334d26349eb03569731_CrossChainRemoteStrategy",
+          "files": 27,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "CrossChainStrategyProxy",
+      "dir": "base/0xB1d624fc40824683e2bFBEfd19eB208DbBE00866_CrossChainStrategyProxy",
+      "files": 5,
+      "source": "sourcify",
+      "compiler": "0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0xaa8af8db4b6a827b51786334d26349eb03569731"
+    }
+  },
+  {
+    "asset": "Compounding Staking Strategy View",
+    "chain": "ethereum",
+    "address": "0xb7992eFDa9aBBaC3522336A626191D198fa37145",
+    "result": {
+      "address": "0xb7992eFDa9aBBaC3522336A626191D198fa37145",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "CompoundingStakingStrategyView",
+      "dir": "ethereum/0xb7992eFDa9aBBaC3522336A626191D198fa37145_CompoundingStakingStrategyView",
+      "files": 24,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a"
+    }
+  },
+  {
+    "asset": "Compounding Staking Strategy",
+    "chain": "ethereum",
+    "address": "0x25e1d468B14005716111d5e8464573e5135275f4",
+    "result": {
+      "address": "0x25e1d468B14005716111d5e8464573e5135275f4",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x689Dd7a91cC353de2b8B1b09Cd9DBd57f7546dCe",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "CompoundingStakingStrategy",
+          "dir": "ethereum/0x689Dd7a91cC353de2b8B1b09Cd9DBd57f7546dCe_CompoundingStakingStrategy",
+          "files": 23,
+          "source": "blockscout",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "InitializeGovernedUpgradeabilityProxy",
+      "dir": "ethereum/0x25e1d468B14005716111d5e8464573e5135275f4_InitializeGovernedUpgradeabilityProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x689dd7a91cc353de2b8b1b09cd9dbd57f7546dce"
+    }
+  },
+  {
+    "asset": "Ethena ARM",
+    "chain": "ethereum",
+    "address": "0xCEDa2d856238aA0D12f6329de20B9115f07C366d",
+    "result": {
+      "address": "0xCEDa2d856238aA0D12f6329de20B9115f07C366d",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xebB2B66759b593Ea50eB8C306E2E13464cDB99Fe",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "EthenaARM",
+          "dir": "ethereum/0xebB2B66759b593Ea50eB8C306E2E13464cDB99Fe_EthenaARM",
+          "files": 14,
+          "source": "blockscout",
+          "compiler": "0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0xCEDa2d856238aA0D12f6329de20B9115f07C366d_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0xebb2b66759b593ea50eb8c306e2e13464cdb99fe"
+    }
+  },
+  {
+    "asset": "Ethena ARM Aave Strategy",
+    "chain": "ethereum",
+    "address": "0x0DC20109Ea012f050BeDA184844c1eD5ec6dA33A",
+    "result": {
+      "address": "0x0DC20109Ea012f050BeDA184844c1eD5ec6dA33A",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x7396F87F71BfBd285F1bFD76e824384031f07424",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "ATokenVault",
+          "dir": "ethereum/0x7396F87F71BfBd285F1bFD76e824384031f07424_ATokenVault",
+          "files": 42,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "TransparentUpgradeableProxy",
+      "dir": "ethereum/0x0DC20109Ea012f050BeDA184844c1eD5ec6dA33A_TransparentUpgradeableProxy",
+      "files": 8,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x7396f87f71bfbd285f1bfd76e824384031f07424"
+    }
+  },
+  {
+    "asset": "Wrapped Super OETH",
+    "chain": "base",
+    "address": "0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6",
+    "result": {
+      "address": "0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "WOETHBase",
+          "dir": "base/0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794_WOETHBase",
+          "files": 15,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "WOETHBaseProxy",
+      "dir": "base/0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6_WOETHBaseProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0xb1e25689d55734fd3fffc939c4c3eb52dff8a794"
+    }
+  },
+  {
+    "asset": "OUSD Token",
+    "chain": "ethereum",
+    "address": "0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86",
+    "result": {
+      "address": "0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xA7B7c59a1705E4A624eA8a4ad8a06F9DE22Dcc33",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "OUSD",
+          "dir": "ethereum/0xA7B7c59a1705E4A624eA8a4ad8a06F9DE22Dcc33_OUSD",
+          "files": 12,
+          "source": "blockscout",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "InitializeGovernedUpgradeabilityProxy",
+      "dir": "ethereum/0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86_InitializeGovernedUpgradeabilityProxy",
+      "files": 1,
+      "source": "blockscout",
+      "compiler": "0.5.11+commit.c082d0b4",
+      "eip1967_impl_onchain": "0xa7b7c59a1705e4a624ea8a4ad8a06f9de22dcc33"
+    }
+  },
+  {
+    "asset": "WOUSD Token",
+    "chain": "ethereum",
+    "address": "0xD2af830E8CBdFed6CC11Bab697bB25496ed6FA62",
+    "result": {
+      "address": "0xD2af830E8CBdFed6CC11Bab697bB25496ed6FA62",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xdeABEB7DFdA1dEFf8a90fDe8A16D7A42D316E632",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "WrappedOusd",
+          "dir": "ethereum/0xdeABEB7DFdA1dEFf8a90fDe8A16D7A42D316E632_WrappedOusd",
+          "files": 15,
+          "source": "blockscout",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "WrappedOUSDProxy",
+      "dir": "ethereum/0xD2af830E8CBdFed6CC11Bab697bB25496ed6FA62_WrappedOUSDProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0xdeabeb7dfda1deff8a90fde8a16d7a42d316e632"
+    }
+  },
+  {
+    "asset": "OUSD Vault",
+    "chain": "ethereum",
+    "address": "0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70",
+    "result": {
+      "address": "0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x82948060c4B72684bEdEdec342350AB344975145",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "OUSDVault",
+          "dir": "ethereum/0x82948060c4B72684bEdEdec342350AB344975145_OUSDVault",
+          "files": 19,
+          "source": "blockscout",
+          "compiler": "v0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "VaultProxy",
+      "dir": "ethereum/0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70_VaultProxy",
+      "files": 1,
+      "source": "blockscout",
+      "compiler": "0.5.11+commit.22be8592",
+      "eip1967_impl_onchain": "0x82948060c4b72684bededec342350ab344975145"
+    }
+  },
+  {
+    "asset": "OUSD Strategy - Curve AMO",
+    "chain": "ethereum",
+    "address": "0x26a02ec47ACC2A3442b757F45E0A82B8e993Ce11",
+    "result": {
+      "address": "0x26a02ec47ACC2A3442b757F45E0A82B8e993Ce11",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x2112Ad60827a946A5D48475F64A1D0D093d25F05",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "CurveAMOStrategy",
+          "dir": "ethereum/0x2112Ad60827a946A5D48475F64A1D0D093d25F05_CurveAMOStrategy",
+          "files": 21,
+          "source": "blockscout",
+          "compiler": "v0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "OUSDCurveAMOProxy",
+      "dir": "ethereum/0x26a02ec47ACC2A3442b757F45E0A82B8e993Ce11_OUSDCurveAMOProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x2112ad60827a946a5d48475f64a1d0d093d25f05"
+    }
+  },
+  {
+    "asset": "OUSD Strategy - Morpho V2",
+    "chain": "ethereum",
+    "address": "0x3643cafA6eF3dd7Fcc2ADaD1cabf708075AFFf6e",
+    "result": {
+      "address": "0x3643cafA6eF3dd7Fcc2ADaD1cabf708075AFFf6e",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x5cbD4e769d0a8833a3e7862857Db7AF3b34BA9c8",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "MorphoV2Strategy",
+          "dir": "ethereum/0x5cbD4e769d0a8833a3e7862857Db7AF3b34BA9c8_MorphoV2Strategy",
+          "files": 22,
+          "source": "blockscout",
+          "compiler": "v0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "OUSDMorphoV2StrategyProxy",
+      "dir": "ethereum/0x3643cafA6eF3dd7Fcc2ADaD1cabf708075AFFf6e_OUSDMorphoV2StrategyProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x5cbd4e769d0a8833a3e7862857db7af3b34ba9c8"
+    }
+  },
+  {
+    "asset": "OUSD Strategy - Base CrossChain Master",
+    "chain": "ethereum",
+    "address": "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+    "result": {
+      "address": "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x2567fc741C6b9EFE589F2583e4431Ac4E69D8B8d",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "CrossChainMasterStrategy",
+          "dir": "ethereum/0x2567fc741C6b9EFE589F2583e4431Ac4E69D8B8d_CrossChainMasterStrategy",
+          "files": 19,
+          "source": "blockscout",
+          "compiler": "v0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "CrossChainStrategyProxy",
+      "dir": "ethereum/0xB1d624fc40824683e2bFBEfd19eB208DbBE00866_CrossChainStrategyProxy",
+      "files": 5,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x2567fc741c6b9efe589f2583e4431ac4e69d8b8d"
+    }
+  },
+  {
+    "asset": "OUSD Strategy - Base CrossChain Remote",
+    "chain": "base",
+    "address": "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+    "result": {
+      "address": "0xB1d624fc40824683e2bFBEfd19eB208DbBE00866",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0xAA8af8Db4B6a827B51786334d26349eb03569731",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "CrossChainRemoteStrategy",
+          "dir": "base/0xAA8af8Db4B6a827B51786334d26349eb03569731_CrossChainRemoteStrategy",
+          "files": 27,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "CrossChainStrategyProxy",
+      "dir": "base/0xB1d624fc40824683e2bFBEfd19eB208DbBE00866_CrossChainStrategyProxy",
+      "files": 5,
+      "source": "sourcify",
+      "compiler": "0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0xaa8af8db4b6a827b51786334d26349eb03569731"
+    }
+  },
+  {
+    "asset": "OUSD Strategy - HyperEVM CrossChain Master",
+    "chain": "ethereum",
+    "address": "0xE0228DB13F8C4Eb00fD1e08e076b09eF5cD0EA1e",
+    "result": {
+      "address": "0xE0228DB13F8C4Eb00fD1e08e076b09eF5cD0EA1e",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x0318D444B1da733dfEBa55A5B7A0C3B134F39197",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "CrossChainMasterStrategy",
+          "dir": "ethereum/0x0318D444B1da733dfEBa55A5B7A0C3B134F39197_CrossChainMasterStrategy",
+          "files": 19,
+          "source": "blockscout",
+          "compiler": "v0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "CrossChainStrategyProxy",
+      "dir": "ethereum/0xE0228DB13F8C4Eb00fD1e08e076b09eF5cD0EA1e_CrossChainStrategyProxy",
+      "files": 5,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x0318d444b1da733dfeba55a5b7a0c3b134f39197"
+    }
+  },
+  {
+    "asset": "OUSD Strategy - HyperEVM CrossChain Remote",
+    "chain": "hyperevm",
+    "address": "0xE0228DB13F8C4Eb00fD1e08e076b09eF5cD0EA1e",
+    "result": {
+      "address": "0xE0228DB13F8C4Eb00fD1e08e076b09eF5cD0EA1e",
+      "chain": "hyperevm",
+      "implementations": [
+        {
+          "address": "0x5f4e7e9d3259dfa181cf7ed5611fdcb13d47f233",
+          "chain": "hyperevm",
+          "implementations": [],
+          "status": "ok",
+          "name": "CrossChainRemoteStrategy",
+          "dir": "hyperevm/0x5f4e7e9d3259dfa181cf7ed5611fdcb13d47f233_CrossChainRemoteStrategy",
+          "files": 317,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok_twin",
+      "eip1967_impl_onchain": "0x5f4e7e9d3259dfa181cf7ed5611fdcb13d47f233",
+      "name": "CrossChainStrategyProxy",
+      "dir": "hyperevm/0xE0228DB13F8C4Eb00fD1e08e076b09eF5cD0EA1e_CrossChainStrategyProxy",
+      "source": "twin:ethereum-blockscout"
+    }
+  },
+  {
+    "asset": "OUSD CoW Harvester",
+    "chain": "ethereum",
+    "address": "0xD400341aEfED0BC75176714cFdE82e8BDAA2D3b8",
+    "result": {
+      "address": "0xD400341aEfED0BC75176714cFdE82e8BDAA2D3b8",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "HarvestingEIP1271",
+      "dir": "ethereum/0xD400341aEfED0BC75176714cFdE82e8BDAA2D3b8_HarvestingEIP1271",
+      "files": 7,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a"
+    }
+  },
+  {
+    "asset": "OETH Token",
+    "chain": "ethereum",
+    "address": "0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3",
+    "result": {
+      "address": "0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xD86756dBb01e75A11AaDaCB75c8495759ED92033",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "OETH",
+          "dir": "ethereum/0xD86756dBb01e75A11AaDaCB75c8495759ED92033_OETH",
+          "files": 13,
+          "source": "blockscout",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "OETHProxy",
+      "dir": "ethereum/0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3_OETHProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0xd86756dbb01e75a11aadacb75c8495759ed92033"
+    }
+  },
+  {
+    "asset": "WOETH Token",
+    "chain": "ethereum",
+    "address": "0xDcEe70654261AF21C44c093C300eD3Bb97b78192",
+    "result": {
+      "address": "0xDcEe70654261AF21C44c093C300eD3Bb97b78192",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x388782b21275F75255f3ee08e23Bd3991d4eB830",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "WOETH",
+          "dir": "ethereum/0x388782b21275F75255f3ee08e23Bd3991d4eB830_WOETH",
+          "files": 14,
+          "source": "blockscout",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "WOETHProxy",
+      "dir": "ethereum/0xDcEe70654261AF21C44c093C300eD3Bb97b78192_WOETHProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0x388782b21275f75255f3ee08e23bd3991d4eb830"
+    }
+  },
+  {
+    "asset": "OETH Vault",
+    "chain": "ethereum",
+    "address": "0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab",
+    "result": {
+      "address": "0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x0E979edF516f88119fa2843fA3f08A9643F8e575",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "OETHVault",
+          "dir": "ethereum/0x0E979edF516f88119fa2843fA3f08A9643F8e575_OETHVault",
+          "files": 19,
+          "source": "blockscout",
+          "compiler": "v0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "OETHVaultProxy",
+      "dir": "ethereum/0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab_OETHVaultProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0x0e979edf516f88119fa2843fa3f08a9643f8e575"
+    }
+  },
+  {
+    "asset": "OETH Strategy - Curve AMO",
+    "chain": "ethereum",
+    "address": "0xba0e352AB5c13861C26e4E773e7a833C3A223FE6",
+    "result": {
+      "address": "0xba0e352AB5c13861C26e4E773e7a833C3A223FE6",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x2C08fa7F2c44753267d4b6783cFc2fF2F53797c5",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "CurveAMOStrategy",
+          "dir": "ethereum/0x2C08fa7F2c44753267d4b6783cFc2fF2F53797c5_CurveAMOStrategy",
+          "files": 21,
+          "source": "blockscout",
+          "compiler": "v0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "OETHCurveAMOProxy",
+      "dir": "ethereum/0xba0e352AB5c13861C26e4E773e7a833C3A223FE6_OETHCurveAMOProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x2c08fa7f2c44753267d4b6783cfc2ff2f53797c5"
+    }
+  },
+  {
+    "asset": "OETH Strategy - Compounding Staking SSV",
+    "chain": "ethereum",
+    "address": "0x25e1d468B14005716111d5e8464573e5135275f4",
+    "result": {
+      "address": "0x25e1d468B14005716111d5e8464573e5135275f4",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x689Dd7a91cC353de2b8B1b09Cd9DBd57f7546dCe",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "CompoundingStakingStrategy",
+          "dir": "ethereum/0x689Dd7a91cC353de2b8B1b09Cd9DBd57f7546dCe_CompoundingStakingStrategy",
+          "files": 23,
+          "source": "blockscout",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "InitializeGovernedUpgradeabilityProxy",
+      "dir": "ethereum/0x25e1d468B14005716111d5e8464573e5135275f4_InitializeGovernedUpgradeabilityProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x689dd7a91cc353de2b8b1b09cd9dbd57f7546dce"
+    }
+  },
+  {
+    "asset": "OETH Strategy - BeaconProofs",
+    "chain": "ethereum",
+    "address": "0xc4444C5D9e7C1a5A0a01c5E4b11692d589DcAF22",
+    "result": {
+      "address": "0xc4444C5D9e7C1a5A0a01c5E4b11692d589DcAF22",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "BeaconProofs",
+      "dir": "ethereum/0xc4444C5D9e7C1a5A0a01c5E4b11692d589DcAF22_BeaconProofs",
+      "files": 5,
+      "source": "blockscout",
+      "compiler": "0.8.28+commit.7893614a"
+    }
+  },
+  {
+    "asset": "OETH Zapper",
+    "chain": "ethereum",
+    "address": "0xDA0485c1E74A7ef690E99D8286C243942eDAa07B",
+    "result": {
+      "address": "0xDA0485c1E74A7ef690E99D8286C243942eDAa07B",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "OETHZapper",
+      "dir": "ethereum/0xDA0485c1E74A7ef690E99D8286C243942eDAa07B_OETHZapper",
+      "files": 17,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a"
+    }
+  },
+  {
+    "asset": "WOETH CCIP Zapper",
+    "chain": "ethereum",
+    "address": "0x438731b5Ee8fEcC02a28532713E237b93260C3F8",
+    "result": {
+      "address": "0x438731b5Ee8fEcC02a28532713E237b93260C3F8",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "WOETHCCIPZapper",
+      "dir": "ethereum/0x438731b5Ee8fEcC02a28532713E237b93260C3F8_WOETHCCIPZapper",
+      "files": 7,
+      "source": "blockscout",
+      "compiler": "0.8.7+commit.e28d00a7"
+    }
+  },
+  {
+    "asset": "Bridged WOETH",
+    "chain": "arbitrum",
+    "address": "0xD8724322f44E5c58D7A815F542036fb17DbbF839",
+    "result": {
+      "address": "0xD8724322f44E5c58D7A815F542036fb17DbbF839",
+      "chain": "arbitrum",
+      "implementations": [
+        {
+          "address": "0x9745A051bD218D78Eb6B5D0F53C685f6B052D478",
+          "chain": "arbitrum",
+          "implementations": [],
+          "status": "ok",
+          "name": "BridgedWOETH",
+          "dir": "arbitrum/0x9745A051bD218D78Eb6B5D0F53C685f6B052D478_BridgedWOETH",
+          "files": 15,
+          "source": "sourcify",
+          "compiler": "0.8.7+commit.e28d00a7"
+        }
+      ],
+      "status": "ok",
+      "name": "BridgedWOETHProxy",
+      "dir": "arbitrum/0xD8724322f44E5c58D7A815F542036fb17DbbF839_BridgedWOETHProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0x9745a051bd218d78eb6b5d0f53c685f6b052d478"
+    }
+  },
+  {
+    "asset": "Bridged WOETH",
+    "chain": "base",
+    "address": "0xD8724322f44E5c58D7A815F542036fb17DbbF839",
+    "result": {
+      "address": "0xD8724322f44E5c58D7A815F542036fb17DbbF839",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0xF66886e242e20cAb2496AF1d411eBcFb73440270",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "BridgedWOETH",
+          "dir": "base/0xF66886e242e20cAb2496AF1d411eBcFb73440270_BridgedWOETH",
+          "files": 15,
+          "source": "sourcify",
+          "compiler": "0.8.7+commit.e28d00a7"
+        }
+      ],
+      "status": "ok",
+      "name": "BridgedBaseWOETHProxy",
+      "dir": "base/0xD8724322f44E5c58D7A815F542036fb17DbbF839_BridgedBaseWOETHProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0xf66886e242e20cab2496af1d411ebcfb73440270"
+    }
+  },
+  {
+    "asset": "superOETHb Token",
+    "chain": "base",
+    "address": "0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3",
+    "result": {
+      "address": "0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0xCcd483cE093682D7D9a41e645EEb710AFaa88249",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "OETHBase",
+          "dir": "base/0xCcd483cE093682D7D9a41e645EEb710AFaa88249_OETHBase",
+          "files": 13,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "OETHBaseProxy",
+      "dir": "base/0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3_OETHBaseProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0xccd483ce093682d7d9a41e645eeb710afaa88249"
+    }
+  },
+  {
+    "asset": "wsuperOETHb Token",
+    "chain": "base",
+    "address": "0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6",
+    "result": {
+      "address": "0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "WOETHBase",
+          "dir": "base/0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794_WOETHBase",
+          "files": 15,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "WOETHBaseProxy",
+      "dir": "base/0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6_WOETHBaseProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0xb1e25689d55734fd3fffc939c4c3eb52dff8a794"
+    }
+  },
+  {
+    "asset": "superOETHb Vault",
+    "chain": "base",
+    "address": "0x98a0CbeF61bD2D21435f433bE4CD42B56B38CC93",
+    "result": {
+      "address": "0x98a0CbeF61bD2D21435f433bE4CD42B56B38CC93",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0xfdBE6A80e1D22ff652Cbff44FEaD2E52287393E8",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "OETHBaseVault",
+          "dir": "base/0xfdBE6A80e1D22ff652Cbff44FEaD2E52287393E8_OETHBaseVault",
+          "files": 19,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "OETHBaseVaultProxy",
+      "dir": "base/0x98a0CbeF61bD2D21435f433bE4CD42B56B38CC93_OETHBaseVaultProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0xfdbe6a80e1d22ff652cbff44fead2e52287393e8"
+    }
+  },
+  {
+    "asset": "wsuperOETHb bridged strategy",
+    "chain": "base",
+    "address": "0x80c864704DD06C3693ed5179190786EE38ACf835",
+    "result": {
+      "address": "0x80c864704DD06C3693ed5179190786EE38ACf835",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0x0929C0fbFF88e129ACaA51Bba0C959491325b4aD",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "BridgedWOETHStrategy",
+          "dir": "base/0x0929C0fbFF88e129ACaA51Bba0C959491325b4aD_BridgedWOETHStrategy",
+          "files": 20,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "BridgedWOETHStrategyProxy",
+      "dir": "base/0x80c864704DD06C3693ed5179190786EE38ACf835_BridgedWOETHStrategyProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0x0929c0fbff88e129acaa51bba0c959491325b4ad"
+    }
+  },
+  {
+    "asset": "superOETHb Strategy - Aerodrome AMO",
+    "chain": "base",
+    "address": "0xF611cC500eEE7E4e4763A05FE623E2363c86d2Af",
+    "result": {
+      "address": "0xF611cC500eEE7E4e4763A05FE623E2363c86d2Af",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0x8bb67820E8aC1a775DA25E50391718C1457d07ac",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "AerodromeAMOStrategy",
+          "dir": "base/0x8bb67820E8aC1a775DA25E50391718C1457d07ac_AerodromeAMOStrategy",
+          "files": 23,
+          "source": "sourcify",
+          "compiler": "0.8.7+commit.e28d00a7"
+        }
+      ],
+      "status": "ok",
+      "name": "AerodromeAMOStrategyProxy",
+      "dir": "base/0xF611cC500eEE7E4e4763A05FE623E2363c86d2Af_AerodromeAMOStrategyProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.7+commit.e28d00a7",
+      "eip1967_impl_onchain": "0x8bb67820e8ac1a775da25e50391718c1457d07ac"
+    }
+  },
+  {
+    "asset": "superOETHb Strategy - Curve AMO",
+    "chain": "base",
+    "address": "0x9cfcAF81600155e01c63e4D2993A8A81A8205829",
+    "result": {
+      "address": "0x9cfcAF81600155e01c63e4D2993A8A81A8205829",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0xEA24e9Bac006DE9635Ac7fA4D767fFb64FB5645c",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "BaseCurveAMOStrategy",
+          "dir": "base/0xEA24e9Bac006DE9635Ac7fA4D767fFb64FB5645c_BaseCurveAMOStrategy",
+          "files": 21,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "OETHBaseCurveAMOProxy",
+      "dir": "base/0x9cfcAF81600155e01c63e4D2993A8A81A8205829_OETHBaseCurveAMOProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0xea24e9bac006de9635ac7fa4d767ffb64fb5645c"
+    }
+  },
+  {
+    "asset": "superOETHb Harvester",
+    "chain": "base",
+    "address": "0x0CbEAcf86232fC04050cD679d860516F7254c22E",
+    "result": {
+      "address": "0x0CbEAcf86232fC04050cD679d860516F7254c22E",
+      "chain": "base",
+      "implementations": [
+        {
+          "address": "0x74c9097cb03bEe2C0fDB45Bb40E1E1438681D32D",
+          "chain": "base",
+          "implementations": [],
+          "status": "ok",
+          "name": "SuperOETHHarvester",
+          "dir": "base/0x74c9097cb03bEe2C0fDB45Bb40E1E1438681D32D_SuperOETHHarvester",
+          "files": 9,
+          "source": "sourcify",
+          "compiler": "0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "OETHBaseHarvesterProxy",
+      "dir": "base/0x0CbEAcf86232fC04050cD679d860516F7254c22E_OETHBaseHarvesterProxy",
+      "files": 4,
+      "source": "sourcify",
+      "compiler": "0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x74c9097cb03bee2c0fdb45bb40e1e1438681d32d"
+    }
+  },
+  {
+    "asset": "superOETHb Zapper",
+    "chain": "base",
+    "address": "0x3b56c09543D3068f8488ED34e6F383c3854d2bC1",
+    "result": {
+      "address": "0x3b56c09543D3068f8488ED34e6F383c3854d2bC1",
+      "chain": "base",
+      "implementations": [],
+      "status": "ok",
+      "name": "OETHBaseZapper",
+      "dir": "base/0x3b56c09543D3068f8488ED34e6F383c3854d2bC1_OETHBaseZapper",
+      "files": 18,
+      "source": "sourcify",
+      "compiler": "0.8.7+commit.e28d00a7"
+    }
+  },
+  {
+    "asset": "WETH ARM",
+    "chain": "ethereum",
+    "address": "0x68025A4615407993A680102b08a23A61D11C657C",
+    "result": {
+      "address": "0x68025A4615407993A680102b08a23A61D11C657C",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xe0Dba0eF9A1C7dF2a94386A3187e9360e1B2c1fb",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "MultiAssetARM",
+          "dir": "ethereum/0xe0Dba0eF9A1C7dF2a94386A3187e9360e1B2c1fb_MultiAssetARM",
+          "files": 14,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0x68025A4615407993A680102b08a23A61D11C657C_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0xe0dba0ef9a1c7df2a94386a3187e9360e1b2c1fb"
+    }
+  },
+  {
+    "asset": "WETH ARM - stETH Adapter",
+    "chain": "ethereum",
+    "address": "0x7b0a90552D2dc01936301A45bFC813717Af7E8a9",
+    "result": {
+      "address": "0x7b0a90552D2dc01936301A45bFC813717Af7E8a9",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x2b8b088B29349f4a9Af1719f0fb3115587E84c26",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "StETHAssetAdapter",
+          "dir": "ethereum/0x2b8b088B29349f4a9Af1719f0fb3115587E84c26_StETHAssetAdapter",
+          "files": 7,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0x7b0a90552D2dc01936301A45bFC813717Af7E8a9_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x2b8b088b29349f4a9af1719f0fb3115587e84c26"
+    }
+  },
+  {
+    "asset": "WETH ARM - wstETH Adapter",
+    "chain": "ethereum",
+    "address": "0xE28ca056A12134b6B872D1CbE04cd1A82fDfeA95",
+    "result": {
+      "address": "0xE28ca056A12134b6B872D1CbE04cd1A82fDfeA95",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x4ab7E8c06d651F7462df728419D4293126764Ed4",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "WstETHAssetAdapter",
+          "dir": "ethereum/0x4ab7E8c06d651F7462df728419D4293126764Ed4_WstETHAssetAdapter",
+          "files": 7,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0xE28ca056A12134b6B872D1CbE04cd1A82fDfeA95_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x4ab7e8c06d651f7462df728419d4293126764ed4"
+    }
+  },
+  {
+    "asset": "WETH ARM - eETH Adapter",
+    "chain": "ethereum",
+    "address": "0xFa205c9a110a3e82Bd8d223CccCB15C5b9E6434e",
+    "result": {
+      "address": "0xFa205c9a110a3e82Bd8d223CccCB15C5b9E6434e",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x0dA9cA22A10252eD87D880F3E45b736Bb10efc44",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "EtherFiAssetAdapter",
+          "dir": "ethereum/0x0dA9cA22A10252eD87D880F3E45b736Bb10efc44_EtherFiAssetAdapter",
+          "files": 7,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0xFa205c9a110a3e82Bd8d223CccCB15C5b9E6434e_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x0da9ca22a10252ed87d880f3e45b736bb10efc44"
+    }
+  },
+  {
+    "asset": "WETH ARM - weETH Adapter",
+    "chain": "ethereum",
+    "address": "0xD5F61bFd890169c28858039f6b6c9b517407C852",
+    "result": {
+      "address": "0xD5F61bFd890169c28858039f6b6c9b517407C852",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x367B54A531b8D1e611326957A5e7c1f67DB3dCe1",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "WeETHAssetAdapter",
+          "dir": "ethereum/0x367B54A531b8D1e611326957A5e7c1f67DB3dCe1_WeETHAssetAdapter",
+          "files": 7,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0xD5F61bFd890169c28858039f6b6c9b517407C852_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x367b54a531b8d1e611326957a5e7c1f67db3dce1"
+    }
+  },
+  {
+    "asset": "WETH ARM - MorphoMarket",
+    "chain": "ethereum",
+    "address": "0xe192824f42ae3D643ac867774b45E8d233d86c72",
+    "result": {
+      "address": "0xe192824f42ae3D643ac867774b45E8d233d86c72",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x4E715556Cd84926FD5EAc206a016711E38273aD4",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "MorphoMarket",
+          "dir": "ethereum/0x4E715556Cd84926FD5EAc206a016711E38273aD4_MorphoMarket",
+          "files": 9,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0xe192824f42ae3D643ac867774b45E8d233d86c72_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x4e715556cd84926fd5eac206a016711e38273ad4"
+    }
+  },
+  {
+    "asset": "WETH ARM Zapper",
+    "chain": "ethereum",
+    "address": "0xE11EDbd5AE4Fa434Af7f8D7F03Da1742996e7Ab2",
+    "result": {
+      "address": "0xE11EDbd5AE4Fa434Af7f8D7F03Da1742996e7Ab2",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "ZapperARM",
+      "dir": "ethereum/0xE11EDbd5AE4Fa434Af7f8D7F03Da1742996e7Ab2_ZapperARM",
+      "files": 3,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362"
+    }
+  },
+  {
+    "asset": "USDC ARM",
+    "chain": "ethereum",
+    "address": "0x9E3A7026E5767F2d7Ff5e83b0ed011005f45a170",
+    "result": {
+      "address": "0x9E3A7026E5767F2d7Ff5e83b0ed011005f45a170",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xef40f3548ec3277ade0eb88DbB80ebF63Ea59a96",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "MultiAssetARM",
+          "dir": "ethereum/0xef40f3548ec3277ade0eb88DbB80ebF63Ea59a96_MultiAssetARM",
+          "files": 14,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0x9E3A7026E5767F2d7Ff5e83b0ed011005f45a170_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0xef40f3548ec3277ade0eb88dbb80ebf63ea59a96"
+    }
+  },
+  {
+    "asset": "USDC ARM CapManager",
+    "chain": "ethereum",
+    "address": "0x19B1Edb2caD902F103a20A30011f125DCe44F954",
+    "result": {
+      "address": "0x19B1Edb2caD902F103a20A30011f125DCe44F954",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xDdF1954db1Ace4a58E07a4D25C0818aC977cb8bd",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "CapManager",
+          "dir": "ethereum/0xDdF1954db1Ace4a58E07a4D25C0818aC977cb8bd_CapManager",
+          "files": 8,
+          "source": "blockscout",
+          "compiler": "0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0x19B1Edb2caD902F103a20A30011f125DCe44F954_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0xddf1954db1ace4a58e07a4d25c0818ac977cb8bd"
+    }
+  },
+  {
+    "asset": "USDC ARM - PYUSD Adapter",
+    "chain": "ethereum",
+    "address": "0x0C9ac6D63B2b2A1b502E29eC47a53d0966Ea9465",
+    "result": {
+      "address": "0x0C9ac6D63B2b2A1b502E29eC47a53d0966Ea9465",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x0bD1bE3B983DE582291dc16DFB123C74dcd65ae8",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "PaxosAssetAdapter",
+          "dir": "ethereum/0x0bD1bE3B983DE582291dc16DFB123C74dcd65ae8_PaxosAssetAdapter",
+          "files": 8,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0x0C9ac6D63B2b2A1b502E29eC47a53d0966Ea9465_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x0bd1be3b983de582291dc16dfb123c74dcd65ae8"
+    }
+  },
+  {
+    "asset": "USDC ARM - USDG Adapter",
+    "chain": "ethereum",
+    "address": "0xAb98aC901B8A26636d9cf3Cf38d9aCdcD045788f",
+    "result": {
+      "address": "0xAb98aC901B8A26636d9cf3Cf38d9aCdcD045788f",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xB4723D7a5724D6Ce35AACf6c3A6E6E2BeE0c2E05",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "PaxosAssetAdapter",
+          "dir": "ethereum/0xB4723D7a5724D6Ce35AACf6c3A6E6E2BeE0c2E05_PaxosAssetAdapter",
+          "files": 8,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0xAb98aC901B8A26636d9cf3Cf38d9aCdcD045788f_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0xb4723d7a5724d6ce35aacf6c3a6e6e2bee0c2e05"
+    }
+  },
+  {
+    "asset": "USDC ARM - AAVE Market",
+    "chain": "ethereum",
+    "address": "0x43f35Fa72dcf93DaD9843Ab7B0E0587bF57d9643",
+    "result": {
+      "address": "0x43f35Fa72dcf93DaD9843Ab7B0E0587bF57d9643",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xE150e0B481E35EA2bCb31532054F28645642d23F",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "ATokenVault",
+          "dir": "ethereum/0xE150e0B481E35EA2bCb31532054F28645642d23F_ATokenVault",
+          "files": 42,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "TransparentUpgradeableProxy",
+      "dir": "ethereum/0x43f35Fa72dcf93DaD9843Ab7B0E0587bF57d9643_TransparentUpgradeableProxy",
+      "files": 8,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0xe150e0b481e35ea2bcb31532054f28645642d23f"
+    }
+  },
+  {
+    "asset": "Ethena ARM - sUSDe Adapter",
+    "chain": "ethereum",
+    "address": "0xE620aFB67223AE03C260112aE21A717Af94C90f0",
+    "result": {
+      "address": "0xE620aFB67223AE03C260112aE21A717Af94C90f0",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x1707b933037287eAf35A64ff1E89Cb00Db809aaB",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "EthenaAssetAdapter",
+          "dir": "ethereum/0x1707b933037287eAf35A64ff1E89Cb00Db809aaB_EthenaAssetAdapter",
+          "files": 7,
+          "source": "blockscout",
+          "compiler": "0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0xE620aFB67223AE03C260112aE21A717Af94C90f0_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x1707b933037287eaf35a64ff1e89cb00db809aab"
+    }
+  },
+  {
+    "asset": "Ethena ARM - AAVE Market",
+    "chain": "ethereum",
+    "address": "0x0DC20109Ea012f050BeDA184844c1eD5ec6dA33A",
+    "result": {
+      "address": "0x0DC20109Ea012f050BeDA184844c1eD5ec6dA33A",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x7396F87F71BfBd285F1bFD76e824384031f07424",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "ATokenVault",
+          "dir": "ethereum/0x7396F87F71BfBd285F1bFD76e824384031f07424_ATokenVault",
+          "files": 42,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "TransparentUpgradeableProxy",
+      "dir": "ethereum/0x0DC20109Ea012f050BeDA184844c1eD5ec6dA33A_TransparentUpgradeableProxy",
+      "files": 8,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x7396f87f71bfbd285f1bfd76e824384031f07424"
+    }
+  },
+  {
+    "asset": "Ethena ARM Unstaker",
+    "chain": "ethereum",
+    "address": "0xB1b9cf49B16DECc1634AEa0675C3b976FfE2B4F4",
+    "result": {
+      "address": "0xB1b9cf49B16DECc1634AEa0675C3b976FfE2B4F4",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "EthenaUnstaker",
+      "dir": "ethereum/0xB1b9cf49B16DECc1634AEa0675C3b976FfE2B4F4_EthenaUnstaker",
+      "files": 5,
+      "source": "blockscout",
+      "compiler": "0.8.23+commit.f704f362"
+    }
+  },
+  {
+    "asset": "Lido ARM",
+    "chain": "ethereum",
+    "address": "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6",
+    "result": {
+      "address": "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x850da2E21F1F71479E2A307EDab114777D9F6217",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "LidoARM",
+          "dir": "ethereum/0x850da2E21F1F71479E2A307EDab114777D9F6217_LidoARM",
+          "files": 13,
+          "source": "blockscout",
+          "compiler": "0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0x850da2e21f1f71479e2a307edab114777d9f6217"
+    }
+  },
+  {
+    "asset": "Lido ARM - Morpho Market",
+    "chain": "ethereum",
+    "address": "0xB7CeFE4CB483Be80C2963D3D9Edb991e69ff39cf",
+    "result": {
+      "address": "0xB7CeFE4CB483Be80C2963D3D9Edb991e69ff39cf",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0xa52cC5aDFE6C638cE31694eAFfD8F993A0324f22",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "MorphoMarket",
+          "dir": "ethereum/0xa52cC5aDFE6C638cE31694eAFfD8F993A0324f22_MorphoMarket",
+          "files": 9,
+          "source": "blockscout",
+          "compiler": "v0.8.23+commit.f704f362"
+        }
+      ],
+      "status": "ok",
+      "name": "Proxy",
+      "dir": "ethereum/0xB7CeFE4CB483Be80C2963D3D9Edb991e69ff39cf_Proxy",
+      "files": 2,
+      "source": "blockscout",
+      "compiler": "v0.8.23+commit.f704f362",
+      "eip1967_impl_onchain": "0xa52cc5adfe6c638ce31694eaffd8f993a0324f22"
+    }
+  },
+  {
+    "asset": "Lido ARM Zapper",
+    "chain": "ethereum",
+    "address": "0x01F30B7358Ba51f637d1aa05D9b4A60f76DAD680",
+    "result": {
+      "address": "0x01F30B7358Ba51f637d1aa05D9b4A60f76DAD680",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "ZapperLidoARM",
+      "dir": "ethereum/0x01F30B7358Ba51f637d1aa05D9b4A60f76DAD680_ZapperLidoARM",
+      "files": 3,
+      "source": "blockscout",
+      "compiler": "0.8.23+commit.f704f362"
+    }
+  },
+  {
+    "asset": "Origin Timelock",
+    "chain": "ethereum",
+    "address": "0x35918cDE7233F2dD33fA41ae3Cb6aE0e42E0e69F",
+    "result": {
+      "address": "0x35918cDE7233F2dD33fA41ae3Cb6aE0e42E0e69F",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "Timelock",
+      "dir": "ethereum/0x35918cDE7233F2dD33fA41ae3Cb6aE0e42E0e69F_Timelock",
+      "files": 10,
+      "source": "blockscout",
+      "compiler": "v0.8.11+commit.d7f03943"
+    }
+  },
+  {
+    "asset": "Origin Governance",
+    "chain": "ethereum",
+    "address": "0x1D3Fbd4d129Ddd2372EA85c5Fa00b2682081c9EC",
+    "result": {
+      "address": "0x1D3Fbd4d129Ddd2372EA85c5Fa00b2682081c9EC",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "Governance",
+      "dir": "ethereum/0x1D3Fbd4d129Ddd2372EA85c5Fa00b2682081c9EC_Governance",
+      "files": 33,
+      "source": "blockscout",
+      "compiler": "0.8.10+commit.fc410830"
+    }
+  },
+  {
+    "asset": "xOGN",
+    "chain": "ethereum",
+    "address": "0x63898b3b6Ef3d39332082178656E9862bee45C57",
+    "result": {
+      "address": "0x63898b3b6Ef3d39332082178656E9862bee45C57",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x97711c7a5D64A064a95d10e37f786d2bD8b1F3c8",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "ExponentialStaking",
+          "dir": "ethereum/0x97711c7a5D64A064a95d10e37f786d2bD8b1F3c8_ExponentialStaking",
+          "files": 19,
+          "source": "blockscout",
+          "compiler": "0.8.10+commit.fc410830"
+        }
+      ],
+      "status": "ok",
+      "name": "ExponentialStakingProxy",
+      "dir": "ethereum/0x63898b3b6Ef3d39332082178656E9862bee45C57_ExponentialStakingProxy",
+      "files": 4,
+      "source": "blockscout",
+      "compiler": "0.8.10+commit.fc410830",
+      "eip1967_impl_onchain": "0x97711c7a5d64a064a95d10e37f786d2bd8b1f3c8"
+    }
+  },
+  {
+    "asset": "Base Timelock",
+    "chain": "base",
+    "address": "0xf817cb3092179083c48c014688D98B72fB61464f",
+    "result": {
+      "address": "0xf817cb3092179083c48c014688D98B72fB61464f",
+      "chain": "base",
+      "implementations": [],
+      "status": "ok",
+      "name": "Timelock",
+      "dir": "base/0xf817cb3092179083c48c014688D98B72fB61464f_Timelock",
+      "files": 8,
+      "source": "sourcify",
+      "compiler": "0.8.10+commit.fc410830"
+    }
+  },
+  {
+    "asset": "HyperEVM Timelock",
+    "chain": "hyperevm",
+    "address": "0x77121911A387c9e4Eae46345E0f831A6da8a1364",
+    "result": {
+      "address": "0x77121911A387c9e4Eae46345E0f831A6da8a1364",
+      "chain": "hyperevm",
+      "implementations": [],
+      "status": "ok_twin",
+      "name": "Timelock",
+      "dir": "hyperevm/0x77121911A387c9e4Eae46345E0f831A6da8a1364_Timelock",
+      "source": "twin:plume-blockscout"
+    }
+  },
+  {
+    "asset": "SafeModule - OUSD AutoWithdrawal",
+    "chain": "ethereum",
+    "address": "0x90d588fc0eC3DB9c4b417dB4537fE08e063D2ae5",
+    "result": {
+      "address": "0x90d588fc0eC3DB9c4b417dB4537fE08e063D2ae5",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "AutoWithdrawalModule",
+      "dir": "ethereum/0x90d588fc0eC3DB9c4b417dB4537fE08e063D2ae5_AutoWithdrawalModule",
+      "files": 25,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a"
+    }
+  },
+  {
+    "asset": "SafeModule - Claim Strategy Rewards",
+    "chain": "ethereum",
+    "address": "0x1b84E64279D63f48DdD88B9B2A7871e817152A44",
+    "result": {
+      "address": "0x1b84E64279D63f48DdD88B9B2A7871e817152A44",
+      "chain": "ethereum",
+      "implementations": [],
+      "status": "ok",
+      "name": "ClaimStrategyRewardsSafeModule",
+      "dir": "ethereum/0x1b84E64279D63f48DdD88B9B2A7871e817152A44_ClaimStrategyRewardsSafeModule",
+      "files": 16,
+      "source": "blockscout",
+      "compiler": "0.8.28+commit.7893614a"
+    }
+  },
+  {
+    "asset": "OETH Vault Lens",
+    "chain": "ethereum",
+    "address": "0xad2b1657E2c3243750B32Cb9A51169575945b05B",
+    "result": {
+      "address": "0xad2b1657E2c3243750B32Cb9A51169575945b05B",
+      "chain": "ethereum",
+      "implementations": [
+        {
+          "address": "0x24c811d39F453f035cC28Be5ce8012A8653894Dc",
+          "chain": "ethereum",
+          "implementations": [],
+          "status": "ok",
+          "name": "OETHVaultLens",
+          "dir": "ethereum/0x24c811d39F453f035cC28Be5ce8012A8653894Dc_OETHVaultLens",
+          "files": 18,
+          "source": "blockscout",
+          "compiler": "v0.8.28+commit.7893614a"
+        }
+      ],
+      "status": "ok",
+      "name": "InitializeGovernedUpgradeabilityProxy",
+      "dir": "ethereum/0xad2b1657E2c3243750B32Cb9A51169575945b05B_InitializeGovernedUpgradeabilityProxy",
+      "files": 5,
+      "source": "blockscout",
+      "compiler": "v0.8.28+commit.7893614a",
+      "eip1967_impl_onchain": "0x24c811d39f453f035cc28be5ce8012a8653894dc"
+    }
+  }
+]

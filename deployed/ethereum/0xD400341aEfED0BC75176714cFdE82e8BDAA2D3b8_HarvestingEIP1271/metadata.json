@@ -1,0 +1,74 @@
+{
+  "name": "HarvestingEIP1271",
+  "file_path": "contracts/harvest/HarvestingEIP1271.sol",
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "evm_version": "paris",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2026-03-19T15:24:30.715773Z",
+  "is_fully_verified": true,
+  "constructor_args": "0x0000000000000000000000004ff1b9d9ba8558f5eafcec096318ea0d8b5419710000000000000000000000007ad5c91914de8d24316038567856d26babe24c9e000000000000000000000000fdafc9d1902f4e0b84f65f49f244b32b31013b74000000000000000000000000c92e8bdf79f0507f65a392b0ab4667716bfe0110",
+  "decoded_constructor_args": [
+    [
+      "0x4FF1b9D9ba8558F5EAfCec096318eA0d8b541971",
+      {
+        "internalType": "address",
+        "name": "initialOwner",
+        "type": "address"
+      }
+    ],
+    [
+      "0x7aD5C91914DE8D24316038567856d26BabE24C9E",
+      {
+        "internalType": "address",
+        "name": "initialBot",
+        "type": "address"
+      }
+    ],
+    [
+      "0xfdaFc9d1902f4e0b84f65F49f244b32b31013b74",
+      {
+        "internalType": "address",
+        "name": "composableCoW_",
+        "type": "address"
+      }
+    ],
+    [
+      "0xC92E8bdf79f0507f65a392b0ab4667716BFE0110",
+      {
+        "internalType": "address",
+        "name": "vaultRelayer",
+        "type": "address"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xD400341aEfED0BC75176714cFdE82e8BDAA2D3b8",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

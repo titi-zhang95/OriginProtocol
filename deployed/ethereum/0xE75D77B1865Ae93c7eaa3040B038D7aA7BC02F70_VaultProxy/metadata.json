@@ -1,0 +1,33 @@
+{
+  "name": "VaultProxy",
+  "file_path": "VaultProxy.sol",
+  "compiler_version": "0.5.11+commit.22be8592",
+  "evm_version": "petersburg",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "petersburg",
+    "libraries": {},
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "remappings": []
+  },
+  "proxy_type": "eip1967",
+  "implementations": [
+    {
+      "address_hash": "0x82948060c4B72684bEdEdec342350AB344975145",
+      "name": "OUSDVault"
+    }
+  ],
+  "verified_at": "2025-09-20T17:05:21.323078Z",
+  "is_fully_verified": false,
+  "constructor_args": null,
+  "decoded_constructor_args": null,
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

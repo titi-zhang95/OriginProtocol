@@ -1,0 +1,56 @@
+{
+  "name": "Timelock",
+  "file_path": "Timelock.sol",
+  "compiler_version": "v0.8.11+commit.d7f03943",
+  "evm_version": "istanbul",
+  "optimization_enabled": true,
+  "optimization_runs": 200,
+  "compiler_settings": {
+    "evmVersion": "istanbul",
+    "libraries": {
+      "Timelock.sol": {}
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers"
+        ]
+      }
+    }
+  },
+  "proxy_type": null,
+  "implementations": [],
+  "verified_at": "2024-03-09T23:13:14.402732Z",
+  "is_fully_verified": false,
+  "constructor_args": "0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  "decoded_constructor_args": [
+    [
+      [],
+      {
+        "internalType": "address[]",
+        "name": "proposers",
+        "type": "address[]"
+      }
+    ],
+    [
+      [],
+      {
+        "internalType": "address[]",
+        "name": "executors",
+        "type": "address[]"
+      }
+    ]
+  ],
+  "external_libraries": [],
+  "language": "solidity",
+  "address": "0x35918cDE7233F2dD33fA41ae3Cb6aE0e42E0e69F",
+  "chain": "ethereum",
+  "source": "blockscout"
+}

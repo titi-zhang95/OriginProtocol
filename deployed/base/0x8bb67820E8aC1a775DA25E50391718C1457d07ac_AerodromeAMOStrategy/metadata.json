@@ -1,0 +1,34 @@
+{
+  "name": "AerodromeAMOStrategy",
+  "fullyQualifiedName": "contracts/strategies/aerodrome/AerodromeAMOStrategy.sol:AerodromeAMOStrategy",
+  "compiler_version": "0.8.7+commit.e28d00a7",
+  "compiler_settings": {
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "libraries": {},
+    "optimizer": {
+      "runs": 200,
+      "enabled": true
+    },
+    "evmVersion": "london",
+    "remappings": []
+  },
+  "match": "exact_match",
+  "verified_at": "2024-10-28T23:24:53Z",
+  "proxy_resolution": {
+    "isProxy": false,
+    "proxyType": null,
+    "implementations": []
+  },
+  "deployment": {
+    "transactionHash": "0xde2b55aa221f136e29179d0bee78c1ac069d2bfc43916bfdfa41dcbfd6d317d2",
+    "blockNumber": "21684049",
+    "transactionIndex": "11",
+    "deployer": "0xFD9E6005187F448957a0972a7d0C0A6dA2911236"
+  },
+  "address": "0x8bb67820E8aC1a775DA25E50391718C1457d07ac",
+  "chain": "base",
+  "source": "sourcify"
+}
